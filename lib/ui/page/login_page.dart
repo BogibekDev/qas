@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: const TextStyle(fontSize: 17),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  hintText: "Parol",
+                  // hintText: "Parol",
                   suffixIcon: Padding(
                     padding: const EdgeInsets.only(right: 4.0),
                     child: IconButton(

@@ -18,6 +18,11 @@ extension Price on double {
         result = s[s.length - i - 1] + result;
       }
     }
-    return "$result UZS";
+    return "$result so'm";
+  }
+
+  String priceWithMLN() {
+    int result = this ~/ 1000000;
+    return "$result mln. so'm";
   }
 }

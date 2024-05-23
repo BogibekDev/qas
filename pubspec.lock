@@ -267,6 +267,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_screenutil:
+    dependency: "direct main"
+    description:
+      name: flutter_screenutil
+      sha256: b372c35a772a1dc84142a3b9c5ee89a390834bd258e5e6a450d9b975b985d1c9
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -445,6 +453,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  mobile_scanner:
+    dependency: "direct main"
+    description:
+      name: mobile_scanner
+      sha256: b8c0e9afcfd52534f85ec666f3d52156f560b5e6c25b1e3d4fe2087763607926
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.1"
   package_config:
     dependency: transitive
     description:
