@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../tools/dimens.dart';
 import '../../tools/prefs.dart';
 import '../../tools/res_color.dart';
-import '../widget/dialogs.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -106,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                       SharedPrefs.saveToken("token");
                       goHomePage();
                     } else {
-                      Dialogs.error(context, "Telefon nomer yoki parol xato!");
+
                     }
                   },
                   child: Text(

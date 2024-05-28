@@ -5,7 +5,6 @@ import 'package:flutter/painting.dart';
 import '../../fake/fakes.dart';
 import '../../tools/res_color.dart';
 import '../widget/car_item.dart';
-import '../widget/dialogs.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -75,7 +74,6 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, position) => CarItem(
             car: cars[position],
             onItemClick: () {
-              Dialogs.error(context, "$position");
             },
           ),
         ),
