@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 import '../../fake/fakes.dart';
 import '../../tools/res_color.dart';
 import '../widget/car_item.dart';
+import 'detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,11 +17,6 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _startYear = TextEditingController();
   final TextEditingController _finishYear = TextEditingController();
   DateTime selectedDate = DateTime(2024);
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +37,13 @@ class _HomePageState extends State<HomePage> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                    color: ResColors.white,
-                    borderRadius: BorderRadius.circular(8.0)),
-                child: const Icon(Icons.qr_code_scanner),
+                  color: ResColors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: const Icon(
+                  Icons.qr_code_scanner,
+                  color: ResColors.black,
+                ),
               ),
             ),
             const SizedBox(width: 8),
@@ -60,7 +58,10 @@ class _HomePageState extends State<HomePage> {
                   color: ResColors.white,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: const Icon(Icons.search),
+                child: const Icon(
+                  Icons.search,
+                  color: ResColors.black,
+                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -74,6 +75,10 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, position) => CarItem(
             car: cars[position],
             onItemClick: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DetailPage()),
+              );
             },
           ),
         ),
@@ -91,37 +96,50 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
       builder: (context) => Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: SizedBox(
           width: MediaQuery.sizeOf(context).width,
           height: 470,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Qidiruv",
-                style: TextStyle(
+                style: const TextStyle(
+                  color: ResColors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 18),
-              const Text(
+              Text(
                 "Rusumi",
-                style: TextStyle(fontSize: 14),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: ResColors.black,
+                ),
               ),
               const SizedBox(height: 10),
               Container(
                 width: MediaQuery.sizeOf(context).width - 32,
                 decoration: const BoxDecoration(
-                    color: ResColors.textFieldBg,
-                    borderRadius: BorderRadius.all(Radius.circular(16))),
+                  color: ResColors.textFieldBg,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
+                  ),
+                ),
                 child: DropdownButtonFormField(
                   dropdownColor: ResColors.textFieldBg,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16))),
-                    hintText: "Tanlang",
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(16),
+                      ),
+                    ),
+                  ),
+                  hint: Text(
+                    "Tanlang",
+                    style: const TextStyle(color: ResColors.black),
                   ),
                   items: rusums
                       .map((e) => DropdownMenuItem(value: e, child: Text(e)))
@@ -136,7 +154,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16),
               const Text(
                 "Ishlab chiqarilgan yili",
-                style: TextStyle(fontSize: 14),
+                style: TextStyle(
+                  color: ResColors.black,
+                  fontSize: 14,
+                ),
               ),
               const SizedBox(height: 10),
               Row(
@@ -155,7 +176,10 @@ class _HomePageState extends State<HomePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
-                          hintText: "Sana",
+                          hintText: "Yildan",
+                          hintStyle: TextStyle(
+                            color: ResColors.black,
+                          ),
                         ),
                         onTap: () {
                           _selectYear().then((value) => {
@@ -181,7 +205,8 @@ class _HomePageState extends State<HomePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
-                          hintText: "Sana",
+                          hintText: "Yilgacha",
+                          hintStyle: TextStyle(color: ResColors.black),
                         ),
                         onTap: () {
                           _selectYear().then((value) => {
@@ -198,7 +223,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16),
               const Text(
                 "Narxi",
-                style: TextStyle(fontSize: 14),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ResColors.black,
+                ),
               ),
               const SizedBox(height: 10),
               Row(
@@ -216,7 +244,10 @@ class _HomePageState extends State<HomePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
-                          hintText: "Sana",
+                          hintText: "Sanadan",
+                          hintStyle: TextStyle(
+                            color: ResColors.black,
+                          ),
                         ),
                         onTap: () {
                           _selectYear().then((value) => {
@@ -238,12 +269,13 @@ class _HomePageState extends State<HomePage> {
                         controller: _finishYear,
                         readOnly: true,
                         decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.calendar_month),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                          ),
-                          hintText: "Sana",
-                        ),
+                            suffixIcon: Icon(Icons.calendar_month),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                            ),
+                            hintText: "Sanagacha",
+                            hintStyle: TextStyle(color: ResColors.black)),
                         onTap: () {
                           _selectYear().then((value) => {
                                 setState(() {
@@ -270,11 +302,15 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         child: const Text(
                           "Bekor qilish",
-                          style:
-                              TextStyle(color: ResColors.black, fontSize: 18),
+                          style: TextStyle(
+                            color: ResColors.black,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
@@ -294,8 +330,10 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {},
                         child: const Text(
                           "Qidirish",
-                          style:
-                              TextStyle(color: ResColors.white, fontSize: 18),
+                          style: TextStyle(
+                            color: ResColors.white,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
@@ -315,7 +353,12 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Yilni tanlnag"),
+          title: const Text(
+            "Yilni tanlnag",
+            style: TextStyle(
+              color: ResColors.black,
+            ),
+          ),
           content: SizedBox(
             width: 300,
             height: 300,

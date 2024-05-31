@@ -31,10 +31,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ResColors.mainBg,
       appBar: AppBar(
+        backgroundColor: ResColors.mainBg,
         title: Text(
           "login".tr(),
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: ResColors.black,
+          ),
         ),
         centerTitle: true,
       ),
@@ -46,7 +51,13 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 60),
-              Text("phone_number".tr(), style: const TextStyle(fontSize: 16.0)),
+              Text(
+                "phone_number".tr(),
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: ResColors.black,
+                ),
+              ),
               const SizedBox(height: 10),
               TextField(
                 controller: _phoneNumberController,
@@ -54,23 +65,39 @@ class _LoginPageState extends State<LoginPage> {
                   border: OutlineInputBorder(),
                   prefix: Text(
                     "+998  ",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: ResColors.black,
+                    ),
                   ),
                 ),
                 maxLength: 9,
                 keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 17),
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: ResColors.black,
+                ),
               ),
               const SizedBox(height: 10),
-              Text("password".tr(), style: const TextStyle(fontSize: 16.0)),
+              Text(
+                "password".tr(),
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: ResColors.black,
+                ),
+              ),
               const SizedBox(height: 10),
               TextField(
                 controller: _passwordController,
                 obscureText: !isPasswordShow,
-                style: const TextStyle(fontSize: 17),
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: ResColors.black,
+                ),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  // hintText: "Parol",
+                  hintText: "********",
+                  hintStyle: const TextStyle(color: ResColors.black),
                   suffixIcon: Padding(
                     padding: const EdgeInsets.only(right: 4.0),
                     child: IconButton(
@@ -100,18 +127,18 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     final number = _phoneNumberController.text;
                     final password = _passwordController.text;
-                    if (password.length > 8 && number.length == 9) {
+                    if (password.length >= 6 && number.length == 9) {
                       SharedPrefs.saveLogin();
                       SharedPrefs.saveToken("token");
                       goHomePage();
-                    } else {
-
-                    }
+                    } else {}
                   },
                   child: Text(
                     "login".tr(),
-                    style:
-                        const TextStyle(color: ResColors.white, fontSize: 18),
+                    style: const TextStyle(
+                      color: ResColors.white,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               )

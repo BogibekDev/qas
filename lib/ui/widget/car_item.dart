@@ -23,6 +23,7 @@ class _CarItemState extends State<CarItem> {
       },
       child: Card(
         surfaceTintColor: ResColors.white,
+        color: ResColors.white,
         elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -75,7 +76,7 @@ class _CarItemState extends State<CarItem> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
+                          const Expanded(
                             child: const Text(
                               "Bosib o'tilgan yo'l: ",
                               overflow: TextOverflow.fade,

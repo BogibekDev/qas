@@ -31,6 +31,8 @@ class MyApp extends StatelessWidget {
       locale: context.locale,
       theme: ThemeData(
         fontFamily: GoogleFonts.montserrat().fontFamily,
+        bottomSheetTheme:
+        const BottomSheetThemeData(backgroundColor: ResColors.mainBg),
         colorScheme: ColorScheme.fromSeed(seedColor: ResColors.mainColor),
         useMaterial3: true,
       ),
