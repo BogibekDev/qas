@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/model/car_model.dart';
@@ -32,11 +33,18 @@ class _CarItemState extends State<CarItem> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image(
+                child: CachedNetworkImage(
                   width: MediaQuery.sizeOf(context).width / 4,
                   height: MediaQuery.sizeOf(context).width / 4 - 10,
+                  imageUrl: widget.car.image_url,
                   fit: BoxFit.cover,
-                  image: NetworkImage(widget.car.image_url),
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.error_outline,
+                    size: 100,
+                  ),
                 ),
               ),
               Expanded(

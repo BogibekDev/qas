@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:qas/fake/fakes.dart';
-import 'package:qas/tools/res_color.dart';
-import 'package:qas/tools/utils.dart';
+
+import '../../fake/fakes.dart';
+import '../../tools/res_color.dart';
+import '../../tools/utils.dart';
+import '../widget/similar_item.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -19,7 +22,7 @@ class _DetailPageState extends State<DetailPage> {
     "https://centralasia-adventures.com/image/new/legkovaya-mashina-shevrole-kobalt-2-g.jpg",
     "https://storage.kun.uz/source/6/2HX_jF3Lbu8YoOfbjw6zZvEwM4Sd1mHN.jpg",
     "https://img03.platesmania.com/170820/o/10279365.jpg",
-    "https://img03.platesmania.com/170820/o/10279365.jpg",
+    "https://qas.chogirmali.uz/media/1_Снимок экрана 2023--28 в 14.46.37.png",
     "https://img03.platesmania.com/170820/o/10279365.jpg",
   ];
 
@@ -41,15 +44,15 @@ class _DetailPageState extends State<DetailPage> {
             CarouselSlider(
               carouselController: carouselController,
               items: images.map((image) {
-                return Image.network(
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                  image,
-                  fit: BoxFit.cover,
-                  width: MediaQuery.sizeOf(context).width,
-                  height: 290,
+                return CachedNetworkImage(
+                  imageUrl: image,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.error_outline,
+                    size: 100,
+                  ),
                 );
               }).toList(),
               options: CarouselOptions(
@@ -94,12 +97,101 @@ class _DetailPageState extends State<DetailPage> {
                   Text(
                     "${142000000.0.price()}",
                     style: const TextStyle(
-                      fontSize: 36,
+                      fontSize: 32,
                       color: ResColors.black,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    decoration: BoxDecoration(
+                        color: ResColors.textFieldBg,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Muddatli to'lov",
+                            style: TextStyle(
+                              color: ResColors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                            )),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Oldindan to'lov",
+                                    style: TextStyle(
+                                      color: ResColors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    "~ \$4311",
+                                    style: TextStyle(
+                                      color: ResColors.black,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Oyma-oy to'lov",
+                                    style: TextStyle(
+                                      color: ResColors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    "12 x ~ \$4311",
+                                    style: TextStyle(
+                                      color: ResColors.black,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Filial: ",
+                        style: TextStyle(
+                          color: ResColors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 30),
+                      Text(
+                        "1-filial",
+                        style: const TextStyle(
+                            color: ResColors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 16),
                   const Text(
                     "Xarakteristika",
                     style: TextStyle(
@@ -132,14 +224,54 @@ class _DetailPageState extends State<DetailPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Ishlab chiqarilgan yili: ",
+                        "Model: ",
                         style: TextStyle(
                           color: ResColors.black,
                           fontSize: 14,
                         ),
                       ),
                       Text(
-                        cars[0].year,
+                        cars[0].name,
+                        style: const TextStyle(
+                            color: ResColors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Rangi: ",
+                        style: TextStyle(
+                          color: ResColors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        "Kulrang",
+                        style: const TextStyle(
+                            color: ResColors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Yoqilg'i turi: ",
+                        style: TextStyle(
+                          color: ResColors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        "Gaz(Metan)",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -152,14 +284,14 @@ class _DetailPageState extends State<DetailPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Ishlab chiqarilgan yili: ",
+                        "Uzatma qutisi: ",
                         style: TextStyle(
                           color: ResColors.black,
                           fontSize: 14,
                         ),
                       ),
                       Text(
-                        cars[0].year,
+                        "Auto",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -172,14 +304,14 @@ class _DetailPageState extends State<DetailPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Ishlab chiqarilgan yili: ",
+                        "Bosib o'tgan masofasi: ",
                         style: TextStyle(
                           color: ResColors.black,
                           fontSize: 14,
                         ),
                       ),
                       Text(
-                        cars[0].year,
+                        cars[0].mileage,
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -192,134 +324,14 @@ class _DetailPageState extends State<DetailPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Ishlab chiqarilgan yili: ",
+                        "Kraskasi: ",
                         style: TextStyle(
                           color: ResColors.black,
                           fontSize: 14,
                         ),
                       ),
                       Text(
-                        cars[0].year,
-                        style: const TextStyle(
-                            color: ResColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Ishlab chiqarilgan yili: ",
-                        style: TextStyle(
-                          color: ResColors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        cars[0].year,
-                        style: const TextStyle(
-                            color: ResColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Ishlab chiqarilgan yili: ",
-                        style: TextStyle(
-                          color: ResColors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        cars[0].year,
-                        style: const TextStyle(
-                            color: ResColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Ishlab chiqarilgan yili: ",
-                        style: TextStyle(
-                          color: ResColors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        cars[0].year,
-                        style: const TextStyle(
-                            color: ResColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Ishlab chiqarilgan yili: ",
-                        style: TextStyle(
-                          color: ResColors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        cars[0].year,
-                        style: const TextStyle(
-                            color: ResColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Ishlab chiqarilgan yili: ",
-                        style: TextStyle(
-                          color: ResColors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        cars[0].year,
-                        style: const TextStyle(
-                            color: ResColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Ishlab chiqarilgan yili: ",
-                        style: TextStyle(
-                          color: ResColors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        cars[0].year,
+                        "Kraskasi toza",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -358,11 +370,9 @@ class _DetailPageState extends State<DetailPage> {
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
-                      itemBuilder: (context, position) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        color: Colors.red,
-                        height: 180,
-                        width: 170,
+                      itemBuilder: (context, position) => SimilarItem(
+                        car: car,
+                        onItemClick: () {},
                       ),
                     ),
                   ),
@@ -373,8 +383,8 @@ class _DetailPageState extends State<DetailPage> {
           ],
         ),
       ),
-      floatingActionButton:  SizedBox(
-        width: MediaQuery.sizeOf(context).width-24,
+      floatingActionButton: SizedBox(
+        width: MediaQuery.sizeOf(context).width - 24,
         height: 60,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(

@@ -16,6 +16,8 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _rusumi = TextEditingController();
   final TextEditingController _startYear = TextEditingController();
   final TextEditingController _finishYear = TextEditingController();
+  final TextEditingController _startMoney = TextEditingController();
+  final TextEditingController _finishMoney = TextEditingController();
   DateTime selectedDate = DateTime(2024);
 
   @override
@@ -237,25 +239,21 @@ class _HomePageState extends State<HomePage> {
                           color: ResColors.textFieldBg,
                           borderRadius: BorderRadius.all(Radius.circular(16))),
                       child: TextField(
-                        controller: _startYear,
-                        readOnly: true,
+                        maxLength: 4,
+                        controller: _startMoney,
+                        //controller: _startYear,
+                        //readOnly: true,
                         decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.calendar_month),
+                          suffixText: "mln",
+                          counterText: "",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
-                          hintText: "Sanadan",
+                          hintText: "10",
                           hintStyle: TextStyle(
                             color: ResColors.black,
                           ),
                         ),
-                        onTap: () {
-                          _selectYear().then((value) => {
-                                setState(() {
-                                  _startYear.text = value.toString();
-                                })
-                              });
-                        },
                       ),
                     ),
                   ),
@@ -266,23 +264,18 @@ class _HomePageState extends State<HomePage> {
                           color: ResColors.textFieldBg,
                           borderRadius: BorderRadius.all(Radius.circular(16))),
                       child: TextField(
-                        controller: _finishYear,
+                        controller: _finishMoney,
                         readOnly: true,
+                        maxLength: 4,
                         decoration: const InputDecoration(
-                            suffixIcon: Icon(Icons.calendar_month),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                            ),
-                            hintText: "Sanagacha",
-                            hintStyle: TextStyle(color: ResColors.black)),
-                        onTap: () {
-                          _selectYear().then((value) => {
-                                setState(() {
-                                  _finishYear.text = value.toString();
-                                })
-                              });
-                        },
+                          suffixText: "mln",
+                          counterText: "",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                          hintText: "100",
+                          hintStyle: TextStyle(color: ResColors.black),
+                        ),
                       ),
                     ),
                   ),
