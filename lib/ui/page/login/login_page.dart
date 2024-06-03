@@ -1,35 +1,25 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qas/ui/page/login/login_vm.dart';
 
-import '../../tools/dimens.dart';
-import '../../tools/prefs.dart';
-import '../../tools/res_color.dart';
-import 'home_page.dart';
+import '../../../tools/dimens.dart';
+import '../../../tools/res_color.dart';
+import '../home_page.dart';
 
-class LoginPage extends StatefulWidget {
+final loginNotifierProvider =
+    ChangeNotifierProvider.autoDispose<LoginVM>((ref) {
+  return LoginVM();
+});
+
+class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  bool isPhoneError = false;
-  bool isPasswordShow = false;
-  bool isLogin = false;
-
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    checkIsLogin();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    LoginVM loginVM = ref.watch(loginNotifierProvider)
+      ..goHome = () => goHomePage.call(context);
     return Scaffold(
       backgroundColor: ResColors.mainBg,
       appBar: AppBar(
@@ -60,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: _phoneNumberController,
+                controller: loginVM.phoneNumberController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefix: Text(
@@ -88,8 +78,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: _passwordController,
-                obscureText: !isPasswordShow,
+                controller: loginVM.passwordController,
+                obscureText: !loginVM.isPasswordShow,
                 style: const TextStyle(
                   fontSize: 18,
                   color: ResColors.black,
@@ -101,12 +91,8 @@ class _LoginPageState extends State<LoginPage> {
                   suffixIcon: Padding(
                     padding: const EdgeInsets.only(right: 4.0),
                     child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isPasswordShow = !isPasswordShow;
-                        });
-                      },
-                      icon: !isPasswordShow
+                      onPressed: loginVM.changePasswordShow,
+                      icon: loginVM.isPasswordShow
                           ? const Icon(CupertinoIcons.eye_fill)
                           : const Icon(CupertinoIcons.eye_slash_fill),
                     ),
@@ -124,15 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
-                    final number = _phoneNumberController.text;
-                    final password = _passwordController.text;
-                    if (password.length >= 6 && number.length == 9) {
-                      SharedPrefs.saveLogin();
-                      SharedPrefs.saveToken("token");
-                      goHomePage();
-                    } else {}
-                  },
+                  onPressed: loginVM.login,
                   child: Text(
                     "login".tr(),
                     style: const TextStyle(
@@ -149,18 +127,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void goHomePage() {
+  void goHomePage(BuildContext context) {
+    print("object");
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => const HomePage(),
       ),
     );
-  }
-
-  void checkIsLogin() async {
-    isLogin = await SharedPrefs.isLogin();
-    if (isLogin) {
-      goHomePage();
-    }
   }
 }

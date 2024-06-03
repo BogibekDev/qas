@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qas/tools/res_color.dart';
 
-import 'ui/page/login_page.dart';
+import 'ui/page/login/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +14,7 @@ void main() async {
         supportedLocales: const [Locale('en', 'US'), Locale('uz', 'UZ')],
         path: 'assets/translations',
         fallbackLocale: const Locale('en', 'US'),
-        child: const MyApp()),
+        child: const ProviderScope(child: MyApp())),
   );
 }
 
