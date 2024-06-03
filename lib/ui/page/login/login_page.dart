@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qas/config/injection.dart';
 import 'package:qas/ui/page/login/login_vm.dart';
 
 import '../../../tools/dimens.dart';
@@ -10,7 +11,9 @@ import '../home_page.dart';
 
 final loginNotifierProvider =
     ChangeNotifierProvider.autoDispose<LoginVM>((ref) {
-  return LoginVM();
+  return LoginVM(
+    ref.read(loginUseCase),
+  );
 });
 
 class LoginPage extends ConsumerWidget {
@@ -128,7 +131,6 @@ class LoginPage extends ConsumerWidget {
   }
 
   void goHomePage(BuildContext context) {
-    print("object");
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => const HomePage(),

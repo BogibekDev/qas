@@ -8,7 +8,7 @@ class SharedPrefs {
 
   static Future<bool> isLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return  prefs.getBool('isLogin') == true;
+    return prefs.getBool('isLogin') == true;
   }
 
   static saveToken(String token) async {
@@ -16,8 +16,8 @@ class SharedPrefs {
     await prefs.setString("token", token);
   }
 
-  static Future<String?> getToken() async {
+  static Future<String> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("token");
+    return prefs.getString("token") ?? "";
   }
 }
