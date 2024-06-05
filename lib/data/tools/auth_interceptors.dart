@@ -2,7 +2,8 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:qas/tools/prefs.dart';
+
+import '../remote/local/prefs.dart';
 
 
 class AuthInterceptor extends InterceptorsWrapper {

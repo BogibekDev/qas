@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:qas/data/server/api/api_const.dart';
-import 'package:qas/data/server/auth_interceptors.dart';
-import 'package:qas/domain/entities/login/login_request.dart';
+import 'package:qas/domain/entities/login/login_response.dart';
+import 'package:qas/domain/entities/response/response.dart';
 import 'package:retrofit/http.dart';
+
+import '../../../domain/entities/login/login_request.dart';
+import '../../tools/auth_interceptors.dart';
+import 'api_const.dart';
 
 part 'api_service.g.dart';
 
@@ -22,5 +25,5 @@ abstract class ApiService {
   }
 
   @POST(ApiConst.login)
-  Stream<dynamic> login(@Body() LoginRequest loginRequest);
+  Stream<CustomResponse<LoginResponse>> login(@Body() LoginRequest loginRequest);
 }

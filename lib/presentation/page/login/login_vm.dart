@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:qas/config/base_vm.dart';
+import 'package:qas/data/remote/local/prefs.dart';
 import 'package:qas/domain/entities/login/login_request.dart';
 import 'package:qas/domain/use_cases/login/login_use_case.dart';
-import 'package:qas/tools/prefs.dart';
 
-class LoginVM extends BaseVM {
+class LoginViewModel extends BaseViewModel {
   final LoginUseCase _loginUseCase;
   bool isLoading = false;
-  bool isPhoneError = false;
+  var errorMessage = "";
   bool isPasswordShow = false;
   bool isLogin = false;
 
@@ -16,7 +16,7 @@ class LoginVM extends BaseVM {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  LoginVM(this._loginUseCase) {
+  LoginViewModel(this._loginUseCase) {
     checkIsLogin();
   }
 
@@ -35,23 +35,29 @@ class LoginVM extends BaseVM {
       _loginApi(request, () {
         goHome?.call();
       });
-    } else {}
+    } else {
+      errorMessage = "Telefon nomer yoki paroll";
+      notifyListeners();
+    }
   }
 
   void _loginApi(request, Function() goHome) {
     _loginUseCase.execute(request).listen(
       (event) {
-        event.when(loading: () {
-          isLoading = true;
-          notifyListeners();
-        }, content: (response) {
-          print(response);
-          SharedPrefs.saveLogin();
-          SharedPrefs.saveToken("token");
-          goHome.call();
-        }, error: (errorMessage) {
-          print(errorMessage);
-        });
+        event.when(
+            loading: () {
+              isLoading = true;
+              notifyListeners();
+            },
+            content: (response) {
+              if (response.success) {
+                SharedPrefs.saveLogin();
+                SharedPrefs.saveToken(response.data.access);
+                SharedPrefs.saveRefreshToken(response.data.refresh);
+                goHome.call();
+              } else {}
+            },
+            error: (errorMessage) {});
       },
     ).onDone(() {
       isLoading = false;
@@ -62,5 +68,18 @@ class LoginVM extends BaseVM {
   void changePasswordShow() {
     isPasswordShow = !isPasswordShow;
     notifyListeners();
+  }
+
+  void showMessage(BuildContext context) {
+    AlertDialog.adaptive(
+      content: Row(
+        children: [Text(errorMessage)],
+      ),
+      actions: [
+        ElevatedButton(onPressed: (){
+          Navigator.of(context).maybePop();
+        }, child: Text("ok"))
+      ],
+    );
   }
 }

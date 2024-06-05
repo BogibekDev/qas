@@ -18,9 +18,8 @@ class ErrorParser {
           switch (error.type) {
             case DioExceptionType.badResponse:
               var errorBody = error.response?.data['result'];
-              if (errorBody != null) {
-                return errorBody;
-              }
+              if (errorBody != null) return errorBody;
+
               return 'Неверный запрос: код статуса ${error.response?.statusCode}';
             default:
               return 'Please try again.';

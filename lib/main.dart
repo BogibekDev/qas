@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:qas/tools/res_color.dart';
 
-import 'ui/page/login/login_page.dart';
+import 'presentation/page/login/login_page.dart';
+import 'tools/res_color.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

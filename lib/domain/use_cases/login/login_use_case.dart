@@ -1,15 +1,19 @@
-import 'package:qas/data/server/error_parser.dart';
-import 'package:qas/domain/entities/login/login_request.dart';
-import 'package:qas/domain/entities/result/result.dart';
-import 'package:qas/domain/repo/app_repo.dart';
+
+import 'package:qas/domain/entities/login/login_response.dart';
+import 'package:qas/domain/entities/response/response.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../../data/tools/error_parser.dart';
+import '../../entities/login/login_request.dart';
+import '../../entities/result/result.dart';
+import '../../repository/app_repo.dart';
 
 class LoginUseCase {
   final AppRepo _repo;
 
   LoginUseCase(this._repo);
 
-  Stream<Result<dynamic>> execute(LoginRequest loginRequest) => _repo
+  Stream<Result<CustomResponse<LoginResponse>>> execute(LoginRequest loginRequest) => _repo
       .login(loginRequest)
       .map((response) {
         return Result.content(response);

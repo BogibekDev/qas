@@ -20,4 +20,14 @@ class SharedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("token") ?? "";
   }
+
+  static saveRefreshToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("refresh", token);
+  }
+
+  static Future<String> getRefreshToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("refresh") ?? "";
+  }
 }
