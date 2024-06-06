@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/model/car_model.dart';
+import '../../fake/car_model.dart';
 import '../../tools/res_color.dart';
 import '../../tools/utils.dart';
 

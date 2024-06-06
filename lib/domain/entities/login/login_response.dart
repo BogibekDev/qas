@@ -4,9 +4,9 @@ part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse {
-  final String refresh;
-  final String access;
-  final String role;
+  final String? refresh;
+  final String? access;
+  final String? role;
 
   LoginResponse(this.refresh, this.access, this.role);
 

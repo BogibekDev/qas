@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:qas/config/base_vm.dart';
-import 'package:qas/data/remote/local/prefs.dart';
-import 'package:qas/domain/entities/login/login_request.dart';
-import 'package:qas/domain/use_cases/login/login_use_case.dart';
+
+import '../../config/base_vm.dart';
+import '../../data/local/prefs.dart';
+import '../../domain/entities/login/login_request.dart';
+import '../../domain/use_cases/login/login_use_case.dart';
+
 
 class LoginViewModel extends BaseViewModel {
   final LoginUseCase _loginUseCase;
@@ -25,7 +27,7 @@ class LoginViewModel extends BaseViewModel {
     if (isLogin) goHome?.call();
   }
 
-  void login() {
+  void login(Function(String) showError) {
     final number = phoneNumberController.text;
     final password = passwordController.text;
 
@@ -34,30 +36,38 @@ class LoginViewModel extends BaseViewModel {
 
       _loginApi(request, () {
         goHome?.call();
+      }, (String error) {
+        showError(error);
       });
     } else {
       errorMessage = "Telefon nomer yoki paroll";
-      notifyListeners();
+      showError(errorMessage);
     }
   }
 
-  void _loginApi(request, Function() goHome) {
+  void _loginApi(
+    request,
+    Function() goHome,
+    Function(String) showError,
+  ) {
     _loginUseCase.execute(request).listen(
       (event) {
-        event.when(
-            loading: () {
-              isLoading = true;
-              notifyListeners();
-            },
-            content: (response) {
-              if (response.success) {
-                SharedPrefs.saveLogin();
-                SharedPrefs.saveToken(response.data.access);
-                SharedPrefs.saveRefreshToken(response.data.refresh);
-                goHome.call();
-              } else {}
-            },
-            error: (errorMessage) {});
+        event.when(loading: () {
+          errorMessage="";
+          isLoading = true;
+          notifyListeners();
+        }, content: (response) {
+          if (response.success) {
+            SharedPrefs.saveLogin();
+            SharedPrefs.saveToken(response.data.access??"");
+            SharedPrefs.saveRefreshToken(response.data.refresh??"");
+            goHome.call();
+          } else {
+            showError(response.error!.message);
+          }
+        }, error: (errorMessage) {
+          showError(errorMessage ?? "");
+        });
       },
     ).onDone(() {
       isLoading = false;
@@ -68,18 +78,5 @@ class LoginViewModel extends BaseViewModel {
   void changePasswordShow() {
     isPasswordShow = !isPasswordShow;
     notifyListeners();
-  }
-
-  void showMessage(BuildContext context) {
-    AlertDialog.adaptive(
-      content: Row(
-        children: [Text(errorMessage)],
-      ),
-      actions: [
-        ElevatedButton(onPressed: (){
-          Navigator.of(context).maybePop();
-        }, child: Text("ok"))
-      ],
-    );
   }
 }

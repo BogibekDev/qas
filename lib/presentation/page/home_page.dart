@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _finishMoney = TextEditingController();
   DateTime selectedDate = DateTime(2024);
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,18 +106,18 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Qidiruv",
-                style: const TextStyle(
+                style: TextStyle(
                   color: ResColors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 18),
-              Text(
+             const Text(
                 "Rusumi",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   color: ResColors.black,
                 ),
@@ -139,9 +140,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  hint: Text(
+                  hint: const Text(
                     "Tanlang",
-                    style: const TextStyle(color: ResColors.black),
+                    style: TextStyle(color: ResColors.black),
                   ),
                   items: rusums
                       .map((e) => DropdownMenuItem(value: e, child: Text(e)))

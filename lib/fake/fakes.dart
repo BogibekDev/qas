@@ -1,4 +1,4 @@
-import '../data/model/car_model.dart';
+import 'car_model.dart';
 
 List<Car> cars = [car, car, car, car, car, car, car, car, car];
 

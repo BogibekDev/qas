@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
-import '../remote/local/prefs.dart';
+import '../local/prefs.dart';
 
 
 class AuthInterceptor extends InterceptorsWrapper {

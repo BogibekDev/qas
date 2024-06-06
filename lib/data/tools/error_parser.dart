@@ -13,16 +13,16 @@ class ErrorParser {
       try {
         if (error is DioException) {
           if (error.error is SocketException) {
-            return 'Упс! Слабый интернет, проверьте ваше сетевое соединение.';
+            return 'Вой! Интернет алоқаси заиф, тармоқ уланишингизни текширинг.';
           }
           switch (error.type) {
             case DioExceptionType.badResponse:
               var errorBody = error.response?.data['result'];
               if (errorBody != null) return errorBody;
 
-              return 'Неверный запрос: код статуса ${error.response?.statusCode}';
+              return 'Нотўғри сўров: ҳолат коди ${error.response?.statusCode}';
             default:
-              return 'Please try again.';
+              return 'Илтимос, яна бир бор уриниб кўринг.';
           }
         }
 
@@ -36,7 +36,7 @@ class ErrorParser {
       }
     }
     return error.toString().contains("is not a subtype of")
-        ? 'Невозможно обработать'
-        : 'Неожиданная ошибка';
+        ? 'Қайта ишлаш имконсиз'
+        : 'Кутилмаган хато';
   }
 }

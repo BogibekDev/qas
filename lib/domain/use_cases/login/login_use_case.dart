@@ -1,4 +1,3 @@
-
 import 'package:qas/domain/entities/login/login_response.dart';
 import 'package:qas/domain/entities/response/response.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,12 +12,12 @@ class LoginUseCase {
 
   LoginUseCase(this._repo);
 
-  Stream<Result<CustomResponse<LoginResponse>>> execute(LoginRequest loginRequest) => _repo
-      .login(loginRequest)
-      .map((response) {
-        return Result.content(response);
-      })
-      .onErrorReturnWith(
-          (error, stackTrace) => Result.error(ErrorParser.parse(error)))
-      .startWith(const Result.loading());
+  Stream<Result<CustomResponse<LoginResponse>>> execute(
+          LoginRequest loginRequest) =>
+      _repo
+          .login(loginRequest)
+          .map((response) => Result.content(response))
+          .onErrorReturnWith(
+              (error, stackTrace) => Result.error(ErrorParser.parse(error)))
+          .startWith(const Result.loading());
 }

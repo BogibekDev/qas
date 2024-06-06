@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'presentation/page/login/login_page.dart';
+import 'presentation/page/login_page.dart';
 import 'tools/res_color.dart';
 
 
