@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qas/config/injection.dart';
+import 'package:qas/presentation/viewmodel/home_viewmodel.dart';
+import 'package:qas/presentation/widget/car_item_shimmer.dart';
 
-import '../../fake/fakes.dart';
 import '../../tools/res_color.dart';
 import '../widget/car_item.dart';
 import 'detail_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+final homeNotifierProvider =
+    ChangeNotifierProvider.autoDispose<HomeViewModel>((ref) {
+  return HomeViewModel(ref.read(homeUseCase));
+});
+
+class HomePage extends ConsumerWidget {
+  HomePage({super.key});
+
+  late HomeViewModel homeViewModel;
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final TextEditingController _rusumi = TextEditingController();
-  final TextEditingController _startYear = TextEditingController();
-  final TextEditingController _finishYear = TextEditingController();
-  final TextEditingController _startMoney = TextEditingController();
-  final TextEditingController _finishMoney = TextEditingController();
-  DateTime selectedDate = DateTime(2024);
-
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    homeViewModel = ref.watch(homeNotifierProvider);
     return Scaffold(
       backgroundColor: ResColors.mainBg,
       appBar: PreferredSize(
@@ -52,7 +50,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 8),
             GestureDetector(
               onTap: () {
-                _searchSheet();
+                _searchSheet(context);
               },
               child: Container(
                 width: 36,
@@ -74,22 +72,25 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: ListView.builder(
-          itemCount: cars.length,
-          itemBuilder: (context, position) => CarItem(
-            car: cars[position],
-            onItemClick: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const DetailPage()),
-              );
-            },
-          ),
+          itemCount: homeViewModel.isLoading ? 10 : homeViewModel.cars.length,
+          itemBuilder: (context, position) => homeViewModel.isLoading
+              ? const CarItemShimmer()
+              : CarItem(
+                  car: homeViewModel.cars[position],
+                  onItemClick: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DetailPage()),
+                    );
+                  },
+                ),
         ),
       ),
     );
   }
 
-  Future _searchSheet() {
+  Future _searchSheet(BuildContext context) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 18),
-             const Text(
+              const Text(
                 "Rusumi",
                 style: TextStyle(
                   fontSize: 14,
@@ -131,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                     Radius.circular(16),
                   ),
                 ),
-                child: DropdownButtonFormField(
+                child: homeViewModel.rusums.isNotEmpty? DropdownButtonFormField(
                   dropdownColor: ResColors.textFieldBg,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(
@@ -144,15 +145,14 @@ class _HomePageState extends State<HomePage> {
                     "Tanlang",
                     style: TextStyle(color: ResColors.black),
                   ),
-                  items: rusums
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  items: homeViewModel.rusums
+                      .map((e) =>
+                          DropdownMenuItem(value: e, child: Text(e.title)))
                       .toList(),
                   onChanged: (value) {
-                    setState(() {
-                      _rusumi.text = value ?? "";
-                    });
+                    homeViewModel.rusumi.text = value?.title ?? "";
                   },
-                ),
+                ):Container(height: 60),
               ),
               const SizedBox(height: 16),
               const Text(
@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                           color: ResColors.textFieldBg,
                           borderRadius: BorderRadius.all(Radius.circular(16))),
                       child: TextField(
-                        controller: _startYear,
+                        controller: homeViewModel.startYear,
                         readOnly: true,
                         decoration: const InputDecoration(
                           suffixIcon: Icon(Icons.calendar_month),
@@ -185,10 +185,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         onTap: () {
-                          _selectYear().then((value) => {
-                                setState(() {
-                                  _startYear.text = value.toString();
-                                })
+                          _selectYear(context).then((value) => {
+                                homeViewModel.startYear.text = value.toString()
                               });
                         },
                       ),
@@ -201,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                           color: ResColors.textFieldBg,
                           borderRadius: BorderRadius.all(Radius.circular(16))),
                       child: TextField(
-                        controller: _finishYear,
+                        controller: homeViewModel.finishYear,
                         readOnly: true,
                         decoration: const InputDecoration(
                           suffixIcon: Icon(Icons.calendar_month),
@@ -212,10 +210,8 @@ class _HomePageState extends State<HomePage> {
                           hintStyle: TextStyle(color: ResColors.black),
                         ),
                         onTap: () {
-                          _selectYear().then((value) => {
-                                setState(() {
-                                  _finishYear.text = value.toString();
-                                })
+                          _selectYear(context).then((value) => {
+                                homeViewModel.finishYear.text = value.toString()
                               });
                         },
                       ),
@@ -241,7 +237,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.all(Radius.circular(16))),
                       child: TextField(
                         maxLength: 4,
-                        controller: _startMoney,
+                        controller: homeViewModel.startMoney,
                         //controller: _startYear,
                         //readOnly: true,
                         decoration: const InputDecoration(
@@ -265,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                           color: ResColors.textFieldBg,
                           borderRadius: BorderRadius.all(Radius.circular(16))),
                       child: TextField(
-                        controller: _finishMoney,
+                        controller: homeViewModel.finishMoney,
                         readOnly: true,
                         maxLength: 4,
                         decoration: const InputDecoration(
@@ -321,7 +317,9 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          homeViewModel.filterCars();
+                        },
                         child: const Text(
                           "Qidirish",
                           style: TextStyle(
@@ -342,7 +340,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<int> _selectYear() async {
+  Future<int> _selectYear(BuildContext context) async {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -359,9 +357,9 @@ class _HomePageState extends State<HomePage> {
             child: YearPicker(
               firstDate: DateTime(DateTime.now().year - 30, 1),
               lastDate: DateTime(DateTime.now().year, 1),
-              selectedDate: selectedDate,
+              selectedDate: homeViewModel.selectedDate,
               onChanged: (DateTime dateTime) {
-                selectedDate = dateTime;
+                homeViewModel.selectedDate = dateTime;
                 Navigator.pop(context);
               },
             ),
@@ -369,6 +367,6 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
-    return selectedDate.year;
+    return homeViewModel.selectedDate.year;
   }
 }

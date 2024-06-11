@@ -5,7 +5,6 @@ import '../../data/local/prefs.dart';
 import '../../domain/entities/login/login_request.dart';
 import '../../domain/use_cases/login/login_use_case.dart';
 
-
 class LoginViewModel extends BaseViewModel {
   final LoginUseCase _loginUseCase;
   bool isLoading = false;
@@ -40,7 +39,7 @@ class LoginViewModel extends BaseViewModel {
         showError(error);
       });
     } else {
-      errorMessage = "Telefon nomer yoki paroll";
+      errorMessage = "Telefon nomer yoki parol to'g'ri kiritilmagan";
       showError(errorMessage);
     }
   }
@@ -52,22 +51,26 @@ class LoginViewModel extends BaseViewModel {
   ) {
     _loginUseCase.execute(request).listen(
       (event) {
-        event.when(loading: () {
-          errorMessage="";
-          isLoading = true;
-          notifyListeners();
-        }, content: (response) {
-          if (response.success) {
-            SharedPrefs.saveLogin();
-            SharedPrefs.saveToken(response.data.access??"");
-            SharedPrefs.saveRefreshToken(response.data.refresh??"");
-            goHome.call();
-          } else {
-            showError(response.error!.message);
-          }
-        }, error: (errorMessage) {
-          showError(errorMessage ?? "");
-        });
+        event.when(
+          loading: () {
+            errorMessage = "";
+            isLoading = true;
+            notifyListeners();
+          },
+          content: (response) {
+            if (response.success) {
+              SharedPrefs.saveLogin();
+              SharedPrefs.saveToken(response.data.access ?? "");
+              SharedPrefs.saveRefreshToken(response.data.refresh ?? "");
+              goHome.call();
+            } else {
+              showError(response.error!.message);
+            }
+          },
+          error: (errorMessage) {
+            showError(errorMessage ?? "");
+          },
+        );
       },
     ).onDone(() {
       isLoading = false;

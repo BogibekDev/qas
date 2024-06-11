@@ -26,3 +26,25 @@ extension Price on double {
     return "$result mln. so'm";
   }
 }
+
+extension Pricee on String {
+  String price() {
+    var s = this;
+    s = s.substring(0, s.length - 2);
+    var result = s[s.length - 1];
+    for (int i = 1; i < s.length; i++) {
+      if (i % 3 == 0) {
+        result = "${s[s.length - i - 1]} $result";
+      } else {
+        result = s[s.length - i - 1] + result;
+      }
+    }
+    return "$result so'm";
+  }
+
+  String priceWithMLN() {
+    double price = double.parse(this);
+    int result = price ~/ 1000000;
+    return "$result mln. so'm";
+  }
+}

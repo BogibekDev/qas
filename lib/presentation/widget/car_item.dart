@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:qas/presentation/widget/shimmer.dart';
 
-import '../../fake/car_model.dart';
+import '../../domain/entities/home/car.dart';
 import '../../tools/res_color.dart';
 import '../../tools/utils.dart';
 
@@ -36,10 +37,10 @@ class _CarItemState extends State<CarItem> {
                 child: CachedNetworkImage(
                   width: MediaQuery.sizeOf(context).width / 4,
                   height: MediaQuery.sizeOf(context).width / 4 - 10,
-                  imageUrl: widget.car.image_url,
+                  imageUrl: "${widget.car.images?[0]}",
                   fit: BoxFit.cover,
                   placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(),
+                    child: Shimmer(),
                   ),
                   errorWidget: (context, url, error) => const Icon(
                     Icons.error_outline,
@@ -54,7 +55,7 @@ class _CarItemState extends State<CarItem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.car.name,
+                        "${widget.car.model}",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -72,7 +73,7 @@ class _CarItemState extends State<CarItem> {
                           ),
                           Expanded(
                             child: Text(
-                              widget.car.year,
+                              "${widget.car.year}",
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.end,
@@ -92,7 +93,7 @@ class _CarItemState extends State<CarItem> {
                             ),
                           ),
                           Text(
-                            "${widget.car.mileage} KM",
+                            "${widget.car.kilometer} KM",
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
@@ -106,7 +107,7 @@ class _CarItemState extends State<CarItem> {
                         children: [
                           const Text("Narx: "),
                           Text(
-                            widget.car.price.priceWithMLN(),
+                            "${widget.car.price?.priceWithMLN()}",
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           )
                         ],

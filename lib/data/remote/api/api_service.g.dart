@@ -50,23 +50,11 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Stream<CustomResponse<Pagination<Car>>> cars({
-    int page = 1,
-    String? model,
-    int? minYear,
-    int? maxYear,
-    int? minPrice,
-    int? maxPrice,
-  }) async* {
+  Stream<CustomResponse<Pagination<Car>>> cars(
+      {Map<String, dynamic>? queries}) async* {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'page': page,
-      r'model': model,
-      r'min_year': minYear,
-      r'max_year': maxYear,
-      r'min_price': minPrice,
-      r'max_price': maxPrice,
-    };
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(queries ?? <String, dynamic>{});
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
@@ -92,6 +80,39 @@ class _ApiService implements ApiService {
       (json) => Pagination<Car>.fromJson(
         json as Map<String, dynamic>,
         (json) => Car.fromJson(json as Map<String, dynamic>),
+      ),
+    );
+    yield value;
+  }
+
+  @override
+  Stream<CustomResponse<Pagination<Model>>> models() async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CustomResponse<Pagination<Model>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v1/seller/car-models',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CustomResponse<Pagination<Model>>.fromJson(
+      _result.data!,
+      (json) => Pagination<Model>.fromJson(
+        json as Map<String, dynamic>,
+        (json) => Model.fromJson(json as Map<String, dynamic>),
       ),
     );
     yield value;

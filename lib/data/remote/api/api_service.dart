@@ -4,6 +4,7 @@ import 'package:qas/domain/entities/home/car.dart';
 import 'package:qas/domain/entities/home/pagination.dart';
 import 'package:retrofit/http.dart';
 
+import '../../../domain/entities/home/model.dart';
 import '../../../domain/entities/login/login_request.dart';
 import '../../../domain/entities/login/login_response.dart';
 import '../../../domain/entities/response/response.dart';
@@ -29,11 +30,9 @@ abstract class ApiService {
 
   @GET(ApiConst.cars)
   Stream<CustomResponse<Pagination<Car>>> cars({
-    @Query("page") int page = 1,
-    @Query("model") String? model,
-    @Query("min_year") int? minYear,
-    @Query("max_year") int? maxYear,
-    @Query("min_price") int? minPrice,
-    @Query("max_price") int? maxPrice,
+    @Queries() Map<String, dynamic>? queries,
   });
+
+  @GET(ApiConst.models)
+  Stream<CustomResponse<Pagination<Model>>> models();
 }

@@ -138,7 +138,7 @@ class LoginPage extends ConsumerWidget {
   void goHomePage(BuildContext context) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => const HomePage(),
+        builder: (context) => HomePage(),
       ),
     );
   }
