@@ -11,7 +11,6 @@ Car _$CarFromJson(Map<String, dynamic> json) => Car(
       model: json['model'] as String?,
       number: json['number'] as String?,
       year: (json['year'] as num?)?.toInt(),
-      camePrice: json['came_price'] as String?,
       price: json['price'] as String?,
       prePrice: json['pre_price'] as String?,
       fuelType: json['fuel_type'] as String?,
@@ -20,19 +19,14 @@ Car _$CarFromJson(Map<String, dynamic> json) => Car(
       color: json['color'] as String?,
       isPainted: json['is_painted'] as String?,
       description: json['description'] as String?,
-      owner: json['owner'] == null
-          ? null
-          : Owner.fromJson(json['owner'] as Map<String, dynamic>),
       period: (json['period'] as num?)?.toInt(),
       pricePerMonth: json['price_per_month'] as String?,
-      similar: json['similar'] as List<dynamic>?,
-      contract: json['contract'] as String?,
-      deed: json['deed'],
+      similar: (json['similar'] as List<dynamic>?)
+          ?.map((e) => Car.fromJson(e as Map<String, dynamic>))
+          .toList(),
       images:
           (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      branch: json['branch'] == null
-          ? null
-          : Branch.fromJson(json['branch'] as Map<String, dynamic>),
+      branch: json['branch'] as String?,
     );
 
 Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
@@ -40,7 +34,6 @@ Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
       'model': instance.model,
       'number': instance.number,
       'year': instance.year,
-      'came_price': instance.camePrice,
       'price': instance.price,
       'pre_price': instance.prePrice,
       'fuel_type': instance.fuelType,
@@ -49,12 +42,9 @@ Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
       'color': instance.color,
       'is_painted': instance.isPainted,
       'description': instance.description,
-      'owner': instance.owner,
       'period': instance.period,
       'price_per_month': instance.pricePerMonth,
       'similar': instance.similar,
-      'contract': instance.contract,
-      'deed': instance.deed,
       'images': instance.images,
       'branch': instance.branch,
     };

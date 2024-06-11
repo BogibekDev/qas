@@ -19,13 +19,12 @@ class _ApiService implements ApiService {
   String? baseUrl;
 
   @override
-  Stream<CustomResponse<LoginResponse>> login(
-      LoginRequest loginRequest) async* {
+  Stream<CustomResponse<LoginResponse>> login(LoginRequest request) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(loginRequest.toJson());
+    _data.addAll(request.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CustomResponse<LoginResponse>>(Options(
       method: 'POST',
@@ -46,6 +45,54 @@ class _ApiService implements ApiService {
     final value = CustomResponse<LoginResponse>.fromJson(
       _result.data!,
       (json) => LoginResponse.fromJson(json as Map<String, dynamic>),
+    );
+    yield value;
+  }
+
+  @override
+  Stream<CustomResponse<Pagination<Car>>> cars({
+    int page = 1,
+    String? model,
+    int? minYear,
+    int? maxYear,
+    int? minPrice,
+    int? maxPrice,
+  }) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'model': model,
+      r'min_year': minYear,
+      r'max_year': maxYear,
+      r'min_price': minPrice,
+      r'max_price': maxPrice,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CustomResponse<Pagination<Car>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v1/seller/cars',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CustomResponse<Pagination<Car>>.fromJson(
+      _result.data!,
+      (json) => Pagination<Car>.fromJson(
+        json as Map<String, dynamic>,
+        (json) => Car.fromJson(json as Map<String, dynamic>),
+      ),
     );
     yield value;
   }
