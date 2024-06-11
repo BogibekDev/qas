@@ -319,6 +319,7 @@ class HomePage extends ConsumerWidget {
                         ),
                         onPressed: () {
                           homeViewModel.filterCars();
+                          Navigator.pop(context);
                         },
                         child: const Text(
                           "Qidirish",
