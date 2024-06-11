@@ -8,7 +8,9 @@ import '../../tools/utils.dart';
 import '../widget/similar_item.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({super.key});
+  const DetailPage({required this.carId, super.key});
+
+  final int carId;
 
   @override
   State<DetailPage> createState() => _DetailPageState();

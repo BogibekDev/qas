@@ -81,7 +81,9 @@ class HomePage extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DetailPage()),
+                        builder: (context) => DetailPage(
+                            carId: homeViewModel.cars[position].id ?? 1),
+                      ),
                     );
                   },
                 ),
@@ -132,27 +134,29 @@ class HomePage extends ConsumerWidget {
                     Radius.circular(16),
                   ),
                 ),
-                child: homeViewModel.rusums.isNotEmpty? DropdownButtonFormField(
-                  dropdownColor: ResColors.textFieldBg,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(16),
-                      ),
-                    ),
-                  ),
-                  hint: const Text(
-                    "Tanlang",
-                    style: TextStyle(color: ResColors.black),
-                  ),
-                  items: homeViewModel.rusums
-                      .map((e) =>
-                          DropdownMenuItem(value: e, child: Text(e.title)))
-                      .toList(),
-                  onChanged: (value) {
-                    homeViewModel.rusumi.text = value?.title ?? "";
-                  },
-                ):Container(height: 60),
+                child: homeViewModel.rusums.isNotEmpty
+                    ? DropdownButtonFormField(
+                        dropdownColor: ResColors.textFieldBg,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(16),
+                            ),
+                          ),
+                        ),
+                        hint: const Text(
+                          "Tanlang",
+                          style: TextStyle(color: ResColors.black),
+                        ),
+                        items: homeViewModel.rusums
+                            .map((e) => DropdownMenuItem(
+                                value: e, child: Text(e.title)))
+                            .toList(),
+                        onChanged: (value) {
+                          homeViewModel.rusumi.text = value?.title ?? "";
+                        },
+                      )
+                    : Container(height: 60),
               ),
               const SizedBox(height: 16),
               const Text(
