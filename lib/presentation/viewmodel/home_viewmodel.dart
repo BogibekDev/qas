@@ -6,6 +6,8 @@ import '../../domain/entities/home/model.dart';
 import '../../domain/use_cases/home/home_use_case.dart';
 
 class HomeViewModel extends BaseViewModel {
+  final HomeUseCase _homeUseCase;
+
   final TextEditingController rusumi = TextEditingController();
   final TextEditingController startYear = TextEditingController();
   final TextEditingController finishYear = TextEditingController();
@@ -16,7 +18,6 @@ class HomeViewModel extends BaseViewModel {
   String errorMessage = "";
   bool isLoading = false;
   DateTime selectedDate = DateTime(2024);
-  final HomeUseCase _homeUseCase;
 
   HomeViewModel(this._homeUseCase) {
     loadCars(page: 1);

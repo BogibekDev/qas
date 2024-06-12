@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qas/domain/use_cases/detail/detail_use_case.dart';
 
 import '../data/remote/api/api_service.dart';
 import '../data/repository/app_repo_impl.dart';
@@ -20,3 +21,4 @@ final apiProvider = Provider<ApiService>(
 
 final loginUseCase = Provider((ref) => LoginUseCase(ref.read(repoProvider)));
 final homeUseCase = Provider((ref) => HomeUseCase(ref.read(repoProvider)));
+final detailUseCase = Provider((ref) => DetailUseCase(ref.read(repoProvider)));

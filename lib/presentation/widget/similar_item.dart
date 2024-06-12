@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:qas/fake/car_model.dart';
 
+import '../../domain/entities/home/car.dart';
 import '../../tools/res_color.dart';
 import '../../tools/utils.dart';
 
@@ -38,7 +38,7 @@ class _SimilarItemState extends State<SimilarItem> {
                   borderRadius: BorderRadius.circular(12),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl: widget.car.image_url,
+                    imageUrl: widget.car.images![0],
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -54,7 +54,7 @@ class _SimilarItemState extends State<SimilarItem> {
                     children: [
                       const SizedBox(height: 4),
                       Text(
-                        "${widget.car.name}  ${widget.car.year}",
+                        "${widget.car.model}  ${widget.car.year}",
                         style: const TextStyle(
                           color: ResColors.black,
                           fontSize: 18,
@@ -64,7 +64,7 @@ class _SimilarItemState extends State<SimilarItem> {
                         maxLines: 2,
                       ),
                       Text(
-                        widget.car.price.priceWithMLN(),
+                        widget.car.price!.priceWithMLN(),
                         style: const TextStyle(
                           color: ResColors.black,
                           fontWeight: FontWeight.bold,

@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:qas/domain/entities/home/car.dart';
-import 'package:qas/domain/entities/home/pagination.dart';
 import 'package:retrofit/http.dart';
 
+import '../../../domain/entities/home/car.dart';
 import '../../../domain/entities/home/model.dart';
 import '../../../domain/entities/login/login_request.dart';
 import '../../../domain/entities/login/login_response.dart';
+import '../../../domain/entities/pagenation/pagination.dart';
 import '../../../domain/entities/response/response.dart';
 import '../../tools/auth_interceptors.dart';
 import 'api_const.dart';
@@ -35,4 +35,7 @@ abstract class ApiService {
 
   @GET(ApiConst.models)
   Stream<CustomResponse<Pagination<Model>>> models();
+
+  @GET("${ApiConst.carById}/{id}")
+  Stream<CustomResponse<Car>> carById(@Path("id") int? id);
 }

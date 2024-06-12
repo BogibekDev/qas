@@ -1,27 +1,28 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:qas/domain/entities/detail/branch.dart';
 
 part 'car.g.dart';
 
 @JsonSerializable()
 class Car {
   Car({
-    required this.id,
-    required this.model,
-    required this.number,
-    required this.year,
-    required this.price,
-    required this.prePrice,
-    required this.fuelType,
-    required this.type,
-    required this.kilometer,
-    required this.color,
-    required this.isPainted,
-    required this.description,
-    required this.period,
-    required this.pricePerMonth,
-    required this.similar,
-    required this.images,
-    required this.branch,
+     this.id,
+     this.model,
+     this.number,
+     this.year,
+     this.price,
+     this.prePrice,
+     this.fuelType,
+     this.type,
+     this.kilometer,
+     this.color,
+     this.isPainted,
+     this.description,
+     this.period,
+     this.pricePerMonth,
+     this.similar,
+     this.images,
+     this.branch,
   });
 
   final int? id;
@@ -48,7 +49,7 @@ class Car {
   final String? pricePerMonth;
   final List<Car>? similar;
   final List<String>? images;
-  final String? branch;
+  final Branch? branch;
 
   factory Car.fromJson(Map<String, dynamic> json) => _$CarFromJson(json);
 

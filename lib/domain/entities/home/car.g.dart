@@ -26,7 +26,9 @@ Car _$CarFromJson(Map<String, dynamic> json) => Car(
           .toList(),
       images:
           (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      branch: json['branch'] as String?,
+      branch: json['branch'] == null
+          ? null
+          : Branch.fromJson(json['branch'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{

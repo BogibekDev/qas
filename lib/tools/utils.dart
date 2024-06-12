@@ -48,3 +48,23 @@ extension Pricee on String {
     return "$result mln. so'm";
   }
 }
+
+Map<String, String> fuelType = {
+  "benzin": "Benzin",
+  "gaz-benzin": "Gaz va  Benzin",
+  "dizel": "Dizel",
+  "gibrid": "Gibrid",
+  "elektr": "Elektr",
+  "gaz": "Gaz",
+};
+
+Map<String, String> type = {
+  "auto": "Auto",
+  "mechanic": "Mehanika",
+};
+
+Map<String, String> paint = {
+  "kraska-toza": "Kraskasi toza",
+  "kraskasi-bor": "Kraskasi bor",
+  "petno-bor": "Petno bor",
+};

@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../entities/home/car.dart';
 import '../../entities/home/model.dart';
-import '../../entities/home/pagination.dart';
+import '../../entities/pagenation/pagination.dart';
 import '../../entities/response/response.dart';
 import '../../entities/result/result.dart';
 import '../../repository/app_repo.dart';

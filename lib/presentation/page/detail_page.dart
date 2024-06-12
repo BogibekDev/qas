@@ -1,35 +1,33 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qas/config/injection.dart';
 
 import '../../fake/fakes.dart';
 import '../../tools/res_color.dart';
 import '../../tools/utils.dart';
+import '../viewmodel/detail_viewmodel.dart';
 import '../widget/similar_item.dart';
 
-class DetailPage extends StatefulWidget {
-  const DetailPage({required this.carId, super.key});
+final detailNotifierProvider =
+    ChangeNotifierProvider.autoDispose<DetailViewModel>((ref) {
+  return DetailViewModel(ref.read(detailUseCase));
+});
+
+class DetailPage extends ConsumerWidget {
+    DetailPage({required this.carId, super.key}){
+      
+    }
 
   final int carId;
 
-  @override
-  State<DetailPage> createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  CarouselController carouselController = CarouselController();
-  final car = cars[0];
-  int caruselIndex = 0;
-  final images = [
-    "https://centralasia-adventures.com/image/new/legkovaya-mashina-shevrole-kobalt-2-g.jpg",
-    "https://storage.kun.uz/source/6/2HX_jF3Lbu8YoOfbjw6zZvEwM4Sd1mHN.jpg",
-    "https://img03.platesmania.com/170820/o/10279365.jpg",
-    "https://qas.chogirmali.uz/media/1_Снимок экрана 2023--28 в 14.46.37.png",
-    "https://img03.platesmania.com/170820/o/10279365.jpg",
-  ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final  DetailViewModel detailViewModel = ref.watch(detailNotifierProvider)
+    ..id = carId;
+
     return Scaffold(
       backgroundColor: ResColors.mainBg,
       appBar: AppBar(
@@ -44,8 +42,8 @@ class _DetailPageState extends State<DetailPage> {
         child: Column(
           children: [
             CarouselSlider(
-              carouselController: carouselController,
-              items: images.map((image) {
+              carouselController: detailViewModel.carouselController,
+              items: detailViewModel.car.images?.map((image) {
                 return CachedNetworkImage(
                   imageUrl: image,
                   placeholder: (context, url) => const Center(
@@ -62,8 +60,7 @@ class _DetailPageState extends State<DetailPage> {
                 enlargeCenterPage: false,
                 enableInfiniteScroll: false,
                 onPageChanged: (index, reason) {
-                  caruselIndex = index;
-                  setState(() {});
+                  detailViewModel.caruselIndex = index;
                 },
                 enlargeStrategy: CenterPageEnlargeStrategy.zoom,
               ),
@@ -71,21 +68,20 @@ class _DetailPageState extends State<DetailPage> {
             Container(
               margin: const EdgeInsets.only(top: 6, left: 10, right: 10),
               height: 4,
-              width: images.length * 60,
+              width: (detailViewModel.car.images?.length??1.0) * 60,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: images.length,
+                itemCount: detailViewModel.car.images?.length,
                 itemBuilder: (context, position) => GestureDetector(
                   onTap: () {
-                    caruselIndex = position;
-                    carouselController.animateToPage(position);
-                    setState(() {});
+                    detailViewModel.caruselIndex = position;
+                    detailViewModel.carouselController.animateToPage(position);
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 6),
                     width: 45,
                     height: 4,
-                    color: itemColor(position),
+                    color: detailViewModel.itemColor(position),
                   ),
                 ),
               ),
@@ -97,7 +93,7 @@ class _DetailPageState extends State<DetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    "${142000000.0.price()}",
+                    (detailViewModel.car.price ?? "0").price(),
                     style: const TextStyle(
                       fontSize: 32,
                       color: ResColors.black,
@@ -112,18 +108,16 @@ class _DetailPageState extends State<DetailPage> {
                     decoration: BoxDecoration(
                         color: ResColors.textFieldBg,
                         borderRadius: BorderRadius.circular(10.0)),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Muddatli to'lov",
+                        const Text("Muddatli to'lov",
                             style: TextStyle(
                               color: ResColors.black,
                               fontSize: 18,
                               fontWeight: FontWeight.w800,
                             )),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -131,15 +125,16 @@ class _DetailPageState extends State<DetailPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Oldindan to'lov",
                                     style: TextStyle(
                                       color: ResColors.black,
                                     ),
                                   ),
                                   Text(
-                                    "~ \$4311",
-                                    style: TextStyle(
+                                    (detailViewModel.car.prePrice ?? "")
+                                        .price(),
+                                    style: const TextStyle(
                                       color: ResColors.black,
                                       fontWeight: FontWeight.w800,
                                     ),
@@ -151,15 +146,15 @@ class _DetailPageState extends State<DetailPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Oyma-oy to'lov",
                                     style: TextStyle(
                                       color: ResColors.black,
                                     ),
                                   ),
                                   Text(
-                                    "12 x ~ \$4311",
-                                    style: TextStyle(
+                                    "${detailViewModel.car.period} x ~ ${(detailViewModel.car.pricePerMonth ?? "").price()}",
+                                    style: const TextStyle(
                                       color: ResColors.black,
                                       fontWeight: FontWeight.w800,
                                     ),
@@ -185,7 +180,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                       const SizedBox(width: 30),
                       Text(
-                        "1-filial",
+                        "${detailViewModel.car.branch?.title}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -213,7 +208,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ),
                       Text(
-                        cars[0].year,
+                        "${detailViewModel.car.year}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -233,7 +228,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ),
                       Text(
-                        cars[0].name,
+                        "${detailViewModel.car.model}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -242,10 +237,10 @@ class _DetailPageState extends State<DetailPage> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Rangi: ",
                         style: TextStyle(
                           color: ResColors.black,
@@ -253,7 +248,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ),
                       Text(
-                        "Kulrang",
+                        "${detailViewModel.car.color}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -262,10 +257,10 @@ class _DetailPageState extends State<DetailPage> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Yoqilg'i turi: ",
                         style: TextStyle(
                           color: ResColors.black,
@@ -273,7 +268,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ),
                       Text(
-                        "Gaz(Metan)",
+                        "${fuelType[detailViewModel.car.fuelType]}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -293,7 +288,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ),
                       Text(
-                        "Auto",
+                        "${type[detailViewModel.car.type]}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -313,7 +308,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ),
                       Text(
-                        cars[0].mileage,
+                        "${detailViewModel.car.kilometer}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -333,7 +328,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ),
                       Text(
-                        "Kraskasi toza",
+                        "${paint[detailViewModel.car.isPainted]}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
@@ -350,9 +345,9 @@ class _DetailPageState extends State<DetailPage> {
                         fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "sdkfh kjsdh fjkdshkjsdhfkjds hfjksdh jkf sdjkfhjk dshfjksh jkhsdjkfh sdjkh fjksdh fsdhiufhius dh f9rehfiueryfiouerhiudhfjksdhf8eorh foefvioue e78hf oerfg oiefh 78oefoier hfekr foer7yf 89erhg iuerfg89p eryg p98erg 98peg9erhg oehgke8yu 8er gofhg oiuehg 9erh gopuieh gjkeg9ueh 9ghe g",
-                    style: TextStyle(
+                  Text(
+                    "${detailViewModel.car.description}",
+                    style: const TextStyle(
                       color: ResColors.black,
                       fontSize: 18,
                     ),
@@ -371,9 +366,9 @@ class _DetailPageState extends State<DetailPage> {
                     height: 180,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 10,
+                      itemCount: detailViewModel.car.similar?.length,
                       itemBuilder: (context, position) => SimilarItem(
-                        car: car,
+                        car: detailViewModel.car.similar![position],
                         onItemClick: () {},
                       ),
                     ),
@@ -398,7 +393,7 @@ class _DetailPageState extends State<DetailPage> {
           onPressed: () {},
           child: const Text(
             "Sotish",
-            style: const TextStyle(
+            style: TextStyle(
               color: ResColors.white,
               fontSize: 18,
             ),
@@ -407,9 +402,5 @@ class _DetailPageState extends State<DetailPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  Color itemColor(i) {
-    return caruselIndex == i ? ResColors.mainColor : ResColors.greyYellow;
   }
 }
