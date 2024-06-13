@@ -29,7 +29,7 @@ extension Price on double {
 
 extension Pricee on String {
   String price() {
-    var s = this;
+    var s = (double.parse(this).roundToDouble()).toString();
     s = s.substring(0, s.length - 2);
     var result = s[s.length - 1];
     for (int i = 1; i < s.length; i++) {

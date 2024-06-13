@@ -12,19 +12,23 @@ class DetailViewModel extends BaseViewModel {
   int id = 1;
   Car car = Car();
 
-  DetailViewModel(this._detailUseCase);
+  DetailViewModel(this._detailUseCase) {
+    loadWithDelay();
+  }
 
   String errorMessage = "";
   bool isLoading = false;
   final CarouselController carouselController = CarouselController();
-  int _caruselIndex = 0;
-  int get caruselIndex => _caruselIndex;
-  set caruselIndex(int index) {
-    _caruselIndex = index;
+  int _carouselIndex = 0;
+
+  int get carouselIndex => _carouselIndex;
+
+  set carouselIndex(int index) {
+    _carouselIndex = index;
     notifyListeners();
   }
 
-  void loadCarDetail(id) {
+  void loadCarDetail(int id) {
     _detailUseCase.execute(id).listen((event) {
       event.when(
         loading: () {
@@ -51,6 +55,11 @@ class DetailViewModel extends BaseViewModel {
   }
 
   Color itemColor(i) {
-    return caruselIndex == i ? ResColors.mainColor : ResColors.greyYellow;
+    return carouselIndex == i ? ResColors.mainColor : ResColors.greyYellow;
+  }
+
+  void loadWithDelay() async {
+    await Future.delayed(const Duration(seconds: 2));
+    loadCarDetail(id);
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qas/config/injection.dart';
 
-import '../../fake/fakes.dart';
 import '../../tools/res_color.dart';
 import '../../tools/utils.dart';
 import '../viewmodel/detail_viewmodel.dart';
@@ -16,24 +15,21 @@ final detailNotifierProvider =
 });
 
 class DetailPage extends ConsumerWidget {
-    DetailPage({required this.carId, super.key}){
-      
-    }
+  const DetailPage({required this.carId, super.key});
 
   final int carId;
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final  DetailViewModel detailViewModel = ref.watch(detailNotifierProvider)
-    ..id = carId;
+    final DetailViewModel detailViewModel = ref.watch(detailNotifierProvider)
+      ..id = carId;
 
     return Scaffold(
       backgroundColor: ResColors.mainBg,
       appBar: AppBar(
         backgroundColor: ResColors.mainBg,
         title: Text(
-          car.name,
+          detailViewModel.car.model ?? "",
           style: const TextStyle(color: ResColors.black),
         ),
         centerTitle: true,
@@ -60,7 +56,7 @@ class DetailPage extends ConsumerWidget {
                 enlargeCenterPage: false,
                 enableInfiniteScroll: false,
                 onPageChanged: (index, reason) {
-                  detailViewModel.caruselIndex = index;
+                  detailViewModel.carouselIndex = index;
                 },
                 enlargeStrategy: CenterPageEnlargeStrategy.zoom,
               ),
@@ -68,13 +64,13 @@ class DetailPage extends ConsumerWidget {
             Container(
               margin: const EdgeInsets.only(top: 6, left: 10, right: 10),
               height: 4,
-              width: (detailViewModel.car.images?.length??1.0) * 60,
+              width: (detailViewModel.car.images?.length ?? 1.0) * 60,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: detailViewModel.car.images?.length,
                 itemBuilder: (context, position) => GestureDetector(
                   onTap: () {
-                    detailViewModel.caruselIndex = position;
+                    detailViewModel.carouselIndex = position;
                     detailViewModel.carouselController.animateToPage(position);
                   },
                   child: Container(
@@ -132,7 +128,7 @@ class DetailPage extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    (detailViewModel.car.prePrice ?? "")
+                                    (detailViewModel.car.prePrice ?? "0.0")
                                         .price(),
                                     style: const TextStyle(
                                       color: ResColors.black,
@@ -153,7 +149,7 @@ class DetailPage extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    "${detailViewModel.car.period} x ~ ${(detailViewModel.car.pricePerMonth ?? "").price()}",
+                                    "${detailViewModel.car.period} x ~ ${(detailViewModel.car.pricePerMonth ?? "0.0").price()}",
                                     style: const TextStyle(
                                       color: ResColors.black,
                                       fontWeight: FontWeight.w800,
