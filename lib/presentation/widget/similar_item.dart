@@ -55,9 +55,9 @@ class _SimilarItemState extends State<SimilarItem> {
                       const SizedBox(height: 4),
                       Text(
                         "${widget.car.model}  ${widget.car.year}",
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: ResColors.black,
-                          fontSize: 18,
+                          fontSize: widget.car.model!.length > 10 ? 16 : 18,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.start,

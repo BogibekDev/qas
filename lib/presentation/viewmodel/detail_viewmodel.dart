@@ -59,6 +59,8 @@ class DetailViewModel extends BaseViewModel {
   }
 
   void loadWithDelay() async {
+    isLoading = true;
+    notifyListeners();
     await Future.delayed(const Duration(seconds: 2));
     loadCarDetail(id);
   }
