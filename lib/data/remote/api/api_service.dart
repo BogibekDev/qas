@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:qas/domain/entities/login/refresh.dart';
 import 'package:retrofit/http.dart';
 
 import '../../../domain/entities/home/car.dart';
@@ -27,6 +28,9 @@ abstract class ApiService {
 
   @POST(ApiConst.login)
   Stream<CustomResponse<LoginResponse>> login(@Body() LoginRequest request);
+
+  @POST(ApiConst.refresh)
+  Stream<CustomResponse<LoginResponse>> refreshToken(@Body() Refresh refresh);
 
   @GET(ApiConst.cars)
   Stream<CustomResponse<Pagination<Car>>> cars({

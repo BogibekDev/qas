@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../config/base_vm.dart';
+import '../../data/local/prefs.dart';
 import '../../domain/entities/home/car.dart';
 import '../../domain/entities/home/model.dart';
 import '../../domain/use_cases/home/home_use_case.dart';
+import 'refresh_token.dart';
 
 class HomeViewModel extends BaseViewModel {
   final HomeUseCase _homeUseCase;
@@ -13,18 +15,30 @@ class HomeViewModel extends BaseViewModel {
   final TextEditingController finishYear = TextEditingController();
   final TextEditingController startMoney = TextEditingController();
   final TextEditingController finishMoney = TextEditingController();
+  DateTime selectedDate = DateTime(2024);
+  final ScrollController scrollController = ScrollController();
+  int page = 1;
+  int filterPage = 1;
   final List<Car> cars = [];
   List<Model> rusums = [];
   String errorMessage = "";
   bool isLoading = false;
-  DateTime selectedDate = DateTime(2024);
+  bool isMoreLoading = false;
+  bool hasNext = true;
 
   HomeViewModel(this._homeUseCase) {
-    loadCars(page: 1);
+    loadCars();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent &&
+          hasNext) {
+        loadMoreCars();
+      }
+    });
     loadModels();
   }
 
-  void loadCars({int page = 1}) {
+  void loadCars() {
     Map<String, dynamic> queries = {
       "page": page,
     };
@@ -37,9 +51,21 @@ class HomeViewModel extends BaseViewModel {
         content: (response) {
           if (response.success) {
             cars.addAll(response.data.results ?? []);
+            hasNext = response.data.next != null;
           }
         },
-        error: (error) {
+        error: (error) async {
+          if (error?.contains("401") == true) {
+            await SharedPrefs.removeToken();
+            final refresh = await SharedPrefs.getRefreshToken();
+            RefreshToken().execute(
+              refresh: refresh,
+              callBack: () {
+                loadCars();
+              },
+              openLogin: () {},
+            );
+          }
           errorMessage = error ?? "";
         },
       );
@@ -51,9 +77,49 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
-  void filterCars({int page = 1}) {
+  void loadMoreCars() {
+    page++;
     Map<String, dynamic> queries = {
       "page": page,
+    };
+    _homeUseCase.execute(queries).listen((event) {
+      event.when(
+        loading: () {
+          isMoreLoading = true;
+          notifyListeners();
+        },
+        content: (response) {
+          if (response.success) {
+            cars.addAll(response.data.results ?? []);
+            hasNext = response.data.next != null;
+          }
+        },
+        error: (error) async {
+          if (error?.contains("401") == true) {
+            final refresh = await SharedPrefs.getRefreshToken();
+            await SharedPrefs.removeToken();
+            RefreshToken().execute(
+              refresh: refresh,
+              callBack: () {
+                loadMoreCars();
+              },
+              openLogin: () {},
+            );
+          }
+          errorMessage = error ?? "";
+        },
+      );
+    }).onDone(
+      () {
+        isMoreLoading = false;
+        notifyListeners();
+      },
+    );
+  }
+
+  void filterCars() {
+    Map<String, dynamic> queries = {
+      "page": filterPage,
       "model": rusumi.text,
       "min_year": startYear.text,
       "max_year": finishYear.text,

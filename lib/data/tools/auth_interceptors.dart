@@ -1,19 +1,15 @@
-
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
 import '../local/prefs.dart';
 
-
 class AuthInterceptor extends InterceptorsWrapper {
-
-
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     String authToken = await SharedPrefs.getToken();
-    if (authToken.isNotEmpty == true) {
+    if (authToken.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $authToken';
     }
     log("Data in interceptor${options.data}");
@@ -35,6 +31,5 @@ class AuthInterceptor extends InterceptorsWrapper {
     log("Error in interceptor ${handler.toString()} : ${err.requestOptions}");
     super.onError(err, handler);
   }
-
 
 }

@@ -50,6 +50,37 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Stream<CustomResponse<LoginResponse>> refreshToken(Refresh refresh) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(refresh.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CustomResponse<LoginResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v1/users/token/refresh',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CustomResponse<LoginResponse>.fromJson(
+      _result.data!,
+      (json) => LoginResponse.fromJson(json as Map<String, dynamic>),
+    );
+    yield value;
+  }
+
+  @override
   Stream<CustomResponse<Pagination<Car>>> cars(
       {Map<String, dynamic>? queries}) async* {
     final _extra = <String, dynamic>{};

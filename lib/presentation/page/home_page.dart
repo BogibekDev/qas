@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qas/config/injection.dart';
-import 'package:qas/presentation/viewmodel/home_viewmodel.dart';
-import 'package:qas/presentation/widget/car_item_shimmer.dart';
 
+import '../../config/injection.dart';
 import '../../tools/res_color.dart';
+import '../viewmodel/home_viewmodel.dart';
 import '../widget/car_item.dart';
+import '../widget/car_item_shimmer.dart';
 import 'detail_page.dart';
 
 final homeNotifierProvider =
@@ -14,13 +14,11 @@ final homeNotifierProvider =
 });
 
 class HomePage extends ConsumerWidget {
-  HomePage({super.key});
-
-  late HomeViewModel homeViewModel;
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    homeViewModel = ref.watch(homeNotifierProvider);
+    HomeViewModel homeViewModel = ref.watch(homeNotifierProvider);
     return Scaffold(
       backgroundColor: ResColors.mainBg,
       appBar: PreferredSize(
@@ -50,7 +48,7 @@ class HomePage extends ConsumerWidget {
             const SizedBox(width: 8),
             GestureDetector(
               onTap: () {
-                _searchSheet(context);
+                _searchSheet(context, homeViewModel);
               },
               child: Container(
                 width: 36,
@@ -72,27 +70,30 @@ class HomePage extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: ListView.builder(
+          controller: homeViewModel.scrollController,
           itemCount: homeViewModel.isLoading ? 10 : homeViewModel.cars.length,
-          itemBuilder: (context, position) => homeViewModel.isLoading
-              ? const CarItemShimmer()
-              : CarItem(
-                  car: homeViewModel.cars[position],
-                  onItemClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(
-                            carId: homeViewModel.cars[position].id ?? 1),
-                      ),
-                    );
-                  },
-                ),
+          itemBuilder: (context, position) {
+            return homeViewModel.isLoading
+                ? const CarItemShimmer()
+                : CarItem(
+                    car: homeViewModel.cars[position],
+                    onItemClick: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailPage(
+                              carId: homeViewModel.cars[position].id ?? 1),
+                        ),
+                      );
+                    },
+                  );
+          },
         ),
       ),
     );
   }
 
-  Future _searchSheet(BuildContext context) {
+  Future _searchSheet(BuildContext context, HomeViewModel homeViewModel) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -189,7 +190,7 @@ class HomePage extends ConsumerWidget {
                           ),
                         ),
                         onTap: () {
-                          _selectYear(context).then((value) => {
+                          _selectYear(context, homeViewModel).then((value) => {
                                 homeViewModel.startYear.text = value.toString()
                               });
                         },
@@ -214,7 +215,7 @@ class HomePage extends ConsumerWidget {
                           hintStyle: TextStyle(color: ResColors.black),
                         ),
                         onTap: () {
-                          _selectYear(context).then((value) => {
+                          _selectYear(context, homeViewModel).then((value) => {
                                 homeViewModel.finishYear.text = value.toString()
                               });
                         },
@@ -345,7 +346,8 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Future<int> _selectYear(BuildContext context) async {
+  Future<int> _selectYear(
+      BuildContext context, HomeViewModel homeViewModel) async {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
