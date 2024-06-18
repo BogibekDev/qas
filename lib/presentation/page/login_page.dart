@@ -112,9 +112,7 @@ class LoginPage extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () => loginVM.login((error) {
-                    showErrorMessage(context, error);
-                  }),
+                  onPressed: () => loginVM.login(),
                   child: loginVM.isLoading
                       ? const CircularProgressIndicator(
                           color: ResColors.white,
@@ -138,7 +136,7 @@ class LoginPage extends ConsumerWidget {
   void goHomePage(BuildContext context) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => HomePage(),
+        builder: (context) => const HomePage(),
       ),
     );
   }
@@ -155,6 +153,7 @@ class LoginPage extends ConsumerWidget {
           const SizedBox(width: 16),
           Text(
             message,
+            overflow: TextOverflow.clip,
             style: const TextStyle(color: ResColors.white),
           ),
         ],

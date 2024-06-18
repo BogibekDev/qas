@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qas/presentation/widget/toast.dart';
 
 import '../../config/base_vm.dart';
 import '../../data/local/prefs.dart';
@@ -26,18 +27,19 @@ class LoginViewModel extends BaseViewModel {
     if (isLogin) goHome?.call();
   }
 
-  void login(Function(String) showError) {
+  void login() {
     final number = phoneNumberController.text;
     final password = passwordController.text;
 
     if (password.length >= 6 && number.length == 9) {
       LoginRequest request = LoginRequest('+998$number', password);
 
-      _loginApi(request, () {
-        goHome?.call();
-      }, (String error) {
-        showError(error);
-      });
+      _loginApi(
+        request,
+        () {
+          goHome?.call();
+        },
+      );
     } else {
       errorMessage = "Telefon nomer yoki parol to'g'ri kiritilmagan";
       showError(errorMessage);
@@ -47,7 +49,6 @@ class LoginViewModel extends BaseViewModel {
   void _loginApi(
     request,
     Function() goHome,
-    Function(String) showError,
   ) {
     _loginUseCase.execute(request).listen(
       (event) {

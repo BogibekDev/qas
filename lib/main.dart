@@ -2,11 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:qas/presentation/page/home_page.dart';
 
 import 'presentation/page/login_page.dart';
 import 'tools/res_color.dart';
 
-
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,14 +33,25 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         fontFamily: GoogleFonts.montserrat().fontFamily,
         bottomSheetTheme:
-        const BottomSheetThemeData(backgroundColor: ResColors.mainBg),
+            const BottomSheetThemeData(backgroundColor: ResColors.mainBg),
         colorScheme: ColorScheme.fromSeed(seedColor: ResColors.mainColor),
         useMaterial3: true,
       ),
       home: const LoginPage(),
+      onGenerateRoute: (RouteSettings settings) {
+        switch (settings.name) {
+          case '/':
+            return MaterialPageRoute(builder: (_) => const HomePage());
+          case '/login':
+            return MaterialPageRoute(builder: (_) => const LoginPage());
+          default:
+            return null;
+        }
+      },
     );
   }
 }

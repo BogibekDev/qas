@@ -5,6 +5,10 @@ class SharedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("isLogin", true);
   }
+  static saveLogOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("isLogin", false);
+  }
 
   static Future<bool> isLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

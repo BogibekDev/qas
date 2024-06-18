@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:qas/presentation/widget/toast.dart';
 
 import '../../config/base_vm.dart';
 import '../../data/local/prefs.dart';
 import '../../domain/entities/home/car.dart';
 import '../../domain/entities/home/model.dart';
 import '../../domain/use_cases/home/home_use_case.dart';
+import '../../main.dart';
 import 'refresh_token.dart';
 
 class HomeViewModel extends BaseViewModel {
@@ -24,7 +26,9 @@ class HomeViewModel extends BaseViewModel {
   String errorMessage = "";
   bool isLoading = false;
   bool isMoreLoading = false;
+  bool isRefresh = false;
   bool hasNext = true;
+  int count401 = 0;
 
   HomeViewModel(this._homeUseCase) {
     loadCars();
@@ -35,7 +39,6 @@ class HomeViewModel extends BaseViewModel {
         loadMoreCars();
       }
     });
-    loadModels();
   }
 
   void loadCars() {
@@ -52,27 +55,39 @@ class HomeViewModel extends BaseViewModel {
           if (response.success) {
             cars.addAll(response.data.results ?? []);
             hasNext = response.data.next != null;
+            loadModels();
           }
         },
         error: (error) async {
-          if (error?.contains("401") == true) {
+          if (error?.contains("401") == true &&
+              error!.contains("Token has expired")) {
             await SharedPrefs.removeToken();
+            count401++;
+            if (count401 == 2) {
+              navigatorKey.currentState?.pushReplacementNamed("/login");
+            }
             final refresh = await SharedPrefs.getRefreshToken();
+            isRefresh = true;
             RefreshToken().execute(
               refresh: refresh,
               callBack: () {
+                isRefresh = false;
                 loadCars();
               },
-              openLogin: () {},
             );
           }
-          errorMessage = error ?? "";
+          if(!isRefresh) {
+            errorMessage = error ?? "";
+            showError(errorMessage);
+          }
         },
       );
     }).onDone(
       () {
-        isLoading = false;
-        notifyListeners();
+        if (!isRefresh) {
+          isLoading = false;
+          notifyListeners();
+        }
       },
     );
   }
@@ -98,12 +113,13 @@ class HomeViewModel extends BaseViewModel {
           if (error?.contains("401") == true) {
             final refresh = await SharedPrefs.getRefreshToken();
             await SharedPrefs.removeToken();
+            isRefresh = true;
             RefreshToken().execute(
               refresh: refresh,
               callBack: () {
+                isRefresh = false;
                 loadMoreCars();
               },
-              openLogin: () {},
             );
           }
           errorMessage = error ?? "";
@@ -111,8 +127,10 @@ class HomeViewModel extends BaseViewModel {
       );
     }).onDone(
       () {
-        isMoreLoading = false;
-        notifyListeners();
+        if(!isRefresh){
+          isMoreLoading = false;
+          notifyListeners();
+        }
       },
     );
   }
@@ -138,14 +156,33 @@ class HomeViewModel extends BaseViewModel {
             cars.addAll(response.data.results ?? []);
           }
         },
-        error: (error) {
+        error: (error) async{
+          if (error?.contains("401") == true &&
+              error!.contains("Token has expired")) {
+            await SharedPrefs.removeToken();
+            count401++;
+            if (count401 == 2) {
+              navigatorKey.currentState?.pushReplacementNamed("/login");
+            }
+            final refresh = await SharedPrefs.getRefreshToken();
+            isRefresh = true;
+            RefreshToken().execute(
+              refresh: refresh,
+              callBack: () {
+                isRefresh = false;
+                filterCars();
+              },
+            );
+          }
           errorMessage = error ?? "";
         },
       );
     }).onDone(
       () {
-        isLoading = false;
-        notifyListeners();
+        if(!isRefresh){
+          isLoading = false;
+          notifyListeners();
+        }
       },
     );
   }

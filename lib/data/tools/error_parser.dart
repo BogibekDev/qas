@@ -20,7 +20,7 @@ class ErrorParser {
               var errorBody = error.response?.data['result'];
               if (errorBody != null) return errorBody;
 
-              return 'Нотўғри сўров: ҳолат коди ${error.response?.statusCode}';
+              return 'Нотўғри сўров: ҳолат коди ${error.response?.statusCode} | data : ${error.response?.data}';
             default:
               return 'Илтимос, яна бир бор уриниб кўринг.';
           }

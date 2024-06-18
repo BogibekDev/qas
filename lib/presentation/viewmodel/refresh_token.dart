@@ -1,11 +1,10 @@
-
-
 import '../../data/local/prefs.dart';
 import '../../data/remote/api/api_service.dart';
 import '../../data/repository/app_repo_impl.dart';
 import '../../data/tools/auth_interceptors.dart';
 import '../../domain/entities/login/refresh.dart';
 import '../../domain/use_cases/refresh/refresh_use_case.dart';
+import '../../main.dart';
 
 class RefreshToken {
   final _refreshUseCase =
@@ -14,7 +13,6 @@ class RefreshToken {
   void execute({
     required String refresh,
     required Function callBack,
-    required Function openLogin,
   }) {
     _refreshUseCase.execute(Refresh(refresh)).listen((event) {
       event.when(
@@ -27,8 +25,9 @@ class RefreshToken {
           }
         },
         error: (error) {
-          if (error?.contains("401") == true) {
-            openLogin.call();
+          if (error?.contains("401") == true){
+            SharedPrefs.saveLogOut();
+            navigatorKey.currentState?.pushReplacementNamed("/login");
           }
         },
       );
