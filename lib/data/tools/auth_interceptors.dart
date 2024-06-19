@@ -16,6 +16,7 @@ class AuthInterceptor extends InterceptorsWrapper {
       options.headers['Authorization'] = 'Bearer $authToken';
     }
     log("Data in interceptor${options.data}");
+    log("request ketdi : ${DateTime.now()}");
     log("Extra in interceptor${options.extra}");
     log("QueryParams in interceptor${options.queryParameters}");
     log("content in interceptor${options.contentType}");
@@ -26,6 +27,7 @@ class AuthInterceptor extends InterceptorsWrapper {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
     log("Response in interceptor ${handler.toString()} : $response");
+    log("respose keldi : ${DateTime.now()}");
     super.onResponse(response, handler);
   }
 

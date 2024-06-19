@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qas/config/injection.dart';
-import 'package:qas/presentation/widget/detail_shimmer.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../config/injection.dart';
 import '../../tools/res_color.dart';
 import '../../tools/utils.dart';
 import '../viewmodel/detail_viewmodel.dart';
+import '../widget/detail_shimmer.dart';
+import '../widget/shimmer.dart';
 import '../widget/similar_item.dart';
 
 final detailNotifierProvider =
@@ -29,10 +32,12 @@ class DetailPage extends ConsumerWidget {
       backgroundColor: ResColors.mainBg,
       appBar: AppBar(
         backgroundColor: ResColors.mainBg,
-        title: Text(
-          detailViewModel.car.model ?? "",
-          style: const TextStyle(fontSize: 32, color: ResColors.black),
-        ),
+        title: detailViewModel.isLoading
+            ? const Shimmer(width: 100)
+            : Text(
+                detailViewModel.car.model ?? "",
+                style: const TextStyle(fontSize: 32, color: ResColors.black),
+              ),
         centerTitle: true,
       ),
       body: detailViewModel.isLoading
@@ -113,8 +118,8 @@ class DetailPage extends ConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text("Muddatli to'lov",
-                                  style: TextStyle(
+                              Text("termPayment".tr(),
+                                  style: const TextStyle(
                                     color: ResColors.black,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w800,
@@ -129,9 +134,9 @@ class DetailPage extends ConsumerWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text(
-                                          "Oldindan to'lov",
-                                          style: TextStyle(
+                                        Text(
+                                          "advancePayment".tr(),
+                                          style: const TextStyle(
                                             color: ResColors.black,
                                           ),
                                         ),
@@ -152,9 +157,9 @@ class DetailPage extends ConsumerWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text(
-                                          "Oyma-oy to'lov",
-                                          style: TextStyle(
+                                        Text(
+                                          "monthlyPayment".tr(),
+                                          style: const TextStyle(
                                             color: ResColors.black,
                                           ),
                                         ),
@@ -177,9 +182,9 @@ class DetailPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Filial: ",
-                              style: TextStyle(
+                            Text(
+                              "${"branch".tr()} :",
+                              style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
                               ),
@@ -195,9 +200,9 @@ class DetailPage extends ConsumerWidget {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          "Xarakteristika",
-                          style: TextStyle(
+                        Text(
+                          "info".tr(),
+                          style: const TextStyle(
                               color: ResColors.black,
                               fontSize: 18,
                               fontWeight: FontWeight.w600),
@@ -206,9 +211,9 @@ class DetailPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Ishlab chiqarilgan yili: ",
-                              style: TextStyle(
+                            Text(
+                              "${"madeYear".tr()}: ",
+                              style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
                               ),
@@ -226,9 +231,9 @@ class DetailPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Model: ",
-                              style: TextStyle(
+                            Text(
+                              "${"model".tr()}: ",
+                              style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
                               ),
@@ -246,9 +251,9 @@ class DetailPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Rangi: ",
-                              style: TextStyle(
+                            Text(
+                              "${"color".tr()}: ",
+                              style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
                               ),
@@ -266,15 +271,15 @@ class DetailPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Yoqilg'i turi: ",
-                              style: TextStyle(
+                            Text(
+                              "${"fuelType".tr()}: ",
+                              style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
                               ),
                             ),
                             Text(
-                              "${fuelType[detailViewModel.car.fuelType]}",
+                              "${detailViewModel.car.fuelType?.tr()}",
                               style: const TextStyle(
                                   color: ResColors.black,
                                   fontSize: 14,
@@ -286,15 +291,15 @@ class DetailPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Uzatma qutisi: ",
-                              style: TextStyle(
+                            Text(
+                              "${"type".tr()}: ",
+                              style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
                               ),
                             ),
                             Text(
-                              "${type[detailViewModel.car.type]}",
+                              "${detailViewModel.car.type?.tr()}",
                               style: const TextStyle(
                                   color: ResColors.black,
                                   fontSize: 14,
@@ -306,9 +311,9 @@ class DetailPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Bosib o'tgan masofasi: ",
-                              style: TextStyle(
+                            Text(
+                              "${"kilometre".tr()}: ",
+                              style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
                               ),
@@ -327,15 +332,15 @@ class DetailPage extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Kraskasi: ",
-                              style: TextStyle(
+                            Text(
+                              "${"paint".tr()}: ",
+                              style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
                               ),
                             ),
                             Text(
-                              "${paint[detailViewModel.car.isPainted]}",
+                              "${detailViewModel.car.isPainted?.tr()}",
                               style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 14,
@@ -345,12 +350,13 @@ class DetailPage extends ConsumerWidget {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          "Avtomobil haqida",
-                          style: TextStyle(
-                              color: ResColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
+                        Text(
+                          "moreInfo".tr(),
+                          style: const TextStyle(
+                            color: ResColors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         const SizedBox(height: 10),
                         Text(
@@ -362,58 +368,95 @@ class DetailPage extends ConsumerWidget {
                           textAlign: TextAlign.justify,
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          "O’xshash avtomobillar",
-                          style: TextStyle(
-                              color: ResColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: 180,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: detailViewModel.car.similar?.length,
-                            itemBuilder: (context, position) => SimilarItem(
-                              car: detailViewModel.car.similar![position],
-                              onItemClick: () {
-                                detailViewModel.loadCarDetail(
-                                    detailViewModel.car.similar![position].id ?? detailViewModel.car.id ?? 1);
-                              },
-                            ),
-                          ),
-                        ),
+                        detailViewModel.car.similar!.isNotEmpty
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "similarCars".tr(),
+                                    style: const TextStyle(
+                                      color: ResColors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                    height: 200,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          detailViewModel.car.similar?.length,
+                                      itemBuilder: (context, position) =>
+                                          SimilarItem(
+                                        car: detailViewModel
+                                            .car.similar![position],
+                                        onItemClick: () {
+                                          detailViewModel.loadCarDetail(
+                                              detailViewModel.car
+                                                      .similar![position].id ??
+                                                  detailViewModel.car.id ??
+                                                  1);
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            : Container()
                       ],
                     ),
                   ),
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width - 24,
+                    height: 60,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ResColors.mainColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "sell".tr(),
+                        style: const TextStyle(
+                          color: ResColors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width - 24,
+                    height: 60,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ResColors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "back".tr(),
+                        style: const TextStyle(
+                          color: ResColors.black,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
-      floatingActionButton: detailViewModel.isLoading
-          ? Container()
-          : SizedBox(
-              width: MediaQuery.sizeOf(context).width - 24,
-              height: 60,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ResColors.mainColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  "Sotish",
-                  style: TextStyle(
-                    color: ResColors.white,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  Future<void> openPDF(String url) async {
+    await launchUrlString(url);
   }
 }

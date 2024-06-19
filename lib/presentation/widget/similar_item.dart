@@ -23,7 +23,6 @@ class _SimilarItemState extends State<SimilarItem> {
         widget.onItemClick.call();
       },
       child: SizedBox(
-        height: 180,
         width: 170,
         child: Card(
           surfaceTintColor: ResColors.white,
@@ -57,7 +56,11 @@ class _SimilarItemState extends State<SimilarItem> {
                         "${widget.car.model}  ${widget.car.year}",
                         style: TextStyle(
                           color: ResColors.black,
-                          fontSize: widget.car.model!.length > 10 ? 16 : 18,
+                          fontSize: widget.car.model!.length > 15
+                              ? 12
+                              : widget.car.model!.length > 10
+                                  ? 18
+                                  : 20,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.start,
@@ -65,7 +68,12 @@ class _SimilarItemState extends State<SimilarItem> {
                       ),
                       Text(
                         widget.car.price!.priceWithMLN(),
-                        style: const TextStyle(
+                        style: TextStyle(
+                          fontSize: widget.car.model!.length > 15
+                              ? 10
+                              : widget.car.model!.length > 10
+                                  ? 16
+                                  : 18,
                           color: ResColors.black,
                           fontWeight: FontWeight.bold,
                         ),

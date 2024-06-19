@@ -31,7 +31,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   rxdart: ^0.27.7
   fluttertoast: ^8.2.6
-
+  mobile_scanner: ^5.1.1
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:

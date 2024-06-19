@@ -6,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../config/injection.dart';
 import '../../tools/dimens.dart';
 import '../../tools/res_color.dart';
-import 'home_page.dart';
 import '../viewmodel/login_vm.dart';
+import 'home_page.dart';
 
 final loginNotifierProvider =
     ChangeNotifierProvider.autoDispose<LoginViewModel>((ref) {
@@ -54,6 +54,7 @@ class LoginPage extends ConsumerWidget {
               TextField(
                 controller: loginVM.phoneNumberController,
                 decoration: const InputDecoration(
+                  hintText: "901234567",
                   border: OutlineInputBorder(),
                   prefix: Text(
                     "+998  ",
@@ -140,27 +141,4 @@ class LoginPage extends ConsumerWidget {
       ),
     );
   }
-
-  void showErrorMessage(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.red,
-      content: Row(
-        children: [
-          const Icon(
-            Icons.error_outline_rounded,
-            color: Colors.white,
-          ),
-          const SizedBox(width: 16),
-          Text(
-            message,
-            overflow: TextOverflow.clip,
-            style: const TextStyle(color: ResColors.white),
-          ),
-        ],
-      ),
-      behavior: SnackBarBehavior.floating,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
 }

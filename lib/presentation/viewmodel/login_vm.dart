@@ -42,7 +42,7 @@ class LoginViewModel extends BaseViewModel {
       );
     } else {
       errorMessage = "Telefon nomer yoki parol to'g'ri kiritilmagan";
-      showError(errorMessage);
+      toastError(errorMessage);
     }
   }
 
@@ -59,17 +59,17 @@ class LoginViewModel extends BaseViewModel {
             notifyListeners();
           },
           content: (response) {
-            if (response.success) {
+            if (response.success && response.data.role == "seller") {
               SharedPrefs.saveLogin();
               SharedPrefs.saveToken(response.data.access ?? "");
               SharedPrefs.saveRefreshToken(response.data.refresh ?? "");
               goHome.call();
             } else {
-              showError(response.error!.message);
+              toastError(response.error?.message??"Nimadur xatolik");
             }
           },
           error: (errorMessage) {
-            showError(errorMessage ?? "");
+            toastError(errorMessage ?? "");
           },
         );
       },

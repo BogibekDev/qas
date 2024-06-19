@@ -78,7 +78,7 @@ class HomeViewModel extends BaseViewModel {
           }
           if(!isRefresh) {
             errorMessage = error ?? "";
-            showError(errorMessage);
+            toastError(errorMessage);
           }
         },
       );
