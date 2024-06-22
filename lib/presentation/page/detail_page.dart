@@ -12,6 +12,7 @@ import '../viewmodel/detail_viewmodel.dart';
 import '../widget/detail_shimmer.dart';
 import '../widget/shimmer.dart';
 import '../widget/similar_item.dart';
+import 'sell_page.dart';
 
 final detailNotifierProvider =
     ChangeNotifierProvider.autoDispose<DetailViewModel>((ref) {
@@ -418,7 +419,14 @@ class DetailPage extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SellPage(carId: carId),
+                          ),
+                        );
+                      },
                       child: Text(
                         "sell".tr(),
                         style: const TextStyle(
@@ -439,7 +447,9 @@ class DetailPage extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: ()  {
+                        _backSheet(context,detailViewModel, carId);
+                      },
                       child: Text(
                         "back".tr(),
                         style: const TextStyle(
@@ -458,5 +468,126 @@ class DetailPage extends ConsumerWidget {
 
   Future<void> openPDF(String url) async {
     await launchUrlString(url);
+  }
+
+  Future _backSheet(BuildContext context, DetailViewModel detailViewModel,carId) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      barrierColor: Colors.black87,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Padding(
+          padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: SizedBox(
+            width: MediaQuery.sizeOf(context).width,
+            height: 440,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "back".tr(),
+                  style: const TextStyle(
+                    color: ResColors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  "cause".tr(),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: ResColors.black,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: const BoxDecoration(
+                      color: ResColors.textFieldBg,
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(16))),
+                  child: TextField(
+                    maxLines: 9,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(16)),
+                      ),
+                      hintText: "cause".tr(),
+                      hintStyle: const TextStyle(
+                        color: ResColors.black,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        width: MediaQuery.sizeOf(context).width,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ResColors.textFieldBg,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "cancel".tr(),
+                            style: const TextStyle(
+                              color: ResColors.black,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: SizedBox(
+                        width: MediaQuery.sizeOf(context).width,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ResColors.mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "back".tr(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: ResColors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

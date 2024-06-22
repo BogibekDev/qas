@@ -29,13 +29,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "appName".tr(),
       debugShowCheckedModeBanner: false,
       builder: FToastBuilder(),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       navigatorKey: navigatorKey,
+      title: "appName".tr(),
       theme: ThemeData(
         fontFamily: GoogleFonts.montserrat().fontFamily,
         bottomSheetTheme:

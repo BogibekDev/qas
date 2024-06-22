@@ -36,7 +36,8 @@
   "paint": "Kraskasi",
   "moreInfo": "Avtomobil haqida",
   "similarCars": "O’xshash avtomobillar",
-  "sell": "Sotish",
-  "back": "Qaytarish",
+  "sell": "Avtomobilni sotish",
+  "back": "Avtomobilni qaytarish",
+  "cause": "Avtomobilni qaytarish sababi",
   "somethingWentError": "Qandaydir xatolik"
 }

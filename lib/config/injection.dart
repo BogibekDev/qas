@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qas/domain/use_cases/home/get_models.dart';
 
 import '../data/remote/api/api_service.dart';
 import '../data/repository/app_repo_impl.dart';
@@ -22,5 +23,6 @@ final apiProvider = Provider<ApiService>(
 
 final loginUseCase = Provider((ref) => LoginUseCase(ref.read(repoProvider)));
 final refreshUseCase = Provider((ref) => RefreshUseCase(ref.read(repoProvider)));
-final homeUseCase = Provider((ref) => HomeUseCase(ref.read(repoProvider)));
+final getCars = Provider((ref) => GetCars(ref.read(repoProvider)));
+final getModels = Provider((ref) => GetModels(ref.read(repoProvider)));
 final detailUseCase = Provider((ref) => DetailUseCase(ref.read(repoProvider)));

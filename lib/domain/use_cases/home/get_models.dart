@@ -1,20 +1,21 @@
 import 'package:rxdart/rxdart.dart';
 
 import '../../../data/tools/error_parser.dart';
-import '../../entities/home/car.dart';
+import '../../entities/home/model.dart';
+import '../../entities/pagenation/pagination.dart';
 import '../../entities/response/response.dart';
 import '../../entities/result/result.dart';
 import '../../repository/app_repo.dart';
 
-class DetailUseCase {
+class GetModels {
   final AppRepo _repo;
 
-  DetailUseCase(this._repo);
+  const GetModels(this._repo);
 
-  Stream<Result<CustomResponse<Car>>> execute(int? id) => _repo
-      .carById(id)
+  Stream<Result<CustomResponse<Pagination<Model>>>> execute() => _repo
+      .models()
       .map((response) => Result.content(response))
       .onErrorReturnWith(
-          (error, stackTrack) => Result.error(ErrorParser.parse(error)))
+          (error, stackTrace) => Result.error(ErrorParser.parse(error)))
       .startWith(const Result.loading());
 }

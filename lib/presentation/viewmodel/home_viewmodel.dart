@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:qas/presentation/widget/toast.dart';
 
 import '../../config/base_vm.dart';
 import '../../data/local/prefs.dart';
 import '../../domain/entities/home/car.dart';
 import '../../domain/entities/home/model.dart';
+import '../../domain/use_cases/home/get_models.dart';
 import '../../domain/use_cases/home/home_use_case.dart';
 import '../../main.dart';
+import '../widget/toast.dart';
 import 'refresh_token.dart';
 
 class HomeViewModel extends BaseViewModel {
-  final HomeUseCase _homeUseCase;
+  final GetCars _getCars;
+  final GetModels _getModels;
 
-  final TextEditingController rusumi = TextEditingController();
+  final TextEditingController modelC = TextEditingController();
   final TextEditingController startYear = TextEditingController();
   final TextEditingController finishYear = TextEditingController();
   final TextEditingController startMoney = TextEditingController();
@@ -22,7 +24,7 @@ class HomeViewModel extends BaseViewModel {
   int page = 1;
   int filterPage = 1;
   final List<Car> cars = [];
-  List<Model> rusums = [];
+  List<Model> models = [];
   String errorMessage = "";
   bool isLoading = false;
   bool isMoreLoading = false;
@@ -30,7 +32,7 @@ class HomeViewModel extends BaseViewModel {
   bool hasNext = true;
   int count401 = 0;
 
-  HomeViewModel(this._homeUseCase) {
+  HomeViewModel(this._getCars,this._getModels) {
     loadCars();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -45,7 +47,7 @@ class HomeViewModel extends BaseViewModel {
     Map<String, dynamic> queries = {
       "page": page,
     };
-    _homeUseCase.execute(queries).listen((event) {
+    _getCars.execute(queries).listen((event) {
       event.when(
         loading: () {
           isLoading = true;
@@ -97,7 +99,7 @@ class HomeViewModel extends BaseViewModel {
     Map<String, dynamic> queries = {
       "page": page,
     };
-    _homeUseCase.execute(queries).listen((event) {
+    _getCars.execute(queries).listen((event) {
       event.when(
         loading: () {
           isMoreLoading = true;
@@ -138,13 +140,13 @@ class HomeViewModel extends BaseViewModel {
   void filterCars() {
     Map<String, dynamic> queries = {
       "page": filterPage,
-      "model": rusumi.text,
+      "model": modelC.text,
       "min_year": startYear.text,
       "max_year": finishYear.text,
       "min_price": startMoney.text,
       "max_price": finishMoney.text
     };
-    _homeUseCase.execute(queries).listen((event) {
+    _getCars.execute(queries).listen((event) {
       event.when(
         loading: () {
           isLoading = true;
@@ -188,12 +190,12 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void loadModels() {
-    _homeUseCase.modelsExecute().listen((event) {
+    _getModels.execute().listen((event) {
       event.when(
         loading: () {},
         content: (response) {
           if (response.success) {
-            rusums = response.data.results ?? [];
+            models = response.data.results ?? [];
             notifyListeners();
           }
         },

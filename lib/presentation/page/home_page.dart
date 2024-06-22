@@ -14,7 +14,7 @@ import 'detail_page.dart';
 
 final homeNotifierProvider =
     ChangeNotifierProvider.autoDispose<HomeViewModel>((ref) {
-  return HomeViewModel(ref.read(homeUseCase));
+  return HomeViewModel(ref.read(getCars), ref.read(getModels));
 });
 
 class HomePage extends ConsumerWidget {
@@ -105,8 +105,8 @@ class HomePage extends ConsumerWidget {
       builder: (context) => Padding(
         padding: const EdgeInsets.all(20.0),
         child: Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: SizedBox(
             width: MediaQuery.sizeOf(context).width,
             height: 440,
@@ -138,7 +138,7 @@ class HomePage extends ConsumerWidget {
                       Radius.circular(16),
                     ),
                   ),
-                  child: homeViewModel.rusums.isNotEmpty
+                  child: homeViewModel.models.isNotEmpty
                       ? DropdownButtonFormField(
                           dropdownColor: ResColors.textFieldBg,
                           decoration: const InputDecoration(
@@ -152,12 +152,12 @@ class HomePage extends ConsumerWidget {
                             "select".tr(),
                             style: const TextStyle(color: ResColors.black),
                           ),
-                          items: homeViewModel.rusums
+                          items: homeViewModel.models
                               .map((e) => DropdownMenuItem(
                                   value: e, child: Text(e.title)))
                               .toList(),
                           onChanged: (value) {
-                            homeViewModel.rusumi.text = value?.title ?? "";
+                            homeViewModel.modelC.text = value?.title ?? "";
                           },
                         )
                       : Container(height: 60),
@@ -178,14 +178,16 @@ class HomePage extends ConsumerWidget {
                         height: 56,
                         decoration: const BoxDecoration(
                             color: ResColors.textFieldBg,
-                            borderRadius: BorderRadius.all(Radius.circular(16))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16))),
                         child: TextField(
                           controller: homeViewModel.startYear,
                           readOnly: true,
                           decoration: InputDecoration(
                             suffixIcon: const Icon(Icons.calendar_month),
                             border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(16)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
                             ),
                             hintText: "minYear".tr(),
                             hintStyle: const TextStyle(
@@ -193,8 +195,10 @@ class HomePage extends ConsumerWidget {
                             ),
                           ),
                           onTap: () {
-                            _selectYear(context, homeViewModel).then((value) => {
-                                  homeViewModel.startYear.text = value.toString()
+                            _selectYear(context, homeViewModel).then((value) =>
+                                {
+                                  homeViewModel.startYear.text =
+                                      value.toString()
                                 });
                           },
                         ),
@@ -205,21 +209,25 @@ class HomePage extends ConsumerWidget {
                       child: Container(
                         decoration: const BoxDecoration(
                             color: ResColors.textFieldBg,
-                            borderRadius: BorderRadius.all(Radius.circular(16))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16))),
                         child: TextField(
                           controller: homeViewModel.finishYear,
                           readOnly: true,
                           decoration: InputDecoration(
                             suffixIcon: const Icon(Icons.calendar_month),
                             border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(16)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
                             ),
                             hintText: "maxYear".tr(),
                             hintStyle: const TextStyle(color: ResColors.black),
                           ),
                           onTap: () {
-                            _selectYear(context, homeViewModel).then((value) => {
-                                  homeViewModel.finishYear.text = value.toString()
+                            _selectYear(context, homeViewModel).then((value) =>
+                                {
+                                  homeViewModel.finishYear.text =
+                                      value.toString()
                                 });
                           },
                         ),
@@ -242,7 +250,8 @@ class HomePage extends ConsumerWidget {
                       child: Container(
                         decoration: const BoxDecoration(
                             color: ResColors.textFieldBg,
-                            borderRadius: BorderRadius.all(Radius.circular(16))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16))),
                         child: TextField(
                           maxLength: 4,
                           controller: homeViewModel.startMoney,
@@ -252,7 +261,8 @@ class HomePage extends ConsumerWidget {
                             suffixText: "mln".tr(),
                             counterText: "",
                             border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(16)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
                             ),
                             hintText: "10",
                             hintStyle: const TextStyle(
@@ -267,7 +277,8 @@ class HomePage extends ConsumerWidget {
                       child: Container(
                         decoration: const BoxDecoration(
                             color: ResColors.textFieldBg,
-                            borderRadius: BorderRadius.all(Radius.circular(16))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16))),
                         child: TextField(
                           controller: homeViewModel.finishMoney,
                           readOnly: true,
@@ -276,7 +287,8 @@ class HomePage extends ConsumerWidget {
                             suffixText: "mln".tr(),
                             counterText: "",
                             border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(16)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
                             ),
                             hintText: "100",
                             hintStyle: const TextStyle(color: ResColors.black),
