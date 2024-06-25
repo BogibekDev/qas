@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qas/tools/res_color.dart';
 
@@ -292,7 +293,7 @@ class _SellPageState extends State<SellPage> {
                           : isNoBuyer
                               ? Container(
                                   width: MediaQuery.sizeOf(context).width,
-                                  margin: EdgeInsets.only(top: 10),
+                                  margin: const EdgeInsets.only(top: 10),
                                   decoration: const BoxDecoration(
                                       color: ResColors.textFieldBg,
                                       borderRadius: BorderRadius.all(
@@ -331,7 +332,9 @@ class _SellPageState extends State<SellPage> {
                                                   BorderRadius.circular(8),
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            _addBuyer(context);
+                                          },
                                           child: Text(
                                             "Xaridor qo'shish",
                                             textAlign: TextAlign.center,
@@ -352,6 +355,283 @@ class _SellPageState extends State<SellPage> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Future _addBuyer(
+    BuildContext context,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      barrierColor: Colors.black87,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      builder: (context) => SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SizedBox(
+              width: MediaQuery.sizeOf(context).width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "search".tr(),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+
+                  // some views
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: remainingPriceC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      label: Text("Qoldiq summa"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+
+                  const SizedBox(height: 18),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          width: MediaQuery.sizeOf(context).width,
+                          height: 60,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ResColors.textFieldBg,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "cancel".tr(),
+                              style: const TextStyle(
+                                color: ResColors.black,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: SizedBox(
+                          width: MediaQuery.sizeOf(context).width,
+                          height: 60,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ResColors.mainColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "search".tr(),
+                              style: const TextStyle(
+                                color: ResColors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
