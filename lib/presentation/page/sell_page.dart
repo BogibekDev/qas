@@ -46,7 +46,7 @@ class _SellPageState extends State<SellPage> {
 
   FocusNode focusNode = FocusNode();
   bool isFocused = false;
-  bool isNoBuyer = false;
+  bool isNoBuyer = true;
   List<String> paymentTypes = ["cash", "credit"];
   String paymentType = "";
 
@@ -383,7 +383,7 @@ class _SellPageState extends State<SellPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "search".tr(),
+                   "Xaridor haqida ma'lumot",
                     style: const TextStyle(
                       color: ResColors.black,
                       fontSize: 20,
@@ -394,16 +394,12 @@ class _SellPageState extends State<SellPage> {
 
                   // some views
                   TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      counterText: "",
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
+                      hintText: "Bogibek",
+                      label: Text("Ism"),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -412,16 +408,12 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      counterText: "",
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
+                      hintText: "Matyaqubov",
+                      label: Text("Familiya"),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -430,16 +422,12 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      counterText: "",
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
+                      hintText: "Palankas o'g'li",
+                      label: Text("Otasining ismi"),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -448,16 +436,12 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      counterText: "",
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
+                      hintText: "12-04-2004",
+                      label: Text("Tugilgan sana"),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -466,16 +450,42 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      counterText: "",
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
+                      hintText: "AA1234567",
+                      label: Text("Passport"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  TextFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "Karvak qishlog'i",
+                      label: Text("Manzil"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  TextFormField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "942344432",
+                      label: Text("Telefon nomer"),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -484,88 +494,12 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      counterText: "",
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
-                    ),
-                    style: const TextStyle(
-                      color: ResColors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      filled: true,
-                      fillColor: ResColors.textFieldBg,
-                      border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
-                    ),
-                    style: const TextStyle(
-                      color: ResColors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      filled: true,
-                      fillColor: ResColors.textFieldBg,
-                      border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
-                    ),
-                    style: const TextStyle(
-                      color: ResColors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      filled: true,
-                      fillColor: ResColors.textFieldBg,
-                      border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
-                    ),
-                    style: const TextStyle(
-                      color: ResColors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: remainingPriceC,
-                    maxLength: 15,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      filled: true,
-                      fillColor: ResColors.textFieldBg,
-                      border: const OutlineInputBorder(),
-                      hintText: "100 000 000",
-                      label: Text("Qoldiq summa"),
+                      hintText: "942344432",
+                      label: Text("Qo'shimcha telefon nomer"),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -573,7 +507,7 @@ class _SellPageState extends State<SellPage> {
                     ),
                   ),
 
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 30),
                   Row(
                     children: [
                       Expanded(
