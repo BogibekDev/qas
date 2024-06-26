@@ -3,21 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../config/injection.dart';
+import '../../tools/currency_input_formatter.dart';
 import '../../tools/res_color.dart';
 import '../viewmodel/sell_viewmodel.dart';
+import '../widget/buyer_shimmer.dart';
 
 final sellNotifierProvider =
     ChangeNotifierProvider.autoDispose<SellViewModel>((ref) {
-  return SellViewModel(ref.read(getBuyers));
+  return SellViewModel(ref.read(getBuyers), ref.read(detailUseCase));
 });
 
-class SellPage extends ConsumerWidget {
+class SellPage extends ConsumerStatefulWidget {
   const SellPage({super.key, required this.carId});
 
   final int carId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _SellPageState createState() => _SellPageState();
+}
+
+class _SellPageState extends ConsumerState<SellPage> {
+  late SellViewModel viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel = ref.read(sellNotifierProvider);
+    viewModel.carId = widget.carId;
+    viewModel.loadCarDetail(widget.carId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     SellViewModel viewModel = ref.watch(sellNotifierProvider);
 
     return Scaffold(
@@ -47,12 +64,15 @@ class SellPage extends ConsumerWidget {
                       suffixIcon: IconButton(
                         onPressed: () {
                           viewModel.buyerController.text = "";
+                          viewModel.searchBuyers(null);
                         },
                         icon: const Icon(Icons.close),
                       ),
                     ),
                     focusNode: viewModel.focusNode,
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      viewModel.searchBuyers(value);
+                    },
                   ),
                   Stack(
                     children: [
@@ -62,6 +82,7 @@ class SellPage extends ConsumerWidget {
                           TextFormField(
                             controller: viewModel.priceC,
                             maxLength: 15,
+                            inputFormatters: [CurrencyInputFormatter()],
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                               counterText: "",
@@ -70,7 +91,7 @@ class SellPage extends ConsumerWidget {
                               border: const OutlineInputBorder(),
                               hintText: "100 000 000",
                               suffixText: "so'm",
-                              label: const Text("Summa"),
+                              label: Text("Avtomobil bahosi"),
                             ),
                             style: const TextStyle(
                               color: ResColors.black,
@@ -82,6 +103,7 @@ class SellPage extends ConsumerWidget {
                             controller: viewModel.compensationC,
                             maxLength: 15,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [CurrencyInputFormatter()],
                             decoration: InputDecoration(
                               counterText: "",
                               filled: true,
@@ -117,7 +139,8 @@ class SellPage extends ConsumerWidget {
                                           )))
                                       .toList(),
                                   onChanged: (value) {
-                                    viewModel.paymentType = value ?? "";
+                                    viewModel
+                                        .changePaymentType(value ?? "cash");
                                   },
                                 )
                               : Container(),
@@ -138,6 +161,9 @@ class SellPage extends ConsumerWidget {
                                       controller: viewModel.prePriceC,
                                       maxLength: 15,
                                       keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        CurrencyInputFormatter()
+                                      ],
                                       decoration: InputDecoration(
                                         counterText: "",
                                         filled: true,
@@ -187,7 +213,7 @@ class SellPage extends ConsumerWidget {
                               ),
                               onPressed: () {},
                               child: Text(
-                                "Sotish",
+                                "sell".tr(),
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   color: ResColors.white,
@@ -198,94 +224,94 @@ class SellPage extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      viewModel.isFocused
+                      viewModel.isNoBuyer
                           ? Container(
                               width: MediaQuery.sizeOf(context).width,
                               margin: const EdgeInsets.only(top: 10),
                               decoration: const BoxDecoration(
-                                color: ResColors.textFieldBg,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
+                                  color: ResColors.textFieldBg,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
                               height: 200,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListView.builder(
-                                  itemCount: viewModel.buyers.length,
-                                  itemBuilder: (context, position) =>
-                                      GestureDetector(
-                                    onTap: () {
-                                      viewModel.selectBuyer(position);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "Xaridor topilmadi!",
+                                    style: TextStyle(
+                                        color: ResColors.black,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "Iltimos, xaridorni qo'shish uchun tugmani bosing",
+                                    style: TextStyle(
+                                        color: ResColors.black, fontSize: 14),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.sizeOf(context).width - 100,
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: ResColors.mainBg,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        _addBuyer(context, viewModel);
+                                      },
                                       child: Text(
-                                        "${viewModel.selectedBuyer?.firstName} ${viewModel.selectedBuyer?.lastName}",
+                                        "Xaridor qo'shish",
+                                        textAlign: TextAlign.center,
                                         style: const TextStyle(
-                                            color: ResColors.black),
+                                          color: ResColors.black,
+                                          fontSize: 18,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
                             )
-                          : viewModel.isNoBuyer
+                          : viewModel.isFocused
                               ? Container(
                                   width: MediaQuery.sizeOf(context).width,
                                   margin: const EdgeInsets.only(top: 10),
                                   decoration: const BoxDecoration(
-                                      color: ResColors.textFieldBg,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
+                                    color: ResColors.textFieldBg,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                  ),
                                   height: 200,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        "Xaridor topilmadi!",
-                                        style: TextStyle(
-                                            color: ResColors.black,
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "Iltimos, xaridorni qo'shish uchun tugmani bosing",
-                                        style: TextStyle(
-                                            color: ResColors.black,
-                                            fontSize: 14),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.sizeOf(context).width -
-                                                100,
-                                        height: 50,
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: ResColors.mainBg,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: viewModel.isLoading
+                                        ? const BuyerShimmer()
+                                        : ListView.builder(
+                                            itemCount: viewModel.buyers.length,
+                                            itemBuilder: (context, position) =>
+                                                GestureDetector(
+                                              onTap: () {
+                                                viewModel.selectBuyer(position);
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  "${viewModel.buyers[position].firstName} ${viewModel.buyers[position].lastName}",
+                                                  style: const TextStyle(
+                                                      color: ResColors.black),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                          onPressed: () {
-                                            _addBuyer(context);
-                                          },
-                                          child: Text(
-                                            "Xaridor qo'shish",
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              color: ResColors.black,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 )
                               : Container(),
@@ -300,10 +326,7 @@ class SellPage extends ConsumerWidget {
     );
   }
 
-  Future _addBuyer(
-    BuildContext context,
-      SellViewModel viewModel
-  ) {
+  Future _addBuyer(BuildContext context, SellViewModel viewModel) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,

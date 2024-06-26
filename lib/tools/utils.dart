@@ -29,6 +29,16 @@ extension Price on double {
 
 extension Pricee on String {
   String price() {
+    return "${addSpace()} so'm";
+  }
+
+  String priceWithMLN() {
+    double price = double.parse(this);
+    int result = price ~/ 1000000;
+    return "$result mln. so'm";
+  }
+
+  String addSpace() {
     var s = (double.parse(this).roundToDouble()).toString();
     s = s.substring(0, s.length - 2);
     var result = s[s.length - 1];
@@ -39,13 +49,11 @@ extension Pricee on String {
         result = s[s.length - i - 1] + result;
       }
     }
-    return "$result so'm";
+    return result;
   }
 
-  String priceWithMLN() {
-    double price = double.parse(this);
-    int result = price ~/ 1000000;
-    return "$result mln. so'm";
+  String removeSpace() {
+    String res = this;
+    return res.replaceAll(" ", "");
   }
 }
-
