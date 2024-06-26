@@ -1,67 +1,25 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:qas/tools/res_color.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entities/sell/buyer.dart';
+import '../../config/injection.dart';
+import '../../tools/res_color.dart';
+import '../viewmodel/sell_viewmodel.dart';
 
-class SellPage extends StatefulWidget {
+final sellNotifierProvider =
+    ChangeNotifierProvider.autoDispose<SellViewModel>((ref) {
+  return SellViewModel(ref.read(getBuyers));
+});
+
+class SellPage extends ConsumerWidget {
   const SellPage({super.key, required this.carId});
 
   final int carId;
 
   @override
-  State<SellPage> createState() => _SellPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    SellViewModel viewModel = ref.watch(sellNotifierProvider);
 
-class _SellPageState extends State<SellPage> {
-  List<Buyer> buyers = [
-    Buyer(1, "John", "Doe", "A", "1985", "P1234567",
-        "123 Elm St, Springfield, IL", "555-1234", "555-5678"),
-    Buyer(2, "Jane", "Smith", "B", "1990", "P7654321",
-        "456 Oak St, Springfield, IL", "555-8765", "555-4321"),
-    Buyer(3, "Emily", "Johnson", "C", "1975", "P2345678",
-        "789 Pine St, Springfield, IL", "555-2345", "555-6789"),
-    Buyer(4, "Michael", "Williams", "D", "1982", "P8765432",
-        "101 Maple St, Springfield, IL", "555-3456", "555-9876"),
-    Buyer(5, "Sarah", "Brown", "E", "1995", "P3456789",
-        "202 Birch St, Springfield, IL", "555-4567", "555-7890"),
-    Buyer(6, "David", "Jones", "F", "1988", "P9876543",
-        "303 Cedar St, Springfield, IL", "555-5678", "555-8901"),
-    Buyer(7, "Laura", "Garcia", "G", "1992", "P4567890",
-        "404 Walnut St, Springfield, IL", "555-6789", "555-9012"),
-    Buyer(8, "Daniel", "Martinez", "H", "1980", "P0987654",
-        "505 Chestnut St, Springfield, IL", "555-7890", "555-0123"),
-    Buyer(9, "Lisa", "Hernandez", "I", "1987", "P5678901",
-        "606 Poplar St, Springfield, IL", "555-8901", "555-1234"),
-    Buyer(10, "James", "Lopez", "J", "1993", "P1098765",
-        "707 Ash St, Springfield, IL", "555-9012", "555-2345"),
-  ];
-  Buyer? selectedBuyer;
-  final TextEditingController buyerController = TextEditingController();
-  final TextEditingController compensationC = TextEditingController();
-  final TextEditingController prePriceC = TextEditingController();
-  final TextEditingController periodC = TextEditingController();
-  final TextEditingController remainingPriceC = TextEditingController();
-  final TextEditingController priceC = TextEditingController();
-
-  FocusNode focusNode = FocusNode();
-  bool isFocused = false;
-  bool isNoBuyer = true;
-  List<String> paymentTypes = ["cash", "credit"];
-  String paymentType = "";
-
-  @override
-  void initState() {
-    focusNode.addListener(() {
-      setState(() {
-        isFocused = focusNode.hasFocus;
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ResColors.mainBg,
       appBar: AppBar(
@@ -79,7 +37,7 @@ class _SellPageState extends State<SellPage> {
               child: Column(
                 children: [
                   TextFormField(
-                    controller: buyerController,
+                    controller: viewModel.buyerController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
@@ -88,12 +46,12 @@ class _SellPageState extends State<SellPage> {
                       label: const Text("Xaridor"),
                       suffixIcon: IconButton(
                         onPressed: () {
-                          buyerController.text = "";
+                          viewModel.buyerController.text = "";
                         },
                         icon: const Icon(Icons.close),
                       ),
                     ),
-                    focusNode: focusNode,
+                    focusNode: viewModel.focusNode,
                     onChanged: (value) {},
                   ),
                   Stack(
@@ -102,7 +60,7 @@ class _SellPageState extends State<SellPage> {
                         children: [
                           const SizedBox(height: 16),
                           TextFormField(
-                            controller: priceC,
+                            controller: viewModel.priceC,
                             maxLength: 15,
                             keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
@@ -110,8 +68,9 @@ class _SellPageState extends State<SellPage> {
                               filled: true,
                               fillColor: ResColors.textFieldBg,
                               border: const OutlineInputBorder(),
-                              hintText: "Umumiy summa : ",
-                              label: const Text("Umumiy summa"),
+                              hintText: "100 000 000",
+                              suffixText: "so'm",
+                              label: const Text("Summa"),
                             ),
                             style: const TextStyle(
                               color: ResColors.black,
@@ -120,7 +79,7 @@ class _SellPageState extends State<SellPage> {
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
-                            controller: compensationC,
+                            controller: viewModel.compensationC,
                             maxLength: 15,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
@@ -128,7 +87,8 @@ class _SellPageState extends State<SellPage> {
                               filled: true,
                               fillColor: ResColors.textFieldBg,
                               border: const OutlineInputBorder(),
-                              hintText: "Kompensatsiya puli : ",
+                              hintText: "100 000 000",
+                              suffixText: "so'm",
                               label: const Text("Kompensatsiya puli"),
                             ),
                             style: const TextStyle(
@@ -137,7 +97,7 @@ class _SellPageState extends State<SellPage> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          paymentTypes.isNotEmpty
+                          viewModel.paymentTypes.isNotEmpty
                               ? DropdownButtonFormField(
                                   dropdownColor: ResColors.textFieldBg,
                                   decoration: const InputDecoration(
@@ -148,7 +108,7 @@ class _SellPageState extends State<SellPage> {
                                   hint: Text(
                                     "To'lov turini tanlang",
                                   ),
-                                  items: paymentTypes
+                                  items: viewModel.paymentTypes
                                       .map((e) => DropdownMenuItem(
                                           value: e,
                                           child: Text(
@@ -157,12 +117,11 @@ class _SellPageState extends State<SellPage> {
                                           )))
                                       .toList(),
                                   onChanged: (value) {
-                                    paymentType = value ?? "";
-                                    setState(() {});
+                                    viewModel.paymentType = value ?? "";
                                   },
                                 )
                               : Container(),
-                          paymentType == paymentTypes[1]
+                          viewModel.paymentType == viewModel.paymentTypes[1]
                               ? Column(
                                   children: [
                                     const SizedBox(height: 16),
@@ -176,7 +135,7 @@ class _SellPageState extends State<SellPage> {
                                     ),
                                     const SizedBox(height: 16),
                                     TextFormField(
-                                      controller: prePriceC,
+                                      controller: viewModel.prePriceC,
                                       maxLength: 15,
                                       keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
@@ -185,6 +144,7 @@ class _SellPageState extends State<SellPage> {
                                         fillColor: ResColors.textFieldBg,
                                         border: const OutlineInputBorder(),
                                         hintText: "100 000 000",
+                                        suffixText: "so'm",
                                         label: Text("Oldindan to'lov"),
                                       ),
                                       style: const TextStyle(
@@ -194,25 +154,7 @@ class _SellPageState extends State<SellPage> {
                                     ),
                                     const SizedBox(height: 16),
                                     TextFormField(
-                                      controller: remainingPriceC,
-                                      maxLength: 15,
-                                      keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
-                                        counterText: "",
-                                        filled: true,
-                                        fillColor: ResColors.textFieldBg,
-                                        border: const OutlineInputBorder(),
-                                        hintText: "100 000 000",
-                                        label: Text("Qoldiq summa"),
-                                      ),
-                                      style: const TextStyle(
-                                        color: ResColors.black,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    TextFormField(
-                                      controller: periodC,
+                                      controller: viewModel.periodC,
                                       maxLength: 4,
                                       keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
@@ -221,6 +163,7 @@ class _SellPageState extends State<SellPage> {
                                         fillColor: ResColors.textFieldBg,
                                         border: const OutlineInputBorder(),
                                         hintText: "48",
+                                        suffixText: "oy",
                                         label: Text("Kredit muddati"),
                                       ),
                                       style: const TextStyle(
@@ -231,7 +174,7 @@ class _SellPageState extends State<SellPage> {
                                   ],
                                 )
                               : Container(),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: MediaQuery.sizeOf(context).width,
                             height: 60,
@@ -255,7 +198,7 @@ class _SellPageState extends State<SellPage> {
                           ),
                         ],
                       ),
-                      isFocused
+                      viewModel.isFocused
                           ? Container(
                               width: MediaQuery.sizeOf(context).width,
                               margin: const EdgeInsets.only(top: 10),
@@ -269,19 +212,16 @@ class _SellPageState extends State<SellPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListView.builder(
-                                  itemCount: buyers.length,
+                                  itemCount: viewModel.buyers.length,
                                   itemBuilder: (context, position) =>
                                       GestureDetector(
                                     onTap: () {
-                                      selectedBuyer = buyers[position];
-                                      buyerController.text =
-                                          "${buyers[position].firstName} ${buyers[position].lastName}";
-                                      focusNode.unfocus();
+                                      viewModel.selectBuyer(position);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "${buyers[position].firstName} ${buyers[position].lastName}",
+                                        "${viewModel.selectedBuyer?.firstName} ${viewModel.selectedBuyer?.lastName}",
                                         style: const TextStyle(
                                             color: ResColors.black),
                                       ),
@@ -290,7 +230,7 @@ class _SellPageState extends State<SellPage> {
                                 ),
                               ),
                             )
-                          : isNoBuyer
+                          : viewModel.isNoBuyer
                               ? Container(
                                   width: MediaQuery.sizeOf(context).width,
                                   margin: const EdgeInsets.only(top: 10),
@@ -362,6 +302,7 @@ class _SellPageState extends State<SellPage> {
 
   Future _addBuyer(
     BuildContext context,
+      SellViewModel viewModel
   ) {
     return showModalBottomSheet(
       context: context,
@@ -383,7 +324,7 @@ class _SellPageState extends State<SellPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                   "Xaridor haqida ma'lumot",
+                    "Xaridor haqida ma'lumot",
                     style: const TextStyle(
                       color: ResColors.black,
                       fontSize: 20,
@@ -394,11 +335,12 @@ class _SellPageState extends State<SellPage> {
 
                   // some views
                   TextFormField(
+                    controller: viewModel.buyerFirstName,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "Bogibek",
+                      hintText: "Palankas",
                       label: Text("Ism"),
                     ),
                     style: const TextStyle(
@@ -408,11 +350,12 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    controller: viewModel.buyerLastName,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "Matyaqubov",
+                      hintText: "Palankasov",
                       label: Text("Familiya"),
                     ),
                     style: const TextStyle(
@@ -422,6 +365,7 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    controller: viewModel.buyerMiddleName,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
@@ -436,6 +380,7 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    controller: viewModel.buyerBirthday,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
@@ -450,6 +395,7 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    controller: viewModel.buyerPassport,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
@@ -465,6 +411,7 @@ class _SellPageState extends State<SellPage> {
                   const SizedBox(height: 16),
 
                   TextFormField(
+                    controller: viewModel.buyerAddress,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
@@ -479,31 +426,53 @@ class _SellPageState extends State<SellPage> {
                   ),
                   const SizedBox(height: 16),
 
-                  TextFormField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: viewModel.buyerPhoneNumber,
+                    decoration: const InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
-                      border: const OutlineInputBorder(),
-                      hintText: "942344432",
-                      label: Text("Telefon nomer"),
+                      hintText: "901234567",
+                      counterText: "",
+                      labelText: "Telefon nomer",
+                      border: OutlineInputBorder(),
+                      prefix: Text(
+                        "+998  ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ResColors.black,
+                        ),
+                      ),
                     ),
+                    maxLength: 9,
+                    keyboardType: TextInputType.number,
                     style: const TextStyle(
+                      fontSize: 18,
                       color: ResColors.black,
-                      fontSize: 20,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: viewModel.buyerExtraPhoneNumber,
+                    decoration: const InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
-                      border: const OutlineInputBorder(),
-                      hintText: "942344432",
-                      label: Text("Qo'shimcha telefon nomer"),
+                      hintText: "901234567",
+                      counterText: "",
+                      labelText: "Qo'shimcha telefon",
+                      border: OutlineInputBorder(),
+                      prefix: Text(
+                        "+998  ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ResColors.black,
+                        ),
+                      ),
                     ),
+                    maxLength: 9,
+                    keyboardType: TextInputType.number,
                     style: const TextStyle(
+                      fontSize: 18,
                       color: ResColors.black,
-                      fontSize: 20,
                     ),
                   ),
 
@@ -550,7 +519,7 @@ class _SellPageState extends State<SellPage> {
                               Navigator.pop(context);
                             },
                             child: Text(
-                              "search".tr(),
+                              "add".tr(),
                               style: const TextStyle(
                                 color: ResColors.white,
                                 fontSize: 18,

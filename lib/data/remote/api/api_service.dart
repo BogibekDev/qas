@@ -1,12 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:qas/domain/entities/login/refresh.dart';
+import 'package:qas/domain/entities/sell/buyer.dart';
 import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
+import '../../../domain/entities/detail/return.dart';
+import '../../../domain/entities/detail/return_response.dart';
 import '../../../domain/entities/home/car.dart';
 import '../../../domain/entities/home/model.dart';
 import '../../../domain/entities/login/login_request.dart';
 import '../../../domain/entities/login/login_response.dart';
+import '../../../domain/entities/login/refresh.dart';
 import '../../../domain/entities/pagenation/pagination.dart';
 import '../../../domain/entities/response/response.dart';
 import '../../tools/auth_interceptors.dart';
@@ -42,4 +46,11 @@ abstract class ApiService {
 
   @GET("${ApiConst.carById}/{id}")
   Stream<CustomResponse<Car>> carById(@Path("id") int? id);
+
+  @POST(ApiConst.carReturn)
+  Stream<CustomResponse<ReturnResponse>> carReturn(
+      @Body() Return returnRequest);
+
+  @GET(ApiConst.buyers)
+  Stream<CustomResponse<Pagination<Buyer>>> buyers({@Query("search") String? search});
 }

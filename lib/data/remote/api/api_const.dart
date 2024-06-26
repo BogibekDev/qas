@@ -7,5 +7,7 @@ class ApiConst{
   static const cars = '/api/v1/seller/cars';
   static const models = '/api/v1/seller/car-models';
   static const carById = '/api/v1/seller/car';
+  static const carReturn = '/api/v1/seller/back';
+  static const buyers = '/api/v1/seller/buyers';
 
 }

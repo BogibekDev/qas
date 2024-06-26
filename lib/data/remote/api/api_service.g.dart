@@ -180,6 +180,72 @@ class _ApiService implements ApiService {
     yield value;
   }
 
+  @override
+  Stream<CustomResponse<ReturnResponse>> carReturn(
+      Return returnRequest) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(returnRequest.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CustomResponse<ReturnResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v1/seller/back',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CustomResponse<ReturnResponse>.fromJson(
+      _result.data!,
+      (json) => ReturnResponse.fromJson(json as Map<String, dynamic>),
+    );
+    yield value;
+  }
+
+  @override
+  Stream<CustomResponse<Pagination<Buyer>>> buyers({String? search}) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'search': search};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CustomResponse<Pagination<Buyer>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v1/seller/buyers',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CustomResponse<Pagination<Buyer>>.fromJson(
+      _result.data!,
+      (json) => Pagination<Buyer>.fromJson(
+        json as Map<String, dynamic>,
+        (json) => Buyer.fromJson(json as Map<String, dynamic>),
+      ),
+    );
+    yield value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

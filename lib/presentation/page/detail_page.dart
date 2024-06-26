@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../config/injection.dart';
 import '../../tools/res_color.dart';
@@ -16,7 +15,7 @@ import 'sell_page.dart';
 
 final detailNotifierProvider =
     ChangeNotifierProvider.autoDispose<DetailViewModel>((ref) {
-  return DetailViewModel(ref.read(detailUseCase));
+  return DetailViewModel(ref.read(detailUseCase), ref.read(carReturn));
 });
 
 class DetailPage extends ConsumerWidget {
@@ -369,7 +368,7 @@ class DetailPage extends ConsumerWidget {
                           textAlign: TextAlign.justify,
                         ),
                         const SizedBox(height: 16),
-                        detailViewModel.car.similar!.isNotEmpty
+                        (detailViewModel.car.similar ?? []).isNotEmpty
                             ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -447,8 +446,8 @@ class DetailPage extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: ()  {
-                        _backSheet(context,detailViewModel, carId);
+                      onPressed: () {
+                        _backSheet(context, detailViewModel, carId);
                       },
                       child: Text(
                         "back".tr(),
@@ -466,11 +465,8 @@ class DetailPage extends ConsumerWidget {
     );
   }
 
-  Future<void> openPDF(String url) async {
-    await launchUrlString(url);
-  }
-
-  Future _backSheet(BuildContext context, DetailViewModel detailViewModel,carId) {
+  Future _backSheet(
+      BuildContext context, DetailViewModel detailViewModel, carId) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -483,7 +479,7 @@ class DetailPage extends ConsumerWidget {
         padding: const EdgeInsets.all(20.0),
         child: Padding(
           padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: SizedBox(
             width: MediaQuery.sizeOf(context).width,
             height: 440,
@@ -510,14 +506,13 @@ class DetailPage extends ConsumerWidget {
                 Container(
                   decoration: const BoxDecoration(
                       color: ResColors.textFieldBg,
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(16))),
+                      borderRadius: BorderRadius.all(Radius.circular(16))),
                   child: TextField(
+                    controller: detailViewModel.reasonController,
                     maxLines: 9,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(16)),
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
                       ),
                       hintText: "cause".tr(),
                       hintStyle: const TextStyle(
@@ -566,17 +561,18 @@ class DetailPage extends ConsumerWidget {
                             ),
                           ),
                           onPressed: () {
-
-                            Navigator.pop(context);
+                            detailViewModel.returnCar();
                           },
-                          child: Text(
-                            "back".tr(),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: ResColors.white,
-                              fontSize: 18,
-                            ),
-                          ),
+                          child: detailViewModel.isReturnLoading
+                              ? const CircularProgressIndicator()
+                              : Text(
+                                  "back".tr(),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: ResColors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
