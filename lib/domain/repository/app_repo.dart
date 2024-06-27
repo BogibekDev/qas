@@ -9,6 +9,8 @@ import '../entities/login/refresh.dart';
 import '../entities/pagenation/pagination.dart';
 import '../entities/response/response.dart';
 import '../entities/sell/buyer.dart';
+import '../entities/sell/sell_request.dart';
+import '../entities/sell/sell_response.dart';
 
 abstract class AppRepo {
   Stream<CustomResponse<LoginResponse>> login(LoginRequest loginRequest);
@@ -18,4 +20,6 @@ abstract class AppRepo {
   Stream<CustomResponse<Car>> carById( int? id);
   Stream<CustomResponse<ReturnResponse>> carReturn(Return returnRequest);
   Stream<CustomResponse<Pagination<Buyer>>> buyers(String? search);
+  Stream<CustomResponse<Buyer>> addBuyer(Buyer buyer);
+  Stream<CustomResponse<SellResponse>> sellCar(SellRequest request);
 }

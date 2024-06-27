@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:qas/presentation/widget/toast.dart';
 
 import '../../config/base_vm.dart';
 import '../../data/local/prefs.dart';
 import '../../domain/entities/login/login_request.dart';
+import '../../domain/entities/response/response.dart';
 import '../../domain/use_cases/login/login_use_case.dart';
+import '../widget/toast.dart';
 
 class LoginViewModel extends BaseViewModel {
   final LoginUseCase _loginUseCase;
@@ -42,7 +43,7 @@ class LoginViewModel extends BaseViewModel {
       );
     } else {
       errorMessage = "Telefon nomer yoki parol to'g'ri kiritilmagan";
-      toastError(errorMessage);
+      toastError(Error.empty()..message = errorMessage);
     }
   }
 
@@ -64,12 +65,10 @@ class LoginViewModel extends BaseViewModel {
               SharedPrefs.saveToken(response.data.access ?? "");
               SharedPrefs.saveRefreshToken(response.data.refresh ?? "");
               goHome.call();
-            } else {
-              toastError(response.error?.message??"Nimadur xatolik");
             }
           },
-          error: (errorMessage) {
-            toastError(errorMessage ?? "");
+          error: (error) {
+            toastError(error);
           },
         );
       },

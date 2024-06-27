@@ -7,10 +7,12 @@ import '../../tools/currency_input_formatter.dart';
 import '../../tools/res_color.dart';
 import '../viewmodel/sell_viewmodel.dart';
 import '../widget/buyer_shimmer.dart';
+import 'home_page.dart';
 
 final sellNotifierProvider =
     ChangeNotifierProvider.autoDispose<SellViewModel>((ref) {
-  return SellViewModel(ref.read(getBuyers), ref.read(detailUseCase));
+  return SellViewModel(ref.read(getBuyers), ref.read(detailUseCase),
+      ref.read(addBuyer), ref.read(sellCar));
 });
 
 class SellPage extends ConsumerStatefulWidget {
@@ -64,6 +66,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                       suffixIcon: IconButton(
                         onPressed: () {
                           viewModel.buyerController.text = "";
+                          viewModel.selectedBuyer = null;
                           viewModel.searchBuyers(null);
                         },
                         icon: const Icon(Icons.close),
@@ -131,12 +134,14 @@ class _SellPageState extends ConsumerState<SellPage> {
                                     "To'lov turini tanlang",
                                   ),
                                   items: viewModel.paymentTypes
-                                      .map((e) => DropdownMenuItem(
-                                          value: e,
-                                          child: Text(
-                                            e,
-                                            style: TextStyle(fontSize: 20),
-                                          )))
+                                      .map((item) => DropdownMenuItem(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style:
+                                                  const TextStyle(fontSize: 20),
+                                            ),
+                                          ))
                                       .toList(),
                                   onChanged: (value) {
                                     viewModel
@@ -180,6 +185,28 @@ class _SellPageState extends ConsumerState<SellPage> {
                                     ),
                                     const SizedBox(height: 16),
                                     TextFormField(
+                                      controller: viewModel.pricePerMC,
+                                      maxLength: 15,
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        CurrencyInputFormatter()
+                                      ],
+                                      decoration: InputDecoration(
+                                        counterText: "",
+                                        filled: true,
+                                        fillColor: ResColors.textFieldBg,
+                                        border: const OutlineInputBorder(),
+                                        hintText: "100 000 000",
+                                        suffixText: "so'm",
+                                        label: Text("Oylik to'lov"),
+                                      ),
+                                      style: const TextStyle(
+                                        color: ResColors.black,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    TextFormField(
                                       controller: viewModel.periodC,
                                       maxLength: 4,
                                       keyboardType: TextInputType.number,
@@ -211,15 +238,23 @@ class _SellPageState extends ConsumerState<SellPage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              onPressed: () {},
-                              child: Text(
-                                "sell".tr(),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: ResColors.white,
-                                  fontSize: 18,
-                                ),
-                              ),
+                              onPressed: () {
+                                viewModel.sellCar(() {
+                                  goHomePage(context);
+                                });
+                              },
+                              child: viewModel.carLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Text(
+                                      "sell".tr(),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: ResColors.white,
+                                        fontSize: 18,
+                                      ),
+                                    ),
                             ),
                           ),
                         ],
@@ -305,7 +340,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                                                 padding:
                                                     const EdgeInsets.all(8.0),
                                                 child: Text(
-                                                  "${viewModel.buyers[position].firstName} ${viewModel.buyers[position].lastName}",
+                                                  "${viewModel.buyers[position].firstName} ${viewModel.buyers[position].lastName} ${viewModel.buyers[position].middleName}",
                                                   style: const TextStyle(
                                                       color: ResColors.black),
                                                 ),
@@ -539,7 +574,9 @@ class _SellPageState extends ConsumerState<SellPage> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.pop(context);
+                              viewModel.addBuyer(() {
+                                Navigator.pop(context);
+                              });
                             },
                             child: Text(
                               "add".tr(),
@@ -559,6 +596,14 @@ class _SellPageState extends ConsumerState<SellPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void goHomePage(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
       ),
     );
   }

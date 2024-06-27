@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../config/base_vm.dart';
-import '../../data/local/prefs.dart';
 import '../../domain/entities/home/car.dart';
 import '../../domain/entities/home/model.dart';
+import '../../domain/entities/response/response.dart';
 import '../../domain/use_cases/home/get_models.dart';
 import '../../domain/use_cases/home/home_use_case.dart';
 import '../../main.dart';
@@ -32,7 +32,7 @@ class HomeViewModel extends BaseViewModel {
   bool hasNext = true;
   int count401 = 0;
 
-  HomeViewModel(this._getCars,this._getModels) {
+  HomeViewModel(this._getCars, this._getModels) {
     loadCars();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -60,27 +60,23 @@ class HomeViewModel extends BaseViewModel {
             loadModels();
           }
         },
-        error: (error) async {
-          if (error?.contains("401") == true &&
-              error!.contains("Token has expired")) {
-            await SharedPrefs.removeToken();
+        error: (Error? error) async {
+          if (error?.statusCode == 401 &&
+              error!.detail == "Token has expired") {
             count401++;
             if (count401 == 2) {
               navigatorKey.currentState?.pushReplacementNamed("/login");
             }
-            final refresh = await SharedPrefs.getRefreshToken();
             isRefresh = true;
             RefreshToken().execute(
-              refresh: refresh,
               callBack: () {
                 isRefresh = false;
                 loadCars();
               },
             );
           }
-          if(!isRefresh) {
-            errorMessage = error ?? "";
-            toastError(errorMessage);
+          if (!isRefresh) {
+            toastError(error);
           }
         },
       );
@@ -111,25 +107,23 @@ class HomeViewModel extends BaseViewModel {
             hasNext = response.data.next != null;
           }
         },
-        error: (error) async {
-          if (error?.contains("401") == true) {
-            final refresh = await SharedPrefs.getRefreshToken();
-            await SharedPrefs.removeToken();
+        error: (Error? error) async {
+          if (error?.statusCode == 401) {
+
             isRefresh = true;
             RefreshToken().execute(
-              refresh: refresh,
               callBack: () {
                 isRefresh = false;
                 loadMoreCars();
               },
             );
           }
-          errorMessage = error ?? "";
+          toastError(error);
         },
       );
     }).onDone(
       () {
-        if(!isRefresh){
+        if (!isRefresh) {
           isMoreLoading = false;
           notifyListeners();
         }
@@ -158,30 +152,27 @@ class HomeViewModel extends BaseViewModel {
             cars.addAll(response.data.results ?? []);
           }
         },
-        error: (error) async{
-          if (error?.contains("401") == true &&
-              error!.contains("Token has expired")) {
-            await SharedPrefs.removeToken();
+        error: (error) async {
+          if (error?.statusCode == 401 &&
+              error?.detail == "Token has expired") {
             count401++;
             if (count401 == 2) {
               navigatorKey.currentState?.pushReplacementNamed("/login");
             }
-            final refresh = await SharedPrefs.getRefreshToken();
             isRefresh = true;
             RefreshToken().execute(
-              refresh: refresh,
               callBack: () {
                 isRefresh = false;
                 filterCars();
               },
             );
           }
-          errorMessage = error ?? "";
+          toastError(error);
         },
       );
     }).onDone(
       () {
-        if(!isRefresh){
+        if (!isRefresh) {
           isLoading = false;
           notifyListeners();
         }
@@ -199,7 +190,9 @@ class HomeViewModel extends BaseViewModel {
             notifyListeners();
           }
         },
-        error: (error) {},
+        error: (error) {
+
+        },
       );
     }).onDone(() {});
   }

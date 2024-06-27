@@ -29,9 +29,17 @@ Map<String, dynamic> _$CustomResponseToJson<T>(
     };
 
 Error _$ErrorFromJson(Map<String, dynamic> json) => Error(
-      json['message'] as String,
+      (json['statusCode'] as num?)?.toInt(),
+      json['message'] as String?,
+      (json['birth_year'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      json['detail'] as String?,
+      json['code'] as String?,
     );
 
 Map<String, dynamic> _$ErrorToJson(Error instance) => <String, dynamic>{
+      'statusCode': instance.statusCode,
       'message': instance.message,
+      'detail': instance.detail,
+      'code': instance.code,
+      'birth_year': instance.birthYear,
     };

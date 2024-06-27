@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qas/presentation/widget/toast.dart';
 
 import '../../config/injection.dart';
 import '../../tools/assets.dart';
@@ -399,7 +398,6 @@ class HomePage extends ConsumerWidget {
     if (result != null) {
       final index = result.lastIndexOf("=");
       final carId = int.parse(result.substring(index + 1));
-      toastError("$carId");
       await Future.delayed(const Duration(seconds: 1));
       openDetail(context, carId);
     }

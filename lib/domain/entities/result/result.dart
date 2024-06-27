@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../domain/entities/response/response.dart';
 
 part 'result.freezed.dart';
 
@@ -8,5 +9,5 @@ class Result<T> with _$Result<T> {
 
   const factory Result.content(T content) = Content;
 
-  const factory Result.error([String? message]) = Error;
+  const factory Result.error([Error? error]) = ErrorBody;
 }

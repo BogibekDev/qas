@@ -18,12 +18,19 @@ class CustomResponse<T> {
 
 @JsonSerializable()
 class Error {
-  final String message;
+  int? statusCode;
+  String? message;
+  final String? detail;
+  final String? code;
+  @JsonKey(name: "birth_year")
+  final List<String>? birthYear;
 
-  Error(this.message);
+  Error(this.statusCode,this.message, this.birthYear, this.detail, this.code);
 
   factory Error.fromJson(Map<String, dynamic> json) =>
       _$ErrorFromJson(json);
 
   Map<String, dynamic> toJson() => _$ErrorToJson(this);
+
+  factory Error.empty()=>Error(null,null,null,null,null);
 }

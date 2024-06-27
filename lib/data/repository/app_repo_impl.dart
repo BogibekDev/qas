@@ -1,3 +1,5 @@
+import 'package:qas/domain/entities/sell/sell_request.dart';
+import 'package:qas/domain/entities/sell/sell_response.dart';
 
 import '../../domain/entities/detail/return.dart';
 import '../../domain/entities/detail/return_response.dart';
@@ -42,4 +44,11 @@ class AppRepoImpl extends AppRepo {
   @override
   Stream<CustomResponse<Pagination<Buyer>>> buyers(String? search) =>
       _api.buyers(search: search);
+
+  @override
+  Stream<CustomResponse<Buyer>> addBuyer(Buyer buyer) => _api.addBuyer(buyer);
+
+  @override
+  Stream<CustomResponse<SellResponse>> sellCar(SellRequest request) =>
+      _api.sellCar(request);
 }

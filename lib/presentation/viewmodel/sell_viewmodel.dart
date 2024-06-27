@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:qas/tools/utils.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../config/base_vm.dart';
 import '../../domain/entities/home/car.dart';
+import '../../domain/entities/response/response.dart';
 import '../../domain/entities/sell/buyer.dart';
+import '../../domain/entities/sell/sell_request.dart';
 import '../../domain/use_cases/detail/detail_use_case.dart';
+import '../../domain/use_cases/sell/add_buyer.dart';
 import '../../domain/use_cases/sell/getBuyers.dart';
+import '../../domain/use_cases/sell/sell_car.dart';
+import '../../main.dart';
+import '../../tools/utils.dart';
+import '../widget/toast.dart';
+import 'refresh_token.dart';
 
 class SellViewModel extends BaseViewModel {
   final GetBuyers _getBuyers;
   final DetailUseCase _detailUseCase;
-  late Car car;
-  Buyer? selectedBuyer;
+  final AddBuyer _addBuyer;
+  final SellCar _sellCar;
 
   final TextEditingController buyerController = TextEditingController();
   final TextEditingController compensationC = TextEditingController();
   final TextEditingController prePriceC = TextEditingController();
   final TextEditingController periodC = TextEditingController();
-  final TextEditingController remainingPriceC = TextEditingController();
+  final TextEditingController pricePerMC = TextEditingController();
   final TextEditingController priceC = TextEditingController();
   final TextEditingController buyerFirstName = TextEditingController();
   final TextEditingController buyerLastName = TextEditingController();
@@ -28,19 +36,24 @@ class SellViewModel extends BaseViewModel {
   final TextEditingController buyerPhoneNumber = TextEditingController();
   final TextEditingController buyerExtraPhoneNumber = TextEditingController();
   int carId = 1;
+  late Car car;
+  Buyer? selectedBuyer;
+  String paymentType = "";
 
   FocusNode focusNode = FocusNode();
   bool isFocused = false;
   bool isNoBuyer = false;
   List<String> paymentTypes = ["cash", "credit"];
-  String paymentType = "";
 
   String errorMessage = "";
   bool isLoading = false;
   bool carLoading = false;
+  bool isRefresh = false;
+  int count401 = 0;
   List<Buyer> buyers = [];
 
-  SellViewModel(this._getBuyers, this._detailUseCase) {
+  SellViewModel(
+      this._getBuyers, this._detailUseCase, this._addBuyer, this._sellCar) {
     searchBuyers(null);
     focusNode.addListener(() {
       isFocused = focusNode.hasFocus;
@@ -64,18 +77,34 @@ class SellViewModel extends BaseViewModel {
             } else {
               isNoBuyer = false;
             }
-          } else {
-            errorMessage = response.error?.message ?? "";
           }
         },
-        error: (error) {
-          errorMessage = error ?? "";
+        error: (Error? error) async {
+          if (error?.statusCode == 401 &&
+              error!.detail == "Token has expired") {
+            count401++;
+            if (count401 == 2) {
+              navigatorKey.currentState?.pushReplacementNamed("/login");
+            }
+            isRefresh = true;
+            RefreshToken().execute(
+              callBack: () {
+                isRefresh = false;
+                searchBuyers(search);
+              },
+            );
+          }
+          if (!isRefresh) {
+            toastError(error);
+          }
         },
       );
     }).onDone(
       () {
-        isLoading = false;
-        notifyListeners();
+        if (!isRefresh) {
+          isLoading = false;
+          notifyListeners();
+        }
       },
     );
   }
@@ -90,29 +119,193 @@ class SellViewModel extends BaseViewModel {
         content: (response) {
           if (response.success) {
             car = response.data;
-            priceC.text = double.tryParse(response.data.price??"0.0")!.toInt().toString().addSpace();
-            prePriceC.text = double.tryParse(response.data.prePrice??"0.0")!.toInt().toString().addSpace();
+            priceC.text = double.tryParse(response.data.price ?? "0.0")!
+                .toInt()
+                .toString()
+                .addSpace();
+            prePriceC.text = double.tryParse(response.data.prePrice ?? "0.0")!
+                .toInt()
+                .toString()
+                .addSpace();
             periodC.text = car.period.toString();
-          } else {
-            errorMessage = response.error?.message ?? "";
+            pricePerMC.text =
+                double.tryParse(response.data.pricePerMonth ?? "0.0")!
+                    .toInt()
+                    .toString()
+                    .addSpace();
+            ;
           }
         },
-        error: (error) {
-          errorMessage = error ?? "";
+        error: (Error? error) async {
+          if (error?.statusCode == 401 &&
+              error!.detail == "Token has expired") {
+            count401++;
+            if (count401 == 2) {
+              navigatorKey.currentState?.pushReplacementNamed("/login");
+            }
+
+            isRefresh = true;
+            RefreshToken().execute(
+              callBack: () {
+                isRefresh = false;
+                loadCarDetail(id);
+              },
+            );
+          }
+          if (!isRefresh) {
+            toastError(error);
+          }
         },
       );
     }).onDone(
       () {
-        carLoading = false;
-        notifyListeners();
+        if (!isRefresh) {
+          carLoading = false;
+          notifyListeners();
+        }
       },
     );
+  }
+
+  void addBuyer(Function onCallBack) {
+    final String firstName = buyerFirstName.text.trim();
+    final String lastName = buyerLastName.text.trim();
+    final String middleName = buyerMiddleName.text.trim();
+    final String birthYear = buyerBirthday.text.trim();
+    final String passport = buyerPassport.text.trim();
+    final String address = buyerAddress.text.trim();
+    final String phoneNumber = buyerPhoneNumber.text.trim();
+    final String extraPhoneNumber = buyerExtraPhoneNumber.text.trim();
+
+    if (firstName.isNotEmpty &&
+        lastName.isNotEmpty &&
+        middleName.isNotEmpty &&
+        birthYear.isNotEmpty &&
+        passport.isNotEmpty &&
+        address.isNotEmpty &&
+        phoneNumber.isNotEmpty) {
+      final buyer = Buyer(
+          null,
+          firstName,
+          lastName,
+          middleName,
+          birthYear,
+          passport,
+          address,
+          "+998$phoneNumber",
+          extraPhoneNumber.isNotEmpty ? "+998$extraPhoneNumber" : null);
+      _addBuyer.execute(buyer).listen((event) {
+        event.when(
+          loading: () {
+            carLoading = true;
+            notifyListeners();
+          },
+          content: (response) {
+            if (response.success) {
+              selectedBuyer = response.data;
+              onCallBack.call();
+            }
+          },
+          error: (Error? error) async {
+            if (error?.statusCode == 401 &&
+                error!.detail == "Token has expired") {
+              count401++;
+              if (count401 == 2) {
+                navigatorKey.currentState?.pushReplacementNamed("/login");
+              }
+              isRefresh = true;
+              RefreshToken().execute(
+                callBack: () {
+                  isRefresh = false;
+                  addBuyer(onCallBack);
+                },
+              );
+            }
+            if (!isRefresh) {
+              toastError(error);
+            } else {
+              onCallBack.call();
+            }
+          },
+        );
+      }).onDone(
+        () {
+          if (!isRefresh) {
+            carLoading = false;
+            notifyListeners();
+          }
+        },
+      );
+    } else {
+      toastError(Error.empty()..message = "Hamma maydonni to'ldiring!");
+    }
+  }
+
+  void sellCar(Function onCallBack) {
+    final String price = priceC.text.removeSpace();
+    final String compensationPrice = compensationC.text.removeSpace();
+    final String prePrice = prePriceC.text.removeSpace();
+    final String pricePerMonth = pricePerMC.text.removeSpace();
+    final String period = periodC.text.removeSpace();
+
+    if (price.length > 1 &&
+        compensationPrice.length > 1 &&
+        selectedBuyer != null &&
+        paymentType.isNotEmpty) {
+      final request = SellRequest(carId, selectedBuyer, price,
+          compensationPrice, paymentType, prePrice, pricePerMonth, period);
+
+      _sellCar.execute(request).listen((event) {
+        event.when(
+          loading: () {
+            carLoading = true;
+            notifyListeners();
+          },
+          content: (response) {
+            if (response.success) {
+              openPDF(response.data.contract ?? "");
+            }
+          },
+          error: (Error? error) async {
+            if (error?.statusCode == 401 &&
+                error!.detail == "Token has expired") {
+              count401++;
+              if (count401 == 2) {
+                navigatorKey.currentState?.pushReplacementNamed("/login");
+              }
+
+              isRefresh = true;
+              RefreshToken().execute(
+                callBack: () {
+                  isRefresh = false;
+                  sellCar(onCallBack);
+                },
+              );
+            }
+            if (!isRefresh) {
+              toastError(error);
+            } else {
+              onCallBack.call();
+            }
+          },
+        );
+      }).onDone(
+        () {
+          if (!isRefresh) {
+            carLoading = false;
+            notifyListeners();
+          }
+        },
+      );
+    } else {
+      toastError(Error.empty()..message = "Hamma maydonni to'ldiring!");
+    }
   }
 
   void selectBuyer(int position) {
     selectedBuyer = buyers[position];
     buyerController.text =
-        "${selectedBuyer?.firstName} ${selectedBuyer?.lastName}";
+        "${selectedBuyer?.firstName} ${selectedBuyer?.lastName} ${selectedBuyer?.middleName}";
     focusNode.unfocus();
     notifyListeners();
   }
@@ -120,5 +313,9 @@ class SellViewModel extends BaseViewModel {
   void changePaymentType(String type) {
     paymentType = type;
     notifyListeners();
+  }
+
+  Future<void> openPDF(String url) async {
+    await launchUrlString(url);
   }
 }
