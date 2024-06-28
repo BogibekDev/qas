@@ -240,7 +240,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                               ),
                               onPressed: () {
                                 viewModel.sellCar(() {
-                                  goHomePage(context);
+                                 Navigator.pop(context, true);
                                 });
                               },
                               child: viewModel.carLoading

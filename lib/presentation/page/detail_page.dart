@@ -14,8 +14,8 @@ import '../widget/similar_item.dart';
 import 'sell_page.dart';
 
 final detailNotifierProvider =
-    ChangeNotifierProvider.autoDispose<DetailViewModel>((ref) {
-  return DetailViewModel(ref.read(detailUseCase), ref.read(carReturn));
+    ChangeNotifierProvider.family.autoDispose((ref, int carId) {
+  return DetailViewModel(ref.read(detailUseCase), ref.read(carReturn), carId);
 });
 
 class DetailPage extends ConsumerWidget {
@@ -25,8 +25,7 @@ class DetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final DetailViewModel detailViewModel = ref.watch(detailNotifierProvider)
-      ..id = carId;
+    final DetailViewModel detailViewModel = ref.watch(detailNotifierProvider(carId));
 
     return Scaffold(
       backgroundColor: ResColors.mainBg,
@@ -418,13 +417,16 @@ class DetailPage extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async{
+                        var res = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => SellPage(carId: carId),
                           ),
                         );
+                        if(res == true) {
+                          if(context.mounted) Navigator.pop(context, true);
+                        }
                       },
                       child: Text(
                         "sell".tr(),

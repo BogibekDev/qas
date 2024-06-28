@@ -261,9 +261,10 @@ class SellViewModel extends BaseViewModel {
             carLoading = true;
             notifyListeners();
           },
-          content: (response) {
+          content: (response)async {
             if (response.success) {
-              openPDF(response.data.contract ?? "");
+             var res = await openPDF(response.data.contract ?? "");
+             if(res == true) onCallBack.call();
             }
           },
           error: (Error? error) async {
@@ -315,7 +316,7 @@ class SellViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> openPDF(String url) async {
-    await launchUrlString(url);
+  Future<bool> openPDF(String url) async {
+   return await launchUrlString(url);
   }
 }

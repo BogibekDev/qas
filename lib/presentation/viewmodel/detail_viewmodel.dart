@@ -16,11 +16,11 @@ import 'refresh_token.dart';
 class DetailViewModel extends BaseViewModel {
   final DetailUseCase _detailUseCase;
   final CarReturn _carReturn;
-  int id = 1;
+  late int id;
   Car car = Car();
 
-  DetailViewModel(this._detailUseCase, this._carReturn) {
-    loadWithDelay();
+  DetailViewModel(this._detailUseCase, this._carReturn, this.id) {
+    loadCarDetail(id);
   }
 
   String errorMessage = "";

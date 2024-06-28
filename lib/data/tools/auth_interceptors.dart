@@ -34,6 +34,6 @@ class AuthInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     log("Error in interceptor ${handler.toString()} : ${err.requestOptions.data}");
-      super.onError(err, handler);
+    super.onError(err, handler);
   }
 }

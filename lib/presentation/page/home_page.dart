@@ -34,7 +34,7 @@ class HomePage extends ConsumerWidget {
           actions: [
             GestureDetector(
               onTap: () {
-                _scanQRCode(context);
+                _scanQRCode(context, homeViewModel);
               },
               child: Container(
                 width: 36,
@@ -71,22 +71,30 @@ class HomePage extends ConsumerWidget {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: ListView.builder(
-          controller: homeViewModel.scrollController,
-          itemCount: homeViewModel.isLoading ? 10 : homeViewModel.cars.length,
-          itemBuilder: (context, position) {
-            return homeViewModel.isLoading
-                ? const CarItemShimmer()
-                : CarItem(
-                    car: homeViewModel.cars[position],
-                    onItemClick: () {
-                      int? carId = homeViewModel.cars[position].id;
-                      openDetail(context, carId);
-                    },
-                  );
-          },
+      body: RefreshIndicator(
+        backgroundColor: ResColors.mainBg,
+        color: ResColors.mainColor,
+        onRefresh: () async {
+          homeViewModel.cars.clear();
+          homeViewModel.loadCars();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: ListView.builder(
+            controller: homeViewModel.scrollController,
+            itemCount: homeViewModel.isLoading ? 10 : homeViewModel.cars.length,
+            itemBuilder: (context, position) {
+              return homeViewModel.isLoading
+                  ? const CarItemShimmer()
+                  : CarItem(
+                      car: homeViewModel.cars[position],
+                      onItemClick: () {
+                        int? carId = homeViewModel.cars[position].id;
+                        openDetail(context, carId, homeViewModel);
+                      },
+                    );
+            },
+          ),
         ),
       ),
     );
@@ -392,25 +400,26 @@ class HomePage extends ConsumerWidget {
     return homeViewModel.selectedDate.year;
   }
 
-  _scanQRCode(BuildContext context) async {
+  _scanQRCode(BuildContext context, HomeViewModel homeViewModel) async {
     final result = await Navigator.push<String>(
         context, MaterialPageRoute(builder: (context) => const Scanner()));
     if (result != null) {
       final index = result.lastIndexOf("=");
-      final carId = int.parse(result.substring(index + 1));
-      await Future.delayed(const Duration(seconds: 1));
-      openDetail(context, carId);
+      final carId = int.tryParse(result.substring(index + 1));
+      if(carId == null) return;
+      openDetail(context, carId, homeViewModel);
     }
   }
 
-  openDetail(BuildContext context, int? carId) {
+  openDetail(BuildContext context, int? carId, HomeViewModel homeViewModel) async {
     if (carId != null) {
-      Navigator.push(
+      var res = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => DetailPage(carId: carId),
         ),
       );
+      if(res == true) homeViewModel.loadCars();
     }
   }
 }
