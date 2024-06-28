@@ -47,6 +47,7 @@ class HomeViewModel extends BaseViewModel {
     Map<String, dynamic> queries = {
       "page": page,
     };
+    cars.clear();
     _getCars.execute(queries).listen((event) {
       event.when(
         loading: () {
@@ -61,14 +62,14 @@ class HomeViewModel extends BaseViewModel {
           }
         },
         error: (Error? error) async {
-          if (error?.statusCode == 401 &&
-              error!.detail == "Token has expired") {
+          if (error?.statusCode == 401) {
             count401++;
             if (count401 == 2) {
               navigatorKey.currentState?.pushReplacementNamed("/login");
             }
             isRefresh = true;
             RefreshToken().execute(
+              err: error,
               callBack: () {
                 isRefresh = false;
                 loadCars();
@@ -109,9 +110,9 @@ class HomeViewModel extends BaseViewModel {
         },
         error: (Error? error) async {
           if (error?.statusCode == 401) {
-
             isRefresh = true;
             RefreshToken().execute(
+              err: error,
               callBack: () {
                 isRefresh = false;
                 loadMoreCars();
@@ -161,6 +162,7 @@ class HomeViewModel extends BaseViewModel {
             }
             isRefresh = true;
             RefreshToken().execute(
+              err: error,
               callBack: () {
                 isRefresh = false;
                 filterCars();
@@ -190,9 +192,7 @@ class HomeViewModel extends BaseViewModel {
             notifyListeners();
           }
         },
-        error: (error) {
-
-        },
+        error: (error) {},
       );
     }).onDone(() {});
   }

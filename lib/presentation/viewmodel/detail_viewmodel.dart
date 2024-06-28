@@ -63,6 +63,7 @@ class DetailViewModel extends BaseViewModel {
             }
             isRefresh = true;
             RefreshToken().execute(
+              err: error,
               callBack: () {
                 isRefresh = false;
                 loadCarDetail(id);
@@ -118,6 +119,7 @@ class DetailViewModel extends BaseViewModel {
             }
             isRefresh = true;
             RefreshToken().execute(
+              err: error,
               callBack: () {
                 isRefresh = false;
                 returnCar();

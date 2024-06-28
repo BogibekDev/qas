@@ -88,6 +88,7 @@ class SellViewModel extends BaseViewModel {
             }
             isRefresh = true;
             RefreshToken().execute(
+              err: error,
               callBack: () {
                 isRefresh = false;
                 searchBuyers(search);
@@ -146,6 +147,7 @@ class SellViewModel extends BaseViewModel {
 
             isRefresh = true;
             RefreshToken().execute(
+              err: error,
               callBack: () {
                 isRefresh = false;
                 loadCarDetail(id);
@@ -180,10 +182,10 @@ class SellViewModel extends BaseViewModel {
     if (firstName.isNotEmpty &&
         lastName.isNotEmpty &&
         middleName.isNotEmpty &&
-        birthYear.isNotEmpty &&
-        passport.isNotEmpty &&
+        birthYear.length == 10 &&
+        passport.length == 9 &&
         address.isNotEmpty &&
-        phoneNumber.isNotEmpty) {
+        phoneNumber.length == 9) {
       final buyer = Buyer(
           null,
           firstName,
@@ -215,6 +217,7 @@ class SellViewModel extends BaseViewModel {
               }
               isRefresh = true;
               RefreshToken().execute(
+                err: error,
                 callBack: () {
                   isRefresh = false;
                   addBuyer(onCallBack);
@@ -261,10 +264,10 @@ class SellViewModel extends BaseViewModel {
             carLoading = true;
             notifyListeners();
           },
-          content: (response)async {
+          content: (response) async {
             if (response.success) {
-             var res = await openPDF(response.data.contract ?? "");
-             if(res == true) onCallBack.call();
+              var res = await openPDF(response.data.contract ?? "");
+              if (res == true) onCallBack.call();
             }
           },
           error: (Error? error) async {
@@ -277,6 +280,7 @@ class SellViewModel extends BaseViewModel {
 
               isRefresh = true;
               RefreshToken().execute(
+                err: error,
                 callBack: () {
                   isRefresh = false;
                   sellCar(onCallBack);
@@ -317,6 +321,6 @@ class SellViewModel extends BaseViewModel {
   }
 
   Future<bool> openPDF(String url) async {
-   return await launchUrlString(url);
+    return await launchUrlString(url);
   }
 }

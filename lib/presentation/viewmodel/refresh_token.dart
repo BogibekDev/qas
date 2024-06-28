@@ -8,31 +8,35 @@ import '../../domain/use_cases/refresh/refresh_use_case.dart';
 import '../../main.dart';
 
 class RefreshToken {
-  final _refreshUseCase =
-      RefreshUseCase(AppRepoImpl(ApiService(AuthInterceptor())));
+  final _refresh = RefreshUseCase(AppRepoImpl(ApiService(AuthInterceptor())));
 
-  void execute({
-    required Function callBack,
-  }) async {
-    final refresh = await SharedPrefs.getRefreshToken();
-    await SharedPrefs.removeToken();
-    _refreshUseCase.execute(Refresh(refresh)).listen((event) {
-      event.when(
-        loading: () {},
-        content: (response) async {
-          if (response.success) {
-            await SharedPrefs.saveToken(response.data.access ?? "");
-            await SharedPrefs.saveRefreshToken(response.data.refresh ?? "");
-            callBack.call();
-          }
-        },
-        error: (Error? error) {
-          if (error?.statusCode == 401) {
-            SharedPrefs.saveLogOut();
-            navigatorKey.currentState?.pushReplacementNamed("/login");
-          }
-        },
-      );
-    }).onDone(() {});
+  Future<void> execute({required Function callBack, Error? err}) async {
+    if (err?.code == "expired" && err?.detail == "Token has expired") {
+      final refresh = await SharedPrefs.getRefreshToken();
+
+      _refresh.execute(Refresh(refresh)).listen((event) {
+        event.when(
+          loading: () {},
+          content: (response) async {
+            if (response.success) {
+              await SharedPrefs.saveToken(response.data.access ?? "");
+              await SharedPrefs.saveRefreshToken(response.data.refresh ?? "");
+              callBack.call();
+            }
+          },
+          error: (Error? error) {
+            if (error?.statusCode == 401) {
+              SharedPrefs.saveLogOut();
+              navigatorKey.currentState?.pushReplacementNamed("/login");
+            }
+          },
+        );
+      }).onDone(() {});
+    } else if (err?.code == "invalid" ||
+        err?.detail == "Token is invalid" ||
+        err?.detail == "Token is invalid or expired") {
+      SharedPrefs.saveLogOut();
+      navigatorKey.currentState?.pushReplacementNamed("/login");
+    }
   }
 }

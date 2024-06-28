@@ -1,20 +1,22 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+
+import '../../domain/entities/response/response.dart';
+import '../../presentation/viewmodel/refresh_token.dart';
 import '../local/prefs.dart';
 
 class AuthInterceptor extends InterceptorsWrapper {
-  late RequestOptions options;
-  late RequestInterceptorHandler handler;
+  bool isRefreshing = false;
+
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    this.options = options;
-    this.handler = handler;
     String authToken = await SharedPrefs.getToken();
     if (authToken.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $authToken';
     }
+
     log("Data in interceptor${options.data}");
     log("request ketdi : ${DateTime.now()}");
     log("Extra in interceptor${options.extra}");
@@ -32,8 +34,35 @@ class AuthInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     log("Error in interceptor ${handler.toString()} : ${err.requestOptions.data}");
     super.onError(err, handler);
+  }
+
+  // @override
+  // void onError(DioException err, ErrorInterceptorHandler handler) async {
+  //   log("Error in interceptor ${handler.toString()} : ${err.requestOptions.data}");
+  //   executeRefresh(err, handler);
+  // }
+
+  void executeRefresh(DioException err, ErrorInterceptorHandler handler) async {
+    log("executeRefresh: onError : statusCode: ${err.response?.statusCode}");
+    log("executeRefresh: onError : data: ${err.response?.data}");
+    log("executeRefresh: onError : statusMessage: ${err.response?.statusMessage}");
+
+    if (err.response?.statusCode == 401) {
+      if (!isRefreshing) {
+        isRefreshing = true;
+        var errorModel = Error.fromJson(err.response?.data)..statusCode = err.response?.statusCode;
+        await RefreshToken().execute(
+          err: errorModel,
+          callBack: () {
+
+          },
+        );
+      }
+    } else {
+      handler.next(err);
+    }
   }
 }
