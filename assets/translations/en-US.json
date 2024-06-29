@@ -40,5 +40,6 @@
   "back": "Avtomobilni qaytarish",
   "cause": "Avtomobilni qaytarish sababi",
   "add": "Qo'shish",
+  "loginMessage": "Sessiya vaqti tugadi, iltimos qayta login qiling!",
   "somethingWentError": "Qandaydir xatolik"
 }

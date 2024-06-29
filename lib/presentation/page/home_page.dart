@@ -406,12 +406,13 @@ class HomePage extends ConsumerWidget {
     if (result != null) {
       final index = result.lastIndexOf("=");
       final carId = int.tryParse(result.substring(index + 1));
-      if(carId == null) return;
-      openDetail(context, carId, homeViewModel);
+      Future.delayed(const Duration(seconds: 1));
+      if (context.mounted) openDetail(context, carId, homeViewModel);
     }
   }
 
-  openDetail(BuildContext context, int? carId, HomeViewModel homeViewModel) async {
+  openDetail(
+      BuildContext context, int? carId, HomeViewModel homeViewModel) async {
     if (carId != null) {
       var res = await Navigator.push(
         context,
@@ -419,7 +420,7 @@ class HomePage extends ConsumerWidget {
           builder: (context) => DetailPage(carId: carId),
         ),
       );
-      if(res == true) homeViewModel.loadCars();
+      if (res == true) homeViewModel.loadCars();
     }
   }
 }

@@ -6,9 +6,7 @@ import '../../domain/entities/home/model.dart';
 import '../../domain/entities/response/response.dart';
 import '../../domain/use_cases/home/get_models.dart';
 import '../../domain/use_cases/home/home_use_case.dart';
-import '../../main.dart';
 import '../widget/toast.dart';
-import 'refresh_token.dart';
 
 class HomeViewModel extends BaseViewModel {
   final GetCars _getCars;
@@ -61,32 +59,14 @@ class HomeViewModel extends BaseViewModel {
             loadModels();
           }
         },
-        error: (Error? error) async {
-          if (error?.statusCode == 401) {
-            count401++;
-            if (count401 == 2) {
-              navigatorKey.currentState?.pushReplacementNamed("/login");
-            }
-            isRefresh = true;
-            RefreshToken().execute(
-              err: error,
-              callBack: () {
-                isRefresh = false;
-                loadCars();
-              },
-            );
-          }
-          if (!isRefresh) {
+        error: (Error? error) {
             toastError(error);
-          }
         },
       );
     }).onDone(
       () {
-        if (!isRefresh) {
           isLoading = false;
           notifyListeners();
-        }
       },
     );
   }
@@ -108,26 +88,14 @@ class HomeViewModel extends BaseViewModel {
             hasNext = response.data.next != null;
           }
         },
-        error: (Error? error) async {
-          if (error?.statusCode == 401) {
-            isRefresh = true;
-            RefreshToken().execute(
-              err: error,
-              callBack: () {
-                isRefresh = false;
-                loadMoreCars();
-              },
-            );
-          }
+        error: (Error? error) {
           toastError(error);
         },
       );
     }).onDone(
       () {
-        if (!isRefresh) {
           isMoreLoading = false;
           notifyListeners();
-        }
       },
     );
   }
@@ -153,31 +121,14 @@ class HomeViewModel extends BaseViewModel {
             cars.addAll(response.data.results ?? []);
           }
         },
-        error: (error) async {
-          if (error?.statusCode == 401 &&
-              error?.detail == "Token has expired") {
-            count401++;
-            if (count401 == 2) {
-              navigatorKey.currentState?.pushReplacementNamed("/login");
-            }
-            isRefresh = true;
-            RefreshToken().execute(
-              err: error,
-              callBack: () {
-                isRefresh = false;
-                filterCars();
-              },
-            );
-          }
+        error: (error) {
           toastError(error);
         },
       );
     }).onDone(
       () {
-        if (!isRefresh) {
           isLoading = false;
           notifyListeners();
-        }
       },
     );
   }

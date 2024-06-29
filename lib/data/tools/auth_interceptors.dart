@@ -1,13 +1,21 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 
+import '../../domain/entities/login/refresh.dart';
 import '../../domain/entities/response/response.dart';
-import '../../presentation/viewmodel/refresh_token.dart';
+import '../../main.dart';
+import '../../presentation/widget/toast.dart';
 import '../local/prefs.dart';
+import '../remote/api/api_service.dart';
 
 class AuthInterceptor extends InterceptorsWrapper {
   bool isRefreshing = false;
+  final Dio dio;
+  final ApiService apiService;
+
+  AuthInterceptor(this.dio, this.apiService);
 
   @override
   void onRequest(
@@ -36,33 +44,65 @@ class AuthInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     log("Error in interceptor ${handler.toString()} : ${err.requestOptions.data}");
-    super.onError(err, handler);
+    log("Error in interceptor : statusCode : ${err.response?.statusCode}");
+    log("Error in interceptor : data : ${err.response?.data}");
+    log("Error in interceptor : statusMessage : ${err.response?.statusMessage}");
+    log("Error in interceptor : error : ${err.error}");
+    log("Error in interceptor : message : ${err.message}");
+    log("Error in interceptor : message : ${err.type}");
+    if (err.response?.statusCode == 401) {
+      executeRefresh(err, handler);
+    } else {
+      handler.next(err); // Let the error pass through if it's not a 401
+    }
   }
 
-  // @override
-  // void onError(DioException err, ErrorInterceptorHandler handler) async {
-  //   log("Error in interceptor ${handler.toString()} : ${err.requestOptions.data}");
-  //   executeRefresh(err, handler);
-  // }
-
   void executeRefresh(DioException err, ErrorInterceptorHandler handler) async {
-    log("executeRefresh: onError : statusCode: ${err.response?.statusCode}");
-    log("executeRefresh: onError : data: ${err.response?.data}");
-    log("executeRefresh: onError : statusMessage: ${err.response?.statusMessage}");
+    if (!isRefreshing) {
+      isRefreshing = true;
+      try {
+        String refreshToken = await SharedPrefs.getRefreshToken();
+        if (refreshToken.isNotEmpty) {
+          final response = await apiService.refreshToken(Refresh(refreshToken));
+          if (response.success) {
+            await SharedPrefs.saveToken(response.data.access ?? "");
+            await SharedPrefs.saveRefreshToken(response.data.refresh ?? "");
 
-    if (err.response?.statusCode == 401) {
-      if (!isRefreshing) {
-        isRefreshing = true;
-        var errorModel = Error.fromJson(err.response?.data)..statusCode = err.response?.statusCode;
-        await RefreshToken().execute(
-          err: errorModel,
-          callBack: () {
+            // Retry the failed request
+            final options = err.requestOptions;
+            options.headers['Authorization'] = 'Bearer ${response.data.access}';
 
-          },
-        );
+            final failedRequest = await dio.request(
+              options.path,
+              options: Options(
+                method: options.method,
+                headers: options.headers,
+              ),
+              data: options.data,
+              queryParameters: options.queryParameters,
+            );
+
+            handler.resolve(failedRequest);
+          } else if (response.error?.code == "invalid" ||
+              response.error?.detail == "Token is invalid" ||
+              response.error?.detail == "Token is invalid or expired") {
+            goLogin();
+          }
+        }
+      } catch (e) {
+        handler.next(err); // Let the error pass through if something fails
+        goLogin();
+      } finally {
+        isRefreshing = false;
       }
     } else {
-      handler.next(err);
+      goLogin();
     }
+  }
+
+  void goLogin() {
+    toastError(Error.empty()..message = "loginMessage".tr());
+    SharedPrefs.saveLogOut();
+    navigatorKey.currentState?.pushReplacementNamed("/login");
   }
 }

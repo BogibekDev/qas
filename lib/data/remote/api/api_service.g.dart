@@ -50,7 +50,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Stream<CustomResponse<LoginResponse>> refreshToken(Refresh refresh) async* {
+  Future<CustomResponse<LoginResponse>> refreshToken(Refresh refresh) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -77,7 +77,7 @@ class _ApiService implements ApiService {
       _result.data!,
       (json) => LoginResponse.fromJson(json as Map<String, dynamic>),
     );
-    yield value;
+    return value;
   }
 
   @override

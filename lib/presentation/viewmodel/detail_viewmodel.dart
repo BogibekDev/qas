@@ -8,10 +8,8 @@ import '../../domain/entities/home/car.dart';
 import '../../domain/entities/response/response.dart';
 import '../../domain/use_cases/detail/car_return.dart';
 import '../../domain/use_cases/detail/detail_use_case.dart';
-import '../../main.dart';
 import '../../tools/res_color.dart';
 import '../widget/toast.dart';
-import 'refresh_token.dart';
 
 class DetailViewModel extends BaseViewModel {
   final DetailUseCase _detailUseCase;
@@ -54,33 +52,14 @@ class DetailViewModel extends BaseViewModel {
             errorMessage = response.error?.message ?? "";
           }
         },
-        error: (Error? error) async {
-          if (error?.statusCode == 401 &&
-              error!.detail == "Token has expired") {
-            count401++;
-            if (count401 == 2) {
-              navigatorKey.currentState?.pushReplacementNamed("/login");
-            }
-            isRefresh = true;
-            RefreshToken().execute(
-              err: error,
-              callBack: () {
-                isRefresh = false;
-                loadCarDetail(id);
-              },
-            );
-          }
-          if (!isRefresh) {
-            toastError(error);
-          }
+        error: (Error? error) {
+          toastError(error);
         },
       );
     }).onDone(
       () {
-        if (!isRefresh) {
-          isLoading = false;
-          notifyListeners();
-        }
+        isLoading = false;
+        notifyListeners();
       },
     );
   }
@@ -89,14 +68,7 @@ class DetailViewModel extends BaseViewModel {
     return carouselIndex == i ? ResColors.mainColor : ResColors.greyYellow;
   }
 
-  void loadWithDelay() async {
-    isLoading = true;
-    notifyListeners();
-    await Future.delayed(const Duration(seconds: 2));
-    loadCarDetail(id);
-  }
-
-  void returnCar() {
+  void returnCar(Function onCallBack) {
     final returnRequest = Return(id, reasonController.text.toString());
     _carReturn.execute(returnRequest).listen((event) {
       event.when(
@@ -108,35 +80,17 @@ class DetailViewModel extends BaseViewModel {
           if (response.success) {
             pdfUrl = response.data.pdfLink ?? "";
             openPDF(pdfUrl);
+            onCallBack.call();
           }
         },
-        error: (Error? error) async {
-          if (error?.statusCode == 401 &&
-              error!.detail == "Token has expired") {
-            count401++;
-            if (count401 == 2) {
-              navigatorKey.currentState?.pushReplacementNamed("/login");
-            }
-            isRefresh = true;
-            RefreshToken().execute(
-              err: error,
-              callBack: () {
-                isRefresh = false;
-                returnCar();
-              },
-            );
-          }
-          if (!isRefresh) {
-            toastError(error);
-          }
+        error: (Error? error) {
+          toastError(error);
         },
       );
     }).onDone(
       () {
-        if (!isRefresh) {
           isReturnLoading = false;
           notifyListeners();
-        }
       },
     );
   }

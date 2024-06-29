@@ -22,21 +22,23 @@ part 'api_service.g.dart';
 
 @RestApi()
 abstract class ApiService {
-  factory ApiService(AuthInterceptor authInterceptor) {
+  factory ApiService() {
     var options = BaseOptions(
       baseUrl: ApiConst.baseUrl,
     );
     Dio dio = Dio(options);
+    ApiService apiService = _ApiService(dio);
+    AuthInterceptor authInterceptor = AuthInterceptor(dio, apiService);
     dio.interceptors.add(authInterceptor);
     if (kDebugMode) dio.interceptors.add(LogInterceptor());
-    return _ApiService(dio);
+    return apiService;
   }
 
   @POST(ApiConst.login)
   Stream<CustomResponse<LoginResponse>> login(@Body() LoginRequest request);
 
   @POST(ApiConst.refresh)
-  Stream<CustomResponse<LoginResponse>> refreshToken(@Body() Refresh refresh);
+  Future<CustomResponse<LoginResponse>> refreshToken(@Body() Refresh refresh);
 
   @GET(ApiConst.cars)
   Stream<CustomResponse<Pagination<Car>>> cars({

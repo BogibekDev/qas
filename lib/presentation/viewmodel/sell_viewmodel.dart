@@ -10,10 +10,8 @@ import '../../domain/use_cases/detail/detail_use_case.dart';
 import '../../domain/use_cases/sell/add_buyer.dart';
 import '../../domain/use_cases/sell/getBuyers.dart';
 import '../../domain/use_cases/sell/sell_car.dart';
-import '../../main.dart';
 import '../../tools/utils.dart';
 import '../widget/toast.dart';
-import 'refresh_token.dart';
 
 class SellViewModel extends BaseViewModel {
   final GetBuyers _getBuyers;
@@ -79,33 +77,14 @@ class SellViewModel extends BaseViewModel {
             }
           }
         },
-        error: (Error? error) async {
-          if (error?.statusCode == 401 &&
-              error!.detail == "Token has expired") {
-            count401++;
-            if (count401 == 2) {
-              navigatorKey.currentState?.pushReplacementNamed("/login");
-            }
-            isRefresh = true;
-            RefreshToken().execute(
-              err: error,
-              callBack: () {
-                isRefresh = false;
-                searchBuyers(search);
-              },
-            );
-          }
-          if (!isRefresh) {
+        error: (Error? error) {
             toastError(error);
-          }
         },
       );
     }).onDone(
       () {
-        if (!isRefresh) {
           isLoading = false;
           notifyListeners();
-        }
       },
     );
   }
@@ -137,34 +116,14 @@ class SellViewModel extends BaseViewModel {
             ;
           }
         },
-        error: (Error? error) async {
-          if (error?.statusCode == 401 &&
-              error!.detail == "Token has expired") {
-            count401++;
-            if (count401 == 2) {
-              navigatorKey.currentState?.pushReplacementNamed("/login");
-            }
-
-            isRefresh = true;
-            RefreshToken().execute(
-              err: error,
-              callBack: () {
-                isRefresh = false;
-                loadCarDetail(id);
-              },
-            );
-          }
-          if (!isRefresh) {
+        error: (Error? error) {
             toastError(error);
-          }
         },
       );
     }).onDone(
       () {
-        if (!isRefresh) {
           carLoading = false;
           notifyListeners();
-        }
       },
     );
   }
@@ -208,35 +167,14 @@ class SellViewModel extends BaseViewModel {
               onCallBack.call();
             }
           },
-          error: (Error? error) async {
-            if (error?.statusCode == 401 &&
-                error!.detail == "Token has expired") {
-              count401++;
-              if (count401 == 2) {
-                navigatorKey.currentState?.pushReplacementNamed("/login");
-              }
-              isRefresh = true;
-              RefreshToken().execute(
-                err: error,
-                callBack: () {
-                  isRefresh = false;
-                  addBuyer(onCallBack);
-                },
-              );
-            }
-            if (!isRefresh) {
-              toastError(error);
-            } else {
-              onCallBack.call();
-            }
-          },
+          error: (Error? error) {
+            toastError(error);
+          }
         );
       }).onDone(
         () {
-          if (!isRefresh) {
             carLoading = false;
             notifyListeners();
-          }
         },
       );
     } else {
@@ -270,36 +208,14 @@ class SellViewModel extends BaseViewModel {
               if (res == true) onCallBack.call();
             }
           },
-          error: (Error? error) async {
-            if (error?.statusCode == 401 &&
-                error!.detail == "Token has expired") {
-              count401++;
-              if (count401 == 2) {
-                navigatorKey.currentState?.pushReplacementNamed("/login");
-              }
-
-              isRefresh = true;
-              RefreshToken().execute(
-                err: error,
-                callBack: () {
-                  isRefresh = false;
-                  sellCar(onCallBack);
-                },
-              );
-            }
-            if (!isRefresh) {
+          error: (Error? error) {
               toastError(error);
-            } else {
-              onCallBack.call();
-            }
           },
         );
       }).onDone(
         () {
-          if (!isRefresh) {
             carLoading = false;
             notifyListeners();
-          }
         },
       );
     } else {

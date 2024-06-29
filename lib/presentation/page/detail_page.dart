@@ -25,7 +25,8 @@ class DetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final DetailViewModel detailViewModel = ref.watch(detailNotifierProvider(carId));
+    final DetailViewModel detailViewModel =
+        ref.watch(detailNotifierProvider(carId));
 
     return Scaffold(
       backgroundColor: ResColors.mainBg,
@@ -417,15 +418,15 @@ class DetailPage extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: () async{
+                      onPressed: () async {
                         var res = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => SellPage(carId: carId),
                           ),
                         );
-                        if(res == true) {
-                          if(context.mounted) Navigator.pop(context, true);
+                        if (res == true) {
+                          if (context.mounted) Navigator.pop(context, true);
                         }
                       },
                       child: Text(
@@ -449,7 +450,9 @@ class DetailPage extends ConsumerWidget {
                         ),
                       ),
                       onPressed: () {
-                        _backSheet(context, detailViewModel, carId);
+                        _backSheet(context, detailViewModel, carId, () {
+                          Navigator.pop(context, true);
+                        });
                       },
                       child: Text(
                         "back".tr(),
@@ -467,8 +470,8 @@ class DetailPage extends ConsumerWidget {
     );
   }
 
-  Future _backSheet(
-      BuildContext context, DetailViewModel detailViewModel, carId) {
+  Future _backSheet(BuildContext context, DetailViewModel detailViewModel,
+      carId, Function onClose) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -477,115 +480,122 @@ class DetailPage extends ConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: SizedBox(
-            width: MediaQuery.sizeOf(context).width,
-            height: 440,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "back".tr(),
-                  style: const TextStyle(
-                    color: ResColors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+      builder: (context) => StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SizedBox(
+              width: MediaQuery.sizeOf(context).width,
+              height: 440,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "back".tr(),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 18),
-                Text(
-                  "cause".tr(),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: ResColors.black,
+                  const SizedBox(height: 18),
+                  Text(
+                    "cause".tr(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: ResColors.black,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  decoration: const BoxDecoration(
-                      color: ResColors.textFieldBg,
-                      borderRadius: BorderRadius.all(Radius.circular(16))),
-                  child: TextField(
-                    controller: detailViewModel.reasonController,
-                    maxLines: 9,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                      ),
-                      hintText: "cause".tr(),
-                      hintStyle: const TextStyle(
-                        color: ResColors.black,
+                  const SizedBox(height: 10),
+                  Container(
+                    decoration: const BoxDecoration(
+                        color: ResColors.textFieldBg,
+                        borderRadius: BorderRadius.all(Radius.circular(16))),
+                    child: TextField(
+                      controller: detailViewModel.reasonController,
+                      maxLines: 9,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+                        hintText: "cause".tr(),
+                        hintStyle: const TextStyle(
+                          color: ResColors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        width: MediaQuery.sizeOf(context).width,
-                        height: 60,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ResColors.textFieldBg,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          width: MediaQuery.sizeOf(context).width,
+                          height: 60,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ResColors.textFieldBg,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            "cancel".tr(),
-                            style: const TextStyle(
-                              color: ResColors.black,
-                              fontSize: 18,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "cancel".tr(),
+                              style: const TextStyle(
+                                color: ResColors.black,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: SizedBox(
-                        width: MediaQuery.sizeOf(context).width,
-                        height: 60,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ResColors.mainColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: SizedBox(
+                          width: MediaQuery.sizeOf(context).width,
+                          height: 60,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ResColors.mainColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            detailViewModel.returnCar();
-                          },
-                          child: detailViewModel.isReturnLoading
-                              ? const CircularProgressIndicator()
-                              : Text(
-                                  "back".tr(),
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: ResColors.white,
-                                    fontSize: 18,
+                            onPressed: () {
+                              setState(() {
+                                detailViewModel.returnCar(() {
+                                  Navigator.pop(context);
+                                });
+                              });
+                            },
+                            child: detailViewModel.isReturnLoading
+                                ? const CircularProgressIndicator()
+                                : Text(
+                                    "back".tr(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: ResColors.white,
+                                      fontSize: 18,
+                                    ),
                                   ),
-                                ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-              ],
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
