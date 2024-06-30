@@ -18,9 +18,8 @@ class CurrencyInputFormatter extends TextInputFormatter {
   }
 
   String _formatNumber(int number) {
-    if (number == 0) {
-      return '';
-    }
+    if (number == 0) return '';
+
     return number.toString().replaceAllMapped(
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ');
   }

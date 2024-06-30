@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../config/injection.dart';
 import '../../tools/currency_input_formatter.dart';
+import '../../tools/date_formatter.dart';
 import '../../tools/res_color.dart';
 import '../viewmodel/sell_viewmodel.dart';
-import '../widget/buyer_shimmer.dart';
 import 'home_page.dart';
 
 final sellNotifierProvider =
@@ -43,7 +43,7 @@ class _SellPageState extends ConsumerState<SellPage> {
       backgroundColor: ResColors.mainBg,
       appBar: AppBar(
         backgroundColor: ResColors.mainBg,
-        title: const Text(
+        title: Text(
           "Ma'lumotlarini kiriting",
           style: TextStyle(color: ResColors.black),
         ),
@@ -55,221 +55,267 @@ class _SellPageState extends ConsumerState<SellPage> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+                  Text(
+                    "Xaridor haqida ma'lumot",
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+
+                  // some views
                   TextFormField(
-                    controller: viewModel.buyerController,
+                    controller: viewModel.buyerFirstName,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "Xaridorni tanlang",
-                      label: const Text("Xaridor"),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          viewModel.buyerController.text = "";
-                          viewModel.selectedBuyer = null;
-                        },
-                        icon: const Icon(Icons.close),
+                      hintText: "Palankas",
+                      label: Text("Ism"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: viewModel.buyerLastName,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "Palankasov",
+                      label: Text("Familiya"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: viewModel.buyerMiddleName,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "Palankas o'g'li",
+                      label: Text("Otasining ismi"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: viewModel.buyerBirthday,
+                    inputFormatters: [
+                      DateInputFormatter()
+                    ],
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "12-04-2004",
+                      label: Text("Tugilgan sana"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: viewModel.buyerPassport,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "AA1234567",
+                      label: Text("Passport"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  TextFormField(
+                    controller: viewModel.buyerAddress,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "Karvak qishlog'i",
+                      label: Text("Manzil"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  TextField(
+                    controller: viewModel.buyerPhoneNumber,
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      hintText: "901234567",
+                      counterText: "",
+                      labelText: "Telefon nomer",
+                      border: OutlineInputBorder(),
+                      prefix: Text(
+                        "+998  ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ResColors.black,
+                        ),
                       ),
                     ),
-                    focusNode: viewModel.focusNode,
-                    onChanged: (value) {
-                    },
+                    maxLength: 9,
+                    keyboardType: TextInputType.number,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: ResColors.black,
+                    ),
                   ),
-                  Stack(
-                    children: [
-                      Column(
-                        children: [
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: viewModel.priceC,
-                            maxLength: 15,
-                            inputFormatters: [CurrencyInputFormatter()],
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              counterText: "",
-                              filled: true,
-                              fillColor: ResColors.textFieldBg,
-                              border: const OutlineInputBorder(),
-                              hintText: "100 000 000",
-                              suffixText: "sum".tr(),
-                              label: Text("carPrice".tr()),
-                            ),
-                            style: const TextStyle(
-                              color: ResColors.black,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            controller: viewModel.compensationC,
-                            maxLength: 15,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [CurrencyInputFormatter()],
-                            decoration: InputDecoration(
-                              counterText: "",
-                              filled: true,
-                              fillColor: ResColors.textFieldBg,
-                              border: const OutlineInputBorder(),
-                              hintText: "100 000 000",
-                              suffixText: "sum".tr(),
-                              label: Text("compensation".tr()),
-                            ),
-                            style: const TextStyle(
-                              color: ResColors.black,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          viewModel.paymentTypes.isNotEmpty
-                              ? DropdownButtonFormField(
-                                  dropdownColor: ResColors.textFieldBg,
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: ResColors.textFieldBg,
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  hint: Text("selectPaymentType".tr()),
-                                  items: viewModel.paymentTypes
-                                      .map((item) => DropdownMenuItem(
-                                            value: item.tr(),
-                                            child: Text(
-                                              item,
-                                              style:
-                                                  const TextStyle(fontSize: 20),
-                                            ),
-                                          ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    viewModel
-                                        .changePaymentType(value ?? "cash");
-                                  },
-                                )
-                              : Container(),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: MediaQuery.sizeOf(context).width,
-                            height: 60,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: ResColors.mainColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              onPressed: () {
-                                viewModel.sellCar(() {
-                                  Navigator.pop(context, true);
-                                });
-                              },
-                              child: viewModel.carLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : Text(
-                                      "sell".tr(),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: ResColors.white,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ],
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: viewModel.buyerExtraPhoneNumber,
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      hintText: "901234567",
+                      counterText: "",
+                      labelText: "Qo'shimcha telefon",
+                      border: OutlineInputBorder(),
+                      prefix: Text(
+                        "+998  ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ResColors.black,
+                        ),
                       ),
-                      viewModel.isNoBuyer
-                          ? Container(
-                              width: MediaQuery.sizeOf(context).width,
-                              margin: const EdgeInsets.only(top: 10),
-                              decoration: const BoxDecoration(
-                                  color: ResColors.textFieldBg,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              height: 200,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    "Xaridor topilmadi!",
-                                    style: TextStyle(
-                                        color: ResColors.black,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Iltimos, xaridorni qo'shish uchun tugmani bosing",
-                                    style: TextStyle(
-                                        color: ResColors.black, fontSize: 14),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.sizeOf(context).width - 100,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: ResColors.mainBg,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        _addBuyer(context, viewModel);
-                                      },
-                                      child: Text(
-                                        "Xaridor qo'shish",
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          color: ResColors.black,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : viewModel.isFocused
-                              ? Container(
-                                  width: MediaQuery.sizeOf(context).width,
-                                  margin: const EdgeInsets.only(top: 10),
-                                  decoration: const BoxDecoration(
-                                    color: ResColors.textFieldBg,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  height: 200,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: viewModel.isLoading
-                                        ? const BuyerShimmer()
-                                        : ListView.builder(
-                                            itemCount: viewModel.buyers.length,
-                                            itemBuilder: (context, position) =>
-                                                GestureDetector(
-                                              onTap: () {
-                                                viewModel.selectBuyer(position);
-                                              },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  "${viewModel.buyers[position].firstName} ${viewModel.buyers[position].lastName} ${viewModel.buyers[position].middleName}",
-                                                  style: const TextStyle(
-                                                      color: ResColors.black),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                  ),
-                                )
-                              : Container(),
-                    ],
+                    ),
+                    maxLength: 9,
+                    keyboardType: TextInputType.number,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: ResColors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Avtomobil haqida ma'lumot",
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+
+                  TextFormField(
+                    controller: viewModel.priceC,
+                    maxLength: 15,
+                    inputFormatters: [CurrencyInputFormatter()],
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      suffixText: "sum".tr(),
+                      label: Text("carPrice".tr()),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: viewModel.compensationC,
+                    maxLength: 15,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [CurrencyInputFormatter()],
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: const OutlineInputBorder(),
+                      hintText: "100 000 000",
+                      suffixText: "sum".tr(),
+                      label: Text("compensation".tr()),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  viewModel.paymentTypes.isNotEmpty
+                      ? DropdownButtonFormField(
+                    dropdownColor: ResColors.textFieldBg,
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: OutlineInputBorder(),
+                    ),
+                    hint: Text("selectPaymentType".tr()),
+                    items: viewModel.paymentTypes
+                        .map((item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(
+                        item.tr(),
+                        style:
+                        const TextStyle(fontSize: 20),
+                      ),
+                    ))
+                        .toList(),
+                    onChanged: (value) {
+                      viewModel
+                          .changePaymentType(value ?? "cash");
+                    },
                   )
+                      : Container(),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width,
+                    height: 60,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ResColors.mainColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {
+                        viewModel.sellCar(() {
+                          Navigator.pop(context, true);
+                        });
+                      },
+                      child: viewModel.carLoading
+                          ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                          : Text(
+                        "sell".tr(),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: ResColors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )

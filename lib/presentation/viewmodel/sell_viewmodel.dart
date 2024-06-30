@@ -182,18 +182,41 @@ class SellViewModel extends BaseViewModel {
   }
 
   void sellCar(Function onCallBack) {
+
+    final String firstName = buyerFirstName.text.trim();
+    final String lastName = buyerLastName.text.trim();
+    final String middleName = buyerMiddleName.text.trim();
+    final String birthYear = buyerBirthday.text.trim();
+    final String passport = buyerPassport.text.trim();
+    final String address = buyerAddress.text.trim();
+    final String phoneNumber = buyerPhoneNumber.text.trim();
+    final String extraPhoneNumber = buyerExtraPhoneNumber.text.trim();
     final String price = priceC.text.removeSpace();
     final String compensationPrice = compensationC.text.removeSpace();
-    final String prePrice = prePriceC.text.removeSpace();
-    final String pricePerMonth = pricePerMC.text.removeSpace();
-    final String period = periodC.text.removeSpace();
 
-    if (price.length > 1 &&
+    if (firstName.isNotEmpty &&
+        lastName.isNotEmpty &&
+        middleName.isNotEmpty &&
+        birthYear.length == 10 &&
+        passport.length == 9 &&
+        address.isNotEmpty &&
+        phoneNumber.length == 9 &&
+        price.length > 1 &&
         compensationPrice.length > 1 &&
-        selectedBuyer != null &&
         paymentType.isNotEmpty) {
-      final request = SellRequest(carId, selectedBuyer, price,
-          compensationPrice, paymentType, prePrice, pricePerMonth, period);
+      final buyer = Buyer(
+          null,
+          firstName,
+          lastName,
+          middleName,
+          birthYear,
+          passport,
+          address,
+          "+998$phoneNumber",
+          extraPhoneNumber.isNotEmpty ? "+998$extraPhoneNumber" : null);
+
+      final request = SellRequest(carId, buyer, price,
+          compensationPrice, paymentType);
 
       _sellCar.execute(request).listen((event) {
         event.when(

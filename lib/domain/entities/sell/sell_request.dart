@@ -16,14 +16,9 @@ class SellRequest {
   @JsonKey(name: "payment_type")
   final String? paymentType;
 
-  @JsonKey(name: "pre_price")
-  final String? prePrice;
-  @JsonKey(name: "price_per_month")
-  final String? pricePerMonth;
-  final String? period;
 
   SellRequest(this.carId, this.buyer, this.price, this.compensationPrice,
-      this.paymentType, this.prePrice, this.pricePerMonth, this.period);
+      this.paymentType);
 
   factory SellRequest.fromJson(Map<String, dynamic> json) =>
       _$SellRequestFromJson(json);

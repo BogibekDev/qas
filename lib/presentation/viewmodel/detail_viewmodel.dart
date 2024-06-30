@@ -76,11 +76,10 @@ class DetailViewModel extends BaseViewModel {
           isReturnLoading = true;
           notifyListeners();
         },
-        content: (response) {
+        content: (response) async {
           if (response.success) {
-            pdfUrl = response.data.pdfLink ?? "";
-            openPDF(pdfUrl);
-            onCallBack.call();
+            var res = await openPDF(response.data.pdfLink ?? "");
+            if (res == true) onCallBack.call();
           }
         },
         error: (Error? error) {
@@ -89,13 +88,13 @@ class DetailViewModel extends BaseViewModel {
       );
     }).onDone(
       () {
-          isReturnLoading = false;
-          notifyListeners();
+        isReturnLoading = false;
+        notifyListeners();
       },
     );
   }
 
-  Future<void> openPDF(String url) async {
-    await launchUrlString(url);
+  Future<bool> openPDF(String url) async {
+    return await launchUrlString(url);
   }
 }
