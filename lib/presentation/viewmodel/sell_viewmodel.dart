@@ -52,7 +52,6 @@ class SellViewModel extends BaseViewModel {
 
   SellViewModel(
       this._getBuyers, this._detailUseCase, this._addBuyer, this._sellCar) {
-    searchBuyers(null);
     focusNode.addListener(() {
       isFocused = focusNode.hasFocus;
       notifyListeners();

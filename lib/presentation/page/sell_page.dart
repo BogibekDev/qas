@@ -67,14 +67,12 @@ class _SellPageState extends ConsumerState<SellPage> {
                         onPressed: () {
                           viewModel.buyerController.text = "";
                           viewModel.selectedBuyer = null;
-                          viewModel.searchBuyers(null);
                         },
                         icon: const Icon(Icons.close),
                       ),
                     ),
                     focusNode: viewModel.focusNode,
                     onChanged: (value) {
-                      viewModel.searchBuyers(value);
                     },
                   ),
                   Stack(
@@ -87,14 +85,14 @@ class _SellPageState extends ConsumerState<SellPage> {
                             maxLength: 15,
                             inputFormatters: [CurrencyInputFormatter()],
                             keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               counterText: "",
                               filled: true,
                               fillColor: ResColors.textFieldBg,
                               border: const OutlineInputBorder(),
                               hintText: "100 000 000",
-                              suffixText: "so'm",
-                              label: Text("Avtomobil bahosi"),
+                              suffixText: "sum".tr(),
+                              label: Text("carPrice".tr()),
                             ),
                             style: const TextStyle(
                               color: ResColors.black,
@@ -113,8 +111,8 @@ class _SellPageState extends ConsumerState<SellPage> {
                               fillColor: ResColors.textFieldBg,
                               border: const OutlineInputBorder(),
                               hintText: "100 000 000",
-                              suffixText: "so'm",
-                              label: const Text("Kompensatsiya puli"),
+                              suffixText: "sum".tr(),
+                              label: Text("compensation".tr()),
                             ),
                             style: const TextStyle(
                               color: ResColors.black,
@@ -130,12 +128,10 @@ class _SellPageState extends ConsumerState<SellPage> {
                                     fillColor: ResColors.textFieldBg,
                                     border: OutlineInputBorder(),
                                   ),
-                                  hint: Text(
-                                    "To'lov turini tanlang",
-                                  ),
+                                  hint: Text("selectPaymentType".tr()),
                                   items: viewModel.paymentTypes
                                       .map((item) => DropdownMenuItem(
-                                            value: item,
+                                            value: item.tr(),
                                             child: Text(
                                               item,
                                               style:
@@ -162,7 +158,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                               ),
                               onPressed: () {
                                 viewModel.sellCar(() {
-                                 Navigator.pop(context, true);
+                                  Navigator.pop(context, true);
                                 });
                               },
                               child: viewModel.carLoading

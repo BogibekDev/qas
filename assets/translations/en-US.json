@@ -40,6 +40,12 @@
   "back": "Avtomobilni qaytarish",
   "cause": "Avtomobilni qaytarish sababi",
   "add": "Qo'shish",
+  "cash": "Naqd",
+  "credit": "Kredit",
+  "sum": "so'm",
+  "carPrice": "Avtomobil bahosi",
+  "compensation": "Kompensatsiya puli",
+  "selectPaymentType": "To'lov turini tanlang",
   "loginMessage": "Sessiya vaqti tugadi, iltimos qayta login qiling!",
   "somethingWentError": "Qandaydir xatolik"
 }
