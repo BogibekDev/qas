@@ -262,8 +262,8 @@ class HomePage extends ConsumerWidget {
                         child: TextField(
                           maxLength: 4,
                           controller: homeViewModel.startMoney,
-                          //controller: _startYear,
-                          //readOnly: true,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             suffixText: "mln".tr(),
                             counterText: "",
@@ -288,7 +288,8 @@ class HomePage extends ConsumerWidget {
                                 BorderRadius.all(Radius.circular(16))),
                         child: TextField(
                           controller: homeViewModel.finishMoney,
-                          readOnly: true,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.number,
                           maxLength: 4,
                           decoration: InputDecoration(
                             suffixText: "mln".tr(),

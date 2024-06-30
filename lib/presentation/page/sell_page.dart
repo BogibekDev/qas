@@ -44,8 +44,8 @@ class _SellPageState extends ConsumerState<SellPage> {
       appBar: AppBar(
         backgroundColor: ResColors.mainBg,
         title: Text(
-          "Ma'lumotlarini kiriting",
-          style: TextStyle(color: ResColors.black),
+          "enterFields".tr(),
+          style: const TextStyle(color: ResColors.black),
         ),
       ),
       body: SingleChildScrollView(
@@ -56,7 +56,7 @@ class _SellPageState extends ConsumerState<SellPage> {
               child: Column(
                 children: [
                   Text(
-                    "Xaridor haqida ma'lumot",
+                    "buyerInfo".tr(),
                     style: const TextStyle(
                       color: ResColors.black,
                       fontSize: 20,
@@ -68,12 +68,13 @@ class _SellPageState extends ConsumerState<SellPage> {
                   // some views
                   TextFormField(
                     controller: viewModel.buyerFirstName,
+                    textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "Palankas",
-                      label: Text("Ism"),
+                      hintText: "firstName".tr(),
+                      label: Text("firstName".tr()),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -82,13 +83,14 @@ class _SellPageState extends ConsumerState<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    textInputAction: TextInputAction.next,
                     controller: viewModel.buyerLastName,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "Palankasov",
-                      label: Text("Familiya"),
+                      hintText: "lastName".tr(),
+                      label: Text("lastName".tr()),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -97,13 +99,14 @@ class _SellPageState extends ConsumerState<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    textInputAction: TextInputAction.next,
                     controller: viewModel.buyerMiddleName,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "Palankas o'g'li",
-                      label: Text("Otasining ismi"),
+                      hintText: "middleName".tr(),
+                      label: Text("middleName".tr()),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -112,16 +115,15 @@ class _SellPageState extends ConsumerState<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    textInputAction: TextInputAction.next,
                     controller: viewModel.buyerBirthday,
-                    inputFormatters: [
-                      DateInputFormatter()
-                    ],
+                    inputFormatters: [DateInputFormatter()],
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
                       hintText: "12-04-2004",
-                      label: Text("Tugilgan sana"),
+                      label: Text("birthday".tr()),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -131,12 +133,15 @@ class _SellPageState extends ConsumerState<SellPage> {
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: viewModel.buyerPassport,
+                    textInputAction: TextInputAction.next,
+                    maxLength: 9,
                     decoration: InputDecoration(
                       filled: true,
+                      counterText: "",
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
                       hintText: "AA1234567",
-                      label: Text("Passport"),
+                      label: Text("passport".tr()),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -147,12 +152,13 @@ class _SellPageState extends ConsumerState<SellPage> {
 
                   TextFormField(
                     controller: viewModel.buyerAddress,
+                    textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       border: const OutlineInputBorder(),
-                      hintText: "Karvak qishlog'i",
-                      label: Text("Manzil"),
+                      hintText: "address".tr(),
+                      label: Text("address".tr()),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -163,14 +169,15 @@ class _SellPageState extends ConsumerState<SellPage> {
 
                   TextField(
                     controller: viewModel.buyerPhoneNumber,
-                    decoration: const InputDecoration(
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       hintText: "901234567",
                       counterText: "",
-                      labelText: "Telefon nomer",
-                      border: OutlineInputBorder(),
-                      prefix: Text(
+                      labelText: "phoneNumber".tr(),
+                      border: const OutlineInputBorder(),
+                      prefix: const Text(
                         "+998  ",
                         style: TextStyle(
                           fontSize: 18,
@@ -188,14 +195,15 @@ class _SellPageState extends ConsumerState<SellPage> {
                   const SizedBox(height: 16),
                   TextField(
                     controller: viewModel.buyerExtraPhoneNumber,
-                    decoration: const InputDecoration(
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
                       filled: true,
                       fillColor: ResColors.textFieldBg,
                       hintText: "901234567",
                       counterText: "",
-                      labelText: "Qo'shimcha telefon",
-                      border: OutlineInputBorder(),
-                      prefix: Text(
+                      labelText: "extraPhoneNumber".tr(),
+                      border: const OutlineInputBorder(),
+                      prefix: const Text(
                         "+998  ",
                         style: TextStyle(
                           fontSize: 18,
@@ -212,7 +220,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "Avtomobil haqida ma'lumot",
+                    "carInfo".tr(),
                     style: const TextStyle(
                       color: ResColors.black,
                       fontSize: 20,
@@ -223,6 +231,7 @@ class _SellPageState extends ConsumerState<SellPage> {
 
                   TextFormField(
                     controller: viewModel.priceC,
+                    textInputAction: TextInputAction.next,
                     maxLength: 15,
                     inputFormatters: [CurrencyInputFormatter()],
                     keyboardType: TextInputType.number,
@@ -243,6 +252,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: viewModel.compensationC,
+                    textInputAction: TextInputAction.next,
                     maxLength: 15,
                     keyboardType: TextInputType.number,
                     inputFormatters: [CurrencyInputFormatter()],
@@ -263,28 +273,26 @@ class _SellPageState extends ConsumerState<SellPage> {
                   const SizedBox(height: 16),
                   viewModel.paymentTypes.isNotEmpty
                       ? DropdownButtonFormField(
-                    dropdownColor: ResColors.textFieldBg,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: ResColors.textFieldBg,
-                      border: OutlineInputBorder(),
-                    ),
-                    hint: Text("selectPaymentType".tr()),
-                    items: viewModel.paymentTypes
-                        .map((item) => DropdownMenuItem(
-                      value: item,
-                      child: Text(
-                        item.tr(),
-                        style:
-                        const TextStyle(fontSize: 20),
-                      ),
-                    ))
-                        .toList(),
-                    onChanged: (value) {
-                      viewModel
-                          .changePaymentType(value ?? "cash");
-                    },
-                  )
+                          dropdownColor: ResColors.textFieldBg,
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: ResColors.textFieldBg,
+                            border: OutlineInputBorder(),
+                          ),
+                          hint: Text("selectPaymentType".tr()),
+                          items: viewModel.paymentTypes
+                              .map((item) => DropdownMenuItem(
+                                    value: item,
+                                    child: Text(
+                                      item.tr(),
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            viewModel.changePaymentType(value ?? "cash");
+                          },
+                        )
                       : Container(),
                   const SizedBox(height: 16),
                   SizedBox(
@@ -304,16 +312,16 @@ class _SellPageState extends ConsumerState<SellPage> {
                       },
                       child: viewModel.carLoading
                           ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
+                              child: CircularProgressIndicator(),
+                            )
                           : Text(
-                        "sell".tr(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: ResColors.white,
-                          fontSize: 18,
-                        ),
-                      ),
+                              "sell".tr(),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: ResColors.white,
+                                fontSize: 18,
+                              ),
+                            ),
                     ),
                   ),
                 ],

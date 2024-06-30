@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qas/presentation/page/home_page.dart';
 
+import 'data/local/prefs.dart';
 import 'presentation/page/login_page.dart';
 import 'tools/res_color.dart';
 
@@ -17,7 +18,7 @@ void main() async {
     EasyLocalization(
         supportedLocales: const [Locale('en', 'US'), Locale('uz', 'UZ')],
         path: 'assets/translations',
-        fallbackLocale: const Locale('en', 'US'),
+        fallbackLocale: const Locale('uz', 'UZ'),
         child: const ProviderScope(child: MyApp())),
   );
 }
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ResColors.mainColor),
         useMaterial3: true,
       ),
-      home: const LoginPage(),
+      home: checkIsLogin() == true ? const HomePage() : const LoginPage(),
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/':
@@ -56,4 +57,6 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
+  checkIsLogin() async => SharedPrefs.isLogin();
 }

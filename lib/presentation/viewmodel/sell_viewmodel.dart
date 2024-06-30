@@ -214,6 +214,17 @@ class SellViewModel extends BaseViewModel {
           address,
           "+998$phoneNumber",
           extraPhoneNumber.isNotEmpty ? "+998$extraPhoneNumber" : null);
+      print(buyer.id);
+      print(buyer.firstName);
+      print(buyer.lastName);
+      print(buyer.middleName);
+      print(buyer.birthYear);
+      print(buyer.passport);
+      print(buyer.address);
+      print(buyer.phoneNumber);
+      print(buyer.extraPhoneNumber);
+
+
 
       final request = SellRequest(carId, buyer, price,
           compensationPrice, paymentType);
