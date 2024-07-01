@@ -117,6 +117,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                   TextFormField(
                     textInputAction: TextInputAction.next,
                     controller: viewModel.buyerBirthday,
+                    keyboardType: TextInputType.number,
                     inputFormatters: [DateInputFormatter()],
                     decoration: InputDecoration(
                       filled: true,

@@ -10,7 +10,7 @@ class Scanner extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ResColors.mainBg,
-        title: Text("QR code'ni scannerlang"),
+        title: const Text("QR code'ni scannerlang"),
         centerTitle: true,
       ),
       backgroundColor: ResColors.mainBg,
@@ -19,7 +19,6 @@ class Scanner extends StatelessWidget {
           width: MediaQuery.sizeOf(context).width - 100,
           height: MediaQuery.sizeOf(context).width - 100,
           child: MobileScanner(
-
             onDetect: (capture) {
               final List<Barcode> barcodes = capture.barcodes;
               for (final barcode in barcodes) {

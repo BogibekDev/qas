@@ -82,4 +82,9 @@ class LoginViewModel extends BaseViewModel {
     isPasswordShow = !isPasswordShow;
     notifyListeners();
   }
+  @override
+  void dispose() {
+    dispose();
+    super.dispose();
+  }
 }

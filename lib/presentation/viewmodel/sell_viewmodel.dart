@@ -214,15 +214,7 @@ class SellViewModel extends BaseViewModel {
           address,
           "+998$phoneNumber",
           extraPhoneNumber.isNotEmpty ? "+998$extraPhoneNumber" : null);
-      print(buyer.id);
-      print(buyer.firstName);
-      print(buyer.lastName);
-      print(buyer.middleName);
-      print(buyer.birthYear);
-      print(buyer.passport);
-      print(buyer.address);
-      print(buyer.phoneNumber);
-      print(buyer.extraPhoneNumber);
+
 
 
 
@@ -271,5 +263,10 @@ class SellViewModel extends BaseViewModel {
 
   Future<bool> openPDF(String url) async {
     return await launchUrlString(url);
+  }
+  @override
+  void dispose() {
+    dispose();
+    super.dispose();
   }
 }

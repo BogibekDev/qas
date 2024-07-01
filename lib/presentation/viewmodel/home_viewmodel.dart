@@ -147,4 +147,9 @@ class HomeViewModel extends BaseViewModel {
       );
     }).onDone(() {});
   }
+  @override
+  void dispose() {
+    dispose();
+    super.dispose();
+  }
 }

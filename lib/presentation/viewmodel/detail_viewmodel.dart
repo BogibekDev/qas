@@ -17,6 +17,8 @@ class DetailViewModel extends BaseViewModel {
   late int id;
   Car car = Car();
 
+  bool isActive = true;
+
   DetailViewModel(this._detailUseCase, this._carReturn, this.id) {
     loadCarDetail(id);
   }
@@ -59,7 +61,7 @@ class DetailViewModel extends BaseViewModel {
     }).onDone(
       () {
         isLoading = false;
-        notifyListeners();
+        if(isActive)notifyListeners();
       },
     );
   }
@@ -96,5 +98,11 @@ class DetailViewModel extends BaseViewModel {
 
   Future<bool> openPDF(String url) async {
     return await launchUrlString(url);
+  }
+
+  @override
+  void dispose() {
+    isActive = false;
+    super.dispose();
   }
 }

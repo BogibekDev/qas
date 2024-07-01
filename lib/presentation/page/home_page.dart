@@ -405,9 +405,12 @@ class HomePage extends ConsumerWidget {
     final result = await Navigator.push<String>(
         context, MaterialPageRoute(builder: (context) => const Scanner()));
     if (result != null) {
+      print(result);
       final index = result.lastIndexOf("=");
       final carId = int.tryParse(result.substring(index + 1));
-      Future.delayed(const Duration(seconds: 1));
+
+      Future.delayed(const Duration(seconds: 2));
+      print(carId);
       if (context.mounted) openDetail(context, carId, homeViewModel);
     }
   }
