@@ -23,12 +23,10 @@ class HomeViewModel extends BaseViewModel {
   int filterPage = 1;
   final List<Car> cars = [];
   List<Model> models = [];
-  String errorMessage = "";
   bool isLoading = false;
   bool isMoreLoading = false;
-  bool isRefresh = false;
   bool hasNext = true;
-  int count401 = 0;
+  bool isFilter = false;
 
   HomeViewModel(this._getCars, this._getModels) {
     loadCars();
@@ -36,12 +34,13 @@ class HomeViewModel extends BaseViewModel {
       if (scrollController.position.pixels ==
               scrollController.position.maxScrollExtent &&
           hasNext) {
-        loadMoreCars();
+        isFilter ? loadMoreCars() : loadMoreCars();
       }
     });
   }
 
   void loadCars() {
+    isFilter = false;
     Map<String, dynamic> queries = {
       "page": page,
     };
@@ -60,18 +59,19 @@ class HomeViewModel extends BaseViewModel {
           }
         },
         error: (Error? error) {
-            toastError(error);
+          toastError(error);
         },
       );
     }).onDone(
       () {
-          isLoading = false;
-          notifyListeners();
+        isLoading = false;
+        notifyListeners();
       },
     );
   }
 
   void loadMoreCars() {
+    isFilter = false;
     page++;
     Map<String, dynamic> queries = {
       "page": page,
@@ -94,13 +94,14 @@ class HomeViewModel extends BaseViewModel {
       );
     }).onDone(
       () {
-          isMoreLoading = false;
-          notifyListeners();
+        isMoreLoading = false;
+        notifyListeners();
       },
     );
   }
 
   void filterCars() {
+    isFilter = true;
     Map<String, dynamic> queries = {
       "page": filterPage,
       "model": modelC.text,
@@ -127,8 +128,42 @@ class HomeViewModel extends BaseViewModel {
       );
     }).onDone(
       () {
-          isLoading = false;
+        isLoading = false;
+        notifyListeners();
+      },
+    );
+  }
+
+  void filterMoreCars() {
+    isFilter = true;
+    Map<String, dynamic> queries = {
+      "page": filterPage,
+      "model": modelC.text,
+      "min_year": startYear.text,
+      "max_year": finishYear.text,
+      "min_price": startMoney.text,
+      "max_price": finishMoney.text
+    };
+    _getCars.execute(queries).listen((event) {
+      event.when(
+        loading: () {
+          isLoading = true;
           notifyListeners();
+        },
+        content: (response) {
+          if (response.success) {
+            cars.addAll(response.data.results ?? []);
+            hasNext = response.data.next != null;
+          }
+        },
+        error: (error) {
+          toastError(error);
+        },
+      );
+    }).onDone(
+          () {
+        isLoading = false;
+        notifyListeners();
       },
     );
   }
@@ -146,10 +181,5 @@ class HomeViewModel extends BaseViewModel {
         error: (error) {},
       );
     }).onDone(() {});
-  }
-  @override
-  void dispose() {
-    dispose();
-    super.dispose();
   }
 }

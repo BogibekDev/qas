@@ -14,7 +14,7 @@ import '../widget/similar_item.dart';
 import 'sell_page.dart';
 
 final detailNotifierProvider =
-    ChangeNotifierProvider.family((ref, int carId) {
+    ChangeNotifierProvider.family.autoDispose((ref, int carId) {
   return DetailViewModel(ref.read(detailUseCase), ref.read(carReturn), carId);
 });
 

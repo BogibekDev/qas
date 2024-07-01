@@ -308,6 +308,40 @@ class _ApiService implements ApiService {
     yield value;
   }
 
+  @override
+  Stream<CustomResponse<Pagination<Car>>> soldCars({int? count = 100}) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'count': count};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CustomResponse<Pagination<Car>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v1/seller/sold-cars',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CustomResponse<Pagination<Car>>.fromJson(
+      _result.data!,
+      (json) => Pagination<Car>.fromJson(
+        json as Map<String, dynamic>,
+        (json) => Car.fromJson(json as Map<String, dynamic>),
+      ),
+    );
+    yield value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

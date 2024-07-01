@@ -12,6 +12,7 @@ Car _$CarFromJson(Map<String, dynamic> json) => Car(
       number: json['number'] as String?,
       year: (json['year'] as num?)?.toInt(),
       price: json['price'] as String?,
+      profit: json['profit'] as String?,
       prePrice: json['pre_price'] as String?,
       fuelType: json['fuel_type'] as String?,
       type: json['type'] as String?,
@@ -21,6 +22,7 @@ Car _$CarFromJson(Map<String, dynamic> json) => Car(
       description: json['description'] as String?,
       period: (json['period'] as num?)?.toInt(),
       pricePerMonth: json['price_per_month'] as String?,
+      soldDate: json['sold_date'] as String?,
       similar: (json['similar'] as List<dynamic>?)
           ?.map((e) => Car.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -37,6 +39,7 @@ Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
       'number': instance.number,
       'year': instance.year,
       'price': instance.price,
+      'profit': instance.profit,
       'pre_price': instance.prePrice,
       'fuel_type': instance.fuelType,
       'type': instance.type,
@@ -46,6 +49,7 @@ Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
       'description': instance.description,
       'period': instance.period,
       'price_per_month': instance.pricePerMonth,
+      'sold_date': instance.soldDate,
       'similar': instance.similar,
       'images': instance.images,
       'branch': instance.branch,

@@ -59,8 +59,8 @@ class _SimilarItemState extends State<SimilarItem> {
                           fontSize: widget.car.model!.length > 15
                               ? 12
                               : widget.car.model!.length > 10
-                                  ? 18
-                                  : 20,
+                                  ? 15
+                                  : 18,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.start,
@@ -72,8 +72,8 @@ class _SimilarItemState extends State<SimilarItem> {
                           fontSize: widget.car.model!.length > 15
                               ? 10
                               : widget.car.model!.length > 10
-                                  ? 16
-                                  : 18,
+                                  ? 13
+                                  : 16,
                           color: ResColors.black,
                           fontWeight: FontWeight.bold,
                         ),

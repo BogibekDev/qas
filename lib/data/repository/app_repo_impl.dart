@@ -46,4 +46,8 @@ class AppRepoImpl extends AppRepo {
   @override
   Stream<CustomResponse<SellResponse>> sellCar(SellRequest request) =>
       _api.sellCar(request);
+
+  @override
+  Stream<CustomResponse<Pagination<Car>>> soldCars(int? count) =>
+      _api.soldCars(count: count);
 }

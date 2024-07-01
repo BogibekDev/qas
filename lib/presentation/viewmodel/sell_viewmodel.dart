@@ -264,9 +264,5 @@ class SellViewModel extends BaseViewModel {
   Future<bool> openPDF(String url) async {
     return await launchUrlString(url);
   }
-  @override
-  void dispose() {
-    dispose();
-    super.dispose();
-  }
+
 }

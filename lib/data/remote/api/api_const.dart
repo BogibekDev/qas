@@ -10,5 +10,6 @@ class ApiConst{
   static const carReturn = '/api/v1/seller/back';
   static const buyers = '/api/v1/seller/buyers';
   static const sellCar = '/api/v1/seller/sell';
+  static const soldCars = '/api/v1/seller/sold-cars';
 
 }

@@ -6,23 +6,25 @@ part 'car.g.dart';
 @JsonSerializable()
 class Car {
   Car({
-     this.id,
-     this.model,
-     this.number,
-     this.year,
-     this.price,
-     this.prePrice,
-     this.fuelType,
-     this.type,
-     this.kilometer,
-     this.color,
-     this.isPainted,
-     this.description,
-     this.period,
-     this.pricePerMonth,
-     this.similar,
-     this.images,
-     this.branch,
+    this.id,
+    this.model,
+    this.number,
+    this.year,
+    this.price,
+    this.profit,
+    this.prePrice,
+    this.fuelType,
+    this.type,
+    this.kilometer,
+    this.color,
+    this.isPainted,
+    this.description,
+    this.period,
+    this.pricePerMonth,
+    this.soldDate,
+    this.similar,
+    this.images,
+    this.branch,
   });
 
   final int? id;
@@ -30,6 +32,7 @@ class Car {
   final String? number;
   final int? year;
   final String? price;
+  final String? profit;
 
   @JsonKey(name: 'pre_price')
   final String? prePrice;
@@ -47,6 +50,9 @@ class Car {
 
   @JsonKey(name: 'price_per_month')
   final String? pricePerMonth;
+
+  @JsonKey(name: 'sold_date')
+  final String? soldDate;
   final List<Car>? similar;
   final List<String>? images;
   final Branch? branch;
@@ -54,5 +60,4 @@ class Car {
   factory Car.fromJson(Map<String, dynamic> json) => _$CarFromJson(json);
 
   Map<String, dynamic> toJson() => _$CarToJson(this);
-
 }

@@ -20,4 +20,5 @@ abstract class AppRepo {
   Stream<CustomResponse<Pagination<Buyer>>> buyers(String? search);
   Stream<CustomResponse<Buyer>> addBuyer(Buyer buyer);
   Stream<CustomResponse<SellResponse>> sellCar(SellRequest request);
+  Stream<CustomResponse<Pagination<Car>>> soldCars(int? count);
 }

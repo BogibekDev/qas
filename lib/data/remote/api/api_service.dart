@@ -64,4 +64,8 @@ abstract class ApiService {
 
   @POST(ApiConst.sellCar)
   Stream<CustomResponse<SellResponse>> sellCar(@Body() SellRequest sellRequest);
+
+  @GET(ApiConst.soldCars)
+  Stream<CustomResponse<Pagination<Car>>> soldCars(
+      {@Query("count") int? count = 100});
 }

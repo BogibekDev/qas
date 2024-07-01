@@ -10,6 +10,7 @@ import '../widget/car_item.dart';
 import '../widget/car_item_shimmer.dart';
 import '../widget/scanner.dart';
 import 'detail_page.dart';
+import 'sold_cars_page.dart';
 
 final homeNotifierProvider =
     ChangeNotifierProvider.autoDispose<HomeViewModel>((ref) {
@@ -32,6 +33,29 @@ class HomePage extends ConsumerWidget {
           leading: Image.asset(Assets.logo),
           leadingWidth: 90,
           actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SoldCarsPage(),
+                  ),
+                );
+              },
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: ResColors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: const Icon(
+                  Icons.import_export_rounded,
+                  color: ResColors.black,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
             GestureDetector(
               onTap: () {
                 _scanQRCode(context, homeViewModel);
@@ -405,12 +429,10 @@ class HomePage extends ConsumerWidget {
     final result = await Navigator.push<String>(
         context, MaterialPageRoute(builder: (context) => const Scanner()));
     if (result != null) {
-      print(result);
       final index = result.lastIndexOf("=");
       final carId = int.tryParse(result.substring(index + 1));
 
-      Future.delayed(const Duration(seconds: 2));
-      print(carId);
+      await Future.delayed(const Duration(milliseconds: 500));
       if (context.mounted) openDetail(context, carId, homeViewModel);
     }
   }
