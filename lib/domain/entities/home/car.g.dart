@@ -31,6 +31,9 @@ Car _$CarFromJson(Map<String, dynamic> json) => Car(
       branch: json['branch'] == null
           ? null
           : Branch.fromJson(json['branch'] as Map<String, dynamic>),
+      owner: json['owner'] == null
+          ? null
+          : Buyer.fromJson(json['owner'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
@@ -52,5 +55,6 @@ Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
       'sold_date': instance.soldDate,
       'similar': instance.similar,
       'images': instance.images,
+      'owner': instance.owner,
       'branch': instance.branch,
     };

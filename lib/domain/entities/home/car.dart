@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:qas/domain/entities/detail/branch.dart';
+
+import '../detail/branch.dart';
+import '../sell/buyer.dart';
 
 part 'car.g.dart';
 
@@ -25,6 +27,7 @@ class Car {
     this.similar,
     this.images,
     this.branch,
+    this.owner,
   });
 
   final int? id;
@@ -39,6 +42,7 @@ class Car {
 
   @JsonKey(name: 'fuel_type')
   final String? fuelType;
+
   final String? type;
   final int? kilometer;
   final String? color;
@@ -55,6 +59,7 @@ class Car {
   final String? soldDate;
   final List<Car>? similar;
   final List<String>? images;
+  final Buyer? owner;
   final Branch? branch;
 
   factory Car.fromJson(Map<String, dynamic> json) => _$CarFromJson(json);

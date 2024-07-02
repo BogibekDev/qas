@@ -99,26 +99,70 @@ class HomePage extends ConsumerWidget {
         backgroundColor: ResColors.mainBg,
         color: ResColors.mainColor,
         onRefresh: () async {
-          homeViewModel.cars.clear();
           homeViewModel.loadCars();
         },
         child: Padding(
           padding: const EdgeInsets.all(12),
-          child: ListView.builder(
-            controller: homeViewModel.scrollController,
-            itemCount: homeViewModel.isLoading ? 10 : homeViewModel.cars.length,
-            itemBuilder: (context, position) {
-              return homeViewModel.isLoading
-                  ? const CarItemShimmer()
-                  : CarItem(
-                      car: homeViewModel.cars[position],
-                      onItemClick: () {
-                        int? carId = homeViewModel.cars[position].id;
-                        openDetail(context, carId, homeViewModel);
-                      },
-                    );
-            },
-          ),
+          child: (homeViewModel.cars.isNotEmpty || homeViewModel.isLoading)
+              ? ListView.builder(
+                  controller: homeViewModel.scrollController,
+                  itemCount:
+                      homeViewModel.isLoading ? 10 : homeViewModel.cars.length,
+                  itemBuilder: (context, position) {
+                    return homeViewModel.isLoading
+                        ? const CarItemShimmer()
+                        : CarItem(
+                            car: homeViewModel.cars[position],
+                            onItemClick: () {
+                              int? carId = homeViewModel.cars[position].id;
+                              openDetail(context, carId, homeViewModel);
+                            },
+                          );
+                  },
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Icon(
+                      Icons.emoji_emotions_outlined,
+                      size: 100,
+                      color: ResColors.mainColor,
+                    ),
+                    const SizedBox(height: 30),
+                    const Text(
+                      "Нимадир хато кетди ёки Машина топилмади. Илтимос янгилаш тугмасини босинг",
+                      style: TextStyle(
+                        color: ResColors.black,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: MediaQuery.sizeOf(context).width / 2,
+                      height: 60,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ResColors.mainColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {
+                          homeViewModel.loadCars();
+                        },
+                        child: const Text(
+                          "Янгилаш",
+                          style: TextStyle(
+                            color: ResColors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );

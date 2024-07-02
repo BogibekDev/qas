@@ -27,6 +27,8 @@ class HomeViewModel extends BaseViewModel {
   bool isMoreLoading = false;
   bool hasNext = true;
   bool isFilter = false;
+  Error? error;
+
 
   HomeViewModel(this._getCars, this._getModels) {
     loadCars();
@@ -59,6 +61,7 @@ class HomeViewModel extends BaseViewModel {
           }
         },
         error: (Error? error) {
+          this.error = error;
           toastError(error);
         },
       );

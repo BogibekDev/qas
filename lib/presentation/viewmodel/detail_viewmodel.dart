@@ -27,7 +27,7 @@ class DetailViewModel extends BaseViewModel {
   String pdfUrl = "";
   bool isLoading = false;
   bool isReturnLoading = false;
-  bool isRefresh = false;
+  bool isReturned = false;
   int count401 = 0;
   final TextEditingController reasonController = TextEditingController();
   final CarouselController carouselController = CarouselController();
@@ -61,7 +61,7 @@ class DetailViewModel extends BaseViewModel {
     }).onDone(
       () {
         isLoading = false;
-        if(isActive)notifyListeners();
+        if (isActive) notifyListeners();
       },
     );
   }
@@ -81,7 +81,11 @@ class DetailViewModel extends BaseViewModel {
         content: (response) async {
           if (response.success) {
             var res = await openPDF(response.data.pdfLink ?? "");
-            if (res == true) onCallBack.call();
+            if (res == true) {
+              isReturned = true;
+              onCallBack.call();
+              notifyListeners();
+            }
           }
         },
         error: (Error? error) {

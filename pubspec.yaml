@@ -25,7 +25,6 @@ dependencies:
   easy_localization: ^3.0.7
   google_fonts: ^6.1.0
   shared_preferences: ^2.2.3
-  flutter_screenutil: ^5.9.1
   carousel_slider: ^4.2.1
   cached_network_image: ^3.3.1
   flutter_riverpod: ^2.5.1
@@ -33,7 +32,6 @@ dependencies:
   fluttertoast: ^8.2.6
   mobile_scanner: ^5.1.1
   url_launcher: ^6.3.0
-  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:

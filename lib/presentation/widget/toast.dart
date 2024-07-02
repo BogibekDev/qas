@@ -20,7 +20,7 @@ FToast fToast = FToast().init(navigatorKey.currentState!.context);
 
 void toastError(Error? e) {
   final errorMessage =
-      "${e?.message ?? e?.birthYear ?? e?.detail ?? e?.statusCode}";
+      "Хатолик : ${e?.message ?? e?.birthYear ?? e?.detail ?? e?.statusCode}";
   fToast.removeCustomToast();
   fToast.showToast(
     gravity: ToastGravity.TOP,

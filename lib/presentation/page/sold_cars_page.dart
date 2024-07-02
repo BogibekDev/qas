@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qas/presentation/page/sold_detail_page.dart';
 
 import '../../config/injection.dart';
 import '../../tools/res_color.dart';
@@ -23,7 +24,7 @@ class SoldCarsPage extends ConsumerWidget {
         backgroundColor: ResColors.mainColor,
         title: Text(
           "Sotilgan moshinalar",
-          style: const TextStyle(fontSize: 32, color: ResColors.textColo),
+          style: const TextStyle(fontSize: 20, color: ResColors.white),
         ),
         centerTitle: true,
       ),
@@ -41,7 +42,15 @@ class SoldCarsPage extends ConsumerWidget {
                   ? const CarItemShimmer()
                   : SoldCarItem(
                       car: viewModel.cars[position],
-                      onItemClick: () {},
+                      onItemClick: () {
+                        int? carId = viewModel.cars[position].id;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SoldDetailPage(carId: carId!),
+                          ),
+                        );
+                      },
                     );
             },
           ),

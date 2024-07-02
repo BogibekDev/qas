@@ -15,6 +15,7 @@ import '../../../domain/entities/response/response.dart';
 import '../../../domain/entities/sell/buyer.dart';
 import '../../../domain/entities/sell/sell_request.dart';
 import '../../../domain/entities/sell/sell_response.dart';
+import '../../../domain/entities/sold_car/sold_car.dart';
 import '../../tools/auth_interceptors.dart';
 import 'api_const.dart';
 
@@ -68,4 +69,7 @@ abstract class ApiService {
   @GET(ApiConst.soldCars)
   Stream<CustomResponse<Pagination<Car>>> soldCars(
       {@Query("count") int? count = 100});
+
+  @GET("${ApiConst.getSoldCar}/{id}")
+  Stream<CustomResponse<SoldCar>> getSoldCar(@Path("id") int? id);
 }
