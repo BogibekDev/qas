@@ -1,3 +1,4 @@
+
 import '../../domain/entities/detail/return.dart';
 import '../../domain/entities/detail/return_response.dart';
 import '../../domain/entities/home/car.dart';
@@ -5,6 +6,8 @@ import '../../domain/entities/home/model.dart';
 import '../../domain/entities/login/login_request.dart';
 import '../../domain/entities/login/login_response.dart';
 import '../../domain/entities/pagenation/pagination.dart';
+import '../../domain/entities/profile/returned.dart';
+import '../../domain/entities/profile/returned_detail.dart';
 import '../../domain/entities/response/response.dart';
 import '../../domain/entities/sell/buyer.dart';
 import '../../domain/entities/sell/sell_request.dart';
@@ -53,4 +56,12 @@ class AppRepoImpl extends AppRepo {
 
   @override
   Stream<CustomResponse<SoldCar>> getSoldCar(int? id) => _api.getSoldCar(id);
+
+  @override
+  Stream<CustomResponse<ReturnedDetail>> getReturnedCar(int? id) =>
+      _api.getReturnedCar(id);
+
+  @override
+  Stream<CustomResponse<Pagination<Returned>>> getReturnedCars() =>
+      _api.getReturned();
 }

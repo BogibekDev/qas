@@ -18,24 +18,24 @@ extension Price on double {
         result = s[s.length - i - 1] + result;
       }
     }
-    return "$result so'm";
+    return "$result сўм";
   }
 
   String priceWithMLN() {
     int result = this ~/ 1000000;
-    return "$result mln. so'm";
+    return "$result млн. сўм";
   }
 }
 
 extension Pricee on String {
   String price() {
-    return "${addSpace()} so'm";
+    return "${addSpace()} сўм";
   }
 
   String priceWithMLN() {
     double price = double.parse(this);
     int result = price ~/ 1000000;
-    return "$result mln. so'm";
+    return "$result млн. сўм";
   }
 
   String addSpace() {

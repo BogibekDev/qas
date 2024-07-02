@@ -5,6 +5,8 @@ import '../entities/home/model.dart';
 import '../entities/login/login_request.dart';
 import '../entities/login/login_response.dart';
 import '../entities/pagenation/pagination.dart';
+import '../entities/profile/returned.dart';
+import '../entities/profile/returned_detail.dart';
 import '../entities/response/response.dart';
 import '../entities/sell/buyer.dart';
 import '../entities/sell/sell_request.dart';
@@ -22,4 +24,6 @@ abstract class AppRepo {
   Stream<CustomResponse<SellResponse>> sellCar(SellRequest request);
   Stream<CustomResponse<Pagination<Car>>> soldCars(int? count);
   Stream<CustomResponse<SoldCar>> getSoldCar(int? id);
+  Stream<CustomResponse<Pagination<Returned>>> getReturnedCars();
+  Stream<CustomResponse<ReturnedDetail>> getReturnedCar(int? id);
 }

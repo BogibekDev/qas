@@ -21,9 +21,10 @@ class SoldCarsPage extends ConsumerWidget {
     SoldCarsViewmodel viewModel = ref.watch(soldCarsNotifierProvider);
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: ResColors.white),
         backgroundColor: ResColors.mainColor,
         title: Text(
-          "Sotilgan moshinalar",
+          "Сотилган мошиналар",
           style: const TextStyle(fontSize: 20, color: ResColors.white),
         ),
         centerTitle: true,

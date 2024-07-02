@@ -6,17 +6,17 @@ import '../../domain/entities/home/car.dart';
 import '../../tools/res_color.dart';
 import '../../tools/utils.dart';
 
-class CarItem extends StatefulWidget {
+class ReturnedCarItem extends StatefulWidget {
   final Car car;
   final Function() onItemClick;
 
-  const CarItem({required this.car, required this.onItemClick, super.key});
+  const ReturnedCarItem({required this.car, required this.onItemClick, super.key});
 
   @override
-  State<CarItem> createState() => _CarItemState();
+  State<ReturnedCarItem> createState() => _ReturnedCarItemState();
 }
 
-class _CarItemState extends State<CarItem> {
+class _ReturnedCarItemState extends State<ReturnedCarItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -67,13 +67,13 @@ class _CarItemState extends State<CarItem> {
                       Row(
                         children: [
                           const Text(
-                            "Ишлаб чиқарилган йили:",
+                            "Статус :",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                           ),
                           Expanded(
                             child: Text(
-                              "${widget.car.year}",
+                              "${widget.car.profit}".price(),
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.end,
@@ -86,14 +86,14 @@ class _CarItemState extends State<CarItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Expanded(
-                            child: const Text(
-                              "Босиб ўтилган йўл: ",
+                            child: Text(
+                              "Қайтарилган сана : ",
                               overflow: TextOverflow.fade,
                               maxLines: 3,
                             ),
                           ),
                           Text(
-                            "${widget.car.kilometer} KM",
+                            "${widget.car.soldDate}",
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,

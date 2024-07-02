@@ -11,6 +11,8 @@ import '../../../domain/entities/login/login_request.dart';
 import '../../../domain/entities/login/login_response.dart';
 import '../../../domain/entities/login/refresh.dart';
 import '../../../domain/entities/pagenation/pagination.dart';
+import '../../../domain/entities/profile/returned.dart';
+import '../../../domain/entities/profile/returned_detail.dart';
 import '../../../domain/entities/response/response.dart';
 import '../../../domain/entities/sell/buyer.dart';
 import '../../../domain/entities/sell/sell_request.dart';
@@ -47,7 +49,8 @@ abstract class ApiService {
   });
 
   @GET(ApiConst.models)
-  Stream<CustomResponse<Pagination<Model>>> models();
+  Stream<CustomResponse<Pagination<Model>>> models(
+      {@Query("count") int? count = 100});
 
   @GET("${ApiConst.carById}/{id}")
   Stream<CustomResponse<Car>> carById(@Path("id") int? id);
@@ -72,4 +75,11 @@ abstract class ApiService {
 
   @GET("${ApiConst.getSoldCar}/{id}")
   Stream<CustomResponse<SoldCar>> getSoldCar(@Path("id") int? id);
+
+  @GET(ApiConst.getReturnedCars)
+  Stream<CustomResponse<Pagination<Returned>>> getReturned(
+      {@Query("count") int? count = 100});
+
+  @GET("${ApiConst.getReturnedCar}/{id}")
+  Stream<CustomResponse<ReturnedDetail>> getReturnedCar(@Path("id") int? id);
 }

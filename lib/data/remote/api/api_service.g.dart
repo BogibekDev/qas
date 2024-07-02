@@ -117,9 +117,10 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Stream<CustomResponse<Pagination<Model>>> models() async* {
+  Stream<CustomResponse<Pagination<Model>>> models({int? count = 100}) async* {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'count': count};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -369,6 +370,72 @@ class _ApiService implements ApiService {
     final value = CustomResponse<SoldCar>.fromJson(
       _result.data!,
       (json) => SoldCar.fromJson(json as Map<String, dynamic>),
+    );
+    yield value;
+  }
+
+  @override
+  Stream<CustomResponse<Pagination<Returned>>> getReturned(
+      {int? count = 100}) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'count': count};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CustomResponse<Pagination<Returned>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v1//seller/back-cars',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CustomResponse<Pagination<Returned>>.fromJson(
+      _result.data!,
+      (json) => Pagination<Returned>.fromJson(
+        json as Map<String, dynamic>,
+        (json) => Returned.fromJson(json as Map<String, dynamic>),
+      ),
+    );
+    yield value;
+  }
+
+  @override
+  Stream<CustomResponse<ReturnedDetail>> getReturnedCar(int? id) async* {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CustomResponse<ReturnedDetail>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/v1//seller/back-car/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CustomResponse<ReturnedDetail>.fromJson(
+      _result.data!,
+      (json) => ReturnedDetail.fromJson(json as Map<String, dynamic>),
     );
     yield value;
   }

@@ -202,8 +202,8 @@ class DetailPage extends ConsumerWidget {
                               ],
                             ),
                             const SizedBox(height: 16),
-                            Text(
-                              "info".tr(),
+                            const Text(
+                              "Автомобиль ҳақида:",
                               style: const TextStyle(
                                   color: ResColors.black,
                                   fontSize: 18,
@@ -321,7 +321,7 @@ class DetailPage extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  "${detailViewModel.car.kilometer}",
+                                  "${"${detailViewModel.car.kilometer}".addSpace()} KM",
                                   style: const TextStyle(
                                     color: ResColors.black,
                                     fontSize: 14,
@@ -351,10 +351,159 @@ class DetailPage extends ConsumerWidget {
                                 )
                               ],
                             ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Олиб қолинган нархи: ",
+                                  style: TextStyle(
+                                    color: ResColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "${detailViewModel.car.camePrice}".price(),
+                                  style: const TextStyle(
+                                    color: ResColors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
+                            ),
                             const SizedBox(height: 16),
-                            Text(
-                              "moreInfo".tr(),
-                              style: const TextStyle(
+                            const Text(
+                              "Автомобил эгасининг малумотлари:",
+                              style: TextStyle(
+                                  color: ResColors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Ф.И.Ш: ",
+                                  style: TextStyle(
+                                    color: ResColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "${detailViewModel.car.owner?.firstName} ${detailViewModel.car.owner?.lastName} ${detailViewModel.car.owner?.middleName}",
+                                  style: const TextStyle(
+                                      color: ResColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Туғилган сана: ",
+                                  style: const TextStyle(
+                                    color: ResColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "${detailViewModel.car.owner?.birthYear}",
+                                  style: const TextStyle(
+                                      color: ResColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Pasport рақами: ",
+                                  style: const TextStyle(
+                                    color: ResColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "${detailViewModel.car.owner?.passport}",
+                                  style: const TextStyle(
+                                      color: ResColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Телефон: ",
+                                  style: const TextStyle(
+                                    color: ResColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "${detailViewModel.car.owner?.phoneNumber}",
+                                  style: const TextStyle(
+                                      color: ResColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Қўшимча телефон: ",
+                                  style: const TextStyle(
+                                    color: ResColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "${detailViewModel.car.owner?.extraPhoneNumber}",
+                                  style: const TextStyle(
+                                      color: ResColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Манзили: ",
+                                  style: const TextStyle(
+                                    color: ResColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "${detailViewModel.car.owner?.address}",
+                                  style: const TextStyle(
+                                      color: ResColors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              "Изоҳ",
+                              style: TextStyle(
                                 color: ResColors.black,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -456,10 +605,7 @@ class DetailPage extends ConsumerWidget {
                           ),
                           onPressed: () {
                             _backSheet(context, detailViewModel, carId, () {
-                              print("navigatordan oldin");
-                             print( Navigator.canPop(context));
                               Navigator.pop(context, true);
-                              print("navigatordan keyin");
                             });
                           },
                           child: Text(
@@ -531,8 +677,8 @@ class DetailPage extends ConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
-      builder: (context) => StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
+      builder: (context) =>
+          StatefulBuilder(builder: (BuildContext ctx, StateSetter setState) {
         return Padding(
           padding: const EdgeInsets.all(20.0),
           child: Padding(
@@ -621,6 +767,7 @@ class DetailPage extends ConsumerWidget {
                             onPressed: () {
                               setState(() {
                                 detailViewModel.returnCar(() {
+                                  Navigator.pop(ctx);
                                   onClose.call();
                                 });
                               });
@@ -628,7 +775,7 @@ class DetailPage extends ConsumerWidget {
                             child: detailViewModel.isReturnLoading
                                 ? const CircularProgressIndicator()
                                 : Text(
-                                    "back".tr(),
+                                    "Қайтариш",
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       color: ResColors.white,

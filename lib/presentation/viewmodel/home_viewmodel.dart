@@ -29,14 +29,13 @@ class HomeViewModel extends BaseViewModel {
   bool isFilter = false;
   Error? error;
 
-
   HomeViewModel(this._getCars, this._getModels) {
     loadCars();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
               scrollController.position.maxScrollExtent &&
           hasNext) {
-        isFilter ? loadMoreCars() : loadMoreCars();
+        isFilter ? filterMoreCars() : loadMoreCars();
       }
     });
   }
@@ -150,7 +149,7 @@ class HomeViewModel extends BaseViewModel {
     _getCars.execute(queries).listen((event) {
       event.when(
         loading: () {
-          isLoading = true;
+          isMoreLoading = true;
           notifyListeners();
         },
         content: (response) {
@@ -164,8 +163,8 @@ class HomeViewModel extends BaseViewModel {
         },
       );
     }).onDone(
-          () {
-        isLoading = false;
+      () {
+        isMoreLoading = false;
         notifyListeners();
       },
     );

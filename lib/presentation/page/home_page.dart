@@ -10,7 +10,7 @@ import '../widget/car_item.dart';
 import '../widget/car_item_shimmer.dart';
 import '../widget/scanner.dart';
 import 'detail_page.dart';
-import 'sold_cars_page.dart';
+import 'profile_page.dart';
 
 final homeNotifierProvider =
     ChangeNotifierProvider.autoDispose<HomeViewModel>((ref) {
@@ -38,7 +38,7 @@ class HomePage extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const SoldCarsPage(),
+                    builder: (context) => const ProfilePage(),
                   ),
                 );
               },
@@ -50,7 +50,7 @@ class HomePage extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: const Icon(
-                  Icons.import_export_rounded,
+                  Icons.person,
                   color: ResColors.black,
                 ),
               ),

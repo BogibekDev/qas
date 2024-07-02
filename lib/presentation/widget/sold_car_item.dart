@@ -67,7 +67,7 @@ class _SoldCarItemState extends State<SoldCarItem> {
                       Row(
                         children: [
                           const Text(
-                            "Foyda:",
+                            "Фойда :",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                           ),
@@ -86,8 +86,8 @@ class _SoldCarItemState extends State<SoldCarItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Expanded(
-                            child: const Text(
-                              "Sotilgan sana: ",
+                            child: Text(
+                              "Сотилган сана : ",
                               overflow: TextOverflow.fade,
                               maxLines: 3,
                             ),
@@ -105,7 +105,7 @@ class _SoldCarItemState extends State<SoldCarItem> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Narx: "),
+                          const Text("Нарх : "),
                           Text(
                             "${widget.car.price?.priceWithMLN()}",
                             style: const TextStyle(fontWeight: FontWeight.bold),

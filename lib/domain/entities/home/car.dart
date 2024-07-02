@@ -15,6 +15,7 @@ class Car {
     this.price,
     this.profit,
     this.prePrice,
+    this.camePrice,
     this.fuelType,
     this.type,
     this.kilometer,
@@ -39,6 +40,8 @@ class Car {
 
   @JsonKey(name: 'pre_price')
   final String? prePrice;
+  @JsonKey(name: 'came_price')
+  final String? camePrice;
 
   @JsonKey(name: 'fuel_type')
   final String? fuelType;

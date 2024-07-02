@@ -325,6 +325,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                             ),
                     ),
                   ),
+                  const SizedBox(height: 16),
                 ],
               ),
             )
