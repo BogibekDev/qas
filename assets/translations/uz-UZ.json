@@ -58,5 +58,8 @@
   "compensation": "Компенсация пули",
   "selectPaymentType": "Тўлов турини танланг",
   "loginMessage": "Сессия вақти тугади, илтимос қайта логин қилинг!",
+  "accepted": "Тасдиқланган",
+  "not_accepted": "Тасдиқланмаган",
+  "null": "",
   "somethingWentError": "Қандайдир хатолик"
 }

@@ -1,3 +1,4 @@
+import 'package:qas/domain/entities/profile/profile.dart';
 
 import '../../domain/entities/detail/return.dart';
 import '../../domain/entities/detail/return_response.dart';
@@ -64,4 +65,7 @@ class AppRepoImpl extends AppRepo {
   @override
   Stream<CustomResponse<Pagination<Returned>>> getReturnedCars() =>
       _api.getReturned();
+
+  @override
+  Stream<CustomResponse<Profile>> getProfile() => _api.getDetail();
 }

@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qas/data/local/prefs.dart';
 
 import '../../config/injection.dart';
+import '../../main.dart';
 import '../../tools/res_color.dart';
 import '../viewmodel/profile_viewmodel.dart';
 import '../widget/car_item_shimmer.dart';
+import '../widget/returned_car_item.dart';
 import '../widget/sold_car_item.dart';
+import 'returned_car_detail_page.dart';
 import 'sold_detail_page.dart';
 
 final profileNotifierProvider =
     ChangeNotifierProvider.autoDispose<ProfileViewmodel>((ref) {
-  return ProfileViewmodel(ref.read(getSoldCars), ref.read(getReturnedCars));
+  return ProfileViewmodel(
+      ref.read(getSoldCars), ref.read(getReturnedCars), ref.read(getProfile));
 });
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -49,6 +54,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
           style: TextStyle(fontSize: 20, color: ResColors.white),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            iconSize: 34,
+            onPressed: () {
+              SharedPrefs.clear();
+              navigatorKey.currentState?.pushReplacementNamed("/login");
+            },
+            icon: const Icon(Icons.logout),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -64,7 +79,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Шахсий маълумотлар",
                       textAlign: TextAlign.left,
                       style: TextStyle(
@@ -73,7 +88,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         const Text(
@@ -87,10 +102,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "azsdsa asdsa asdasddsd",
+                            "${viewModel.profile.fullName}",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: ResColors.black,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -112,10 +127,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "+998942344432",
+                            "${viewModel.profile.phoneNumber}",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: ResColors.black,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -137,7 +152,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Статистика",
                       textAlign: TextAlign.left,
                       style: TextStyle(
@@ -146,7 +161,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         const Text(
@@ -160,10 +175,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "122",
+                            "${viewModel.profile.soldCarsCount} та",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: ResColors.black,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -185,10 +200,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "29",
+                            "${viewModel.profile.returnedCarsCount} та",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: ResColors.black,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -210,10 +225,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "2-ўринда",
+                            viewModel.profile.rating != null
+                                ? "${viewModel.profile.rating}-ўринда"
+                                : "Мавжуд эмас",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: ResColors.black,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -289,13 +306,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               },
                             ),
                             ListView.builder(
-                              itemCount: 10,
+                              itemCount: viewModel.returnedCars.length,
                               // Replace with your dynamic item count
                               itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text("Archived Car $index"),
-                                  subtitle:
-                                      Text("Details for Archived Car $index"),
+                                return ReturnedCarItem(
+                                  car: viewModel.returnedCars[index],
+                                  onItemClick: () {
+                                    int? carId =
+                                        viewModel.returnedCars[index].id;
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ReturnedCarDetailPage(
+                                                carId: carId!),
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             ),

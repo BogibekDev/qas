@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:qas/domain/entities/profile/returned.dart';
 
 import '../../config/base_vm.dart';
 import '../../domain/entities/home/car.dart';
+import '../../domain/entities/profile/profile.dart';
+import '../../domain/entities/profile/returned.dart';
+import '../../domain/use_cases/profile/get_profile.dart';
 import '../../domain/use_cases/profile/get_returned_cars.dart';
 import '../../domain/use_cases/sold/get_sold_cars.dart';
 import '../widget/toast.dart';
@@ -10,8 +12,11 @@ import '../widget/toast.dart';
 class ProfileViewmodel extends BaseViewModel {
   final GetSoldCars _getSoldCars;
   final GetReturnedCars _getReturnedCars;
+  final GetProfile _getProfile;
   bool isLoading = false;
+  Profile profile = Profile();
   bool isReturnedLoading = false;
+  bool isProfileLoading = false;
   bool hasNext = true;
   bool hasNextReturned = true;
   final List<Car> cars = [];
@@ -19,9 +24,10 @@ class ProfileViewmodel extends BaseViewModel {
   bool isMoreLoading = false;
   final ScrollController scrollController = ScrollController();
 
-  ProfileViewmodel(this._getSoldCars, this._getReturnedCars) {
+  ProfileViewmodel(this._getSoldCars, this._getReturnedCars, this._getProfile) {
     getSoldCars();
     getReturnedCars();
+    getProfile();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
               scrollController.position.maxScrollExtent &&
@@ -29,6 +35,30 @@ class ProfileViewmodel extends BaseViewModel {
         getSoldCars();
       }
     });
+  }
+
+  void getProfile() {
+    _getProfile.execute().listen((event) {
+      event.when(
+        loading: () {
+          isProfileLoading = true;
+          notifyListeners();
+        },
+        content: (response) {
+          if (response.success) {
+            profile = response.data;
+          }
+        },
+        error: (error) {
+          toastError(error);
+        },
+      );
+    }).onDone(
+      () {
+        isProfileLoading = false;
+        notifyListeners();
+      },
+    );
   }
 
   void getSoldCars() {

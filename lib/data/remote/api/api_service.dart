@@ -11,6 +11,7 @@ import '../../../domain/entities/login/login_request.dart';
 import '../../../domain/entities/login/login_response.dart';
 import '../../../domain/entities/login/refresh.dart';
 import '../../../domain/entities/pagenation/pagination.dart';
+import '../../../domain/entities/profile/profile.dart';
 import '../../../domain/entities/profile/returned.dart';
 import '../../../domain/entities/profile/returned_detail.dart';
 import '../../../domain/entities/response/response.dart';
@@ -82,4 +83,6 @@ abstract class ApiService {
 
   @GET("${ApiConst.getReturnedCar}/{id}")
   Stream<CustomResponse<ReturnedDetail>> getReturnedCar(@Path("id") int? id);
+  @GET(ApiConst.getProfile)
+  Stream<CustomResponse<Profile>> getDetail();
 }

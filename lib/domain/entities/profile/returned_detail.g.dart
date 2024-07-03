@@ -21,6 +21,7 @@ ReturnedDetail _$ReturnedDetailFromJson(Map<String, dynamic> json) =>
       model: json['model'] as String?,
       images:
           (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      pdfLink: json['pdf_link'] as String?,
       returnedDate: json['returned_date'] as String?,
       price: json['price'] as String?,
       car: json['car'] == null
@@ -42,6 +43,7 @@ Map<String, dynamic> _$ReturnedDetailToJson(ReturnedDetail instance) =>
       'model': instance.model,
       'images': instance.images,
       'returned_date': instance.returnedDate,
+      'pdf_link': instance.pdfLink,
       'price': instance.price,
       'car': instance.car,
       'owner': instance.owner,

@@ -1,16 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qas/presentation/widget/shimmer.dart';
 
-import '../../domain/entities/home/car.dart';
+import '../../domain/entities/profile/returned.dart';
 import '../../tools/res_color.dart';
 import '../../tools/utils.dart';
 
 class ReturnedCarItem extends StatefulWidget {
-  final Car car;
+  final Returned car;
   final Function() onItemClick;
 
-  const ReturnedCarItem({required this.car, required this.onItemClick, super.key});
+  const ReturnedCarItem(
+      {required this.car, required this.onItemClick, super.key});
 
   @override
   State<ReturnedCarItem> createState() => _ReturnedCarItemState();
@@ -73,7 +75,7 @@ class _ReturnedCarItemState extends State<ReturnedCarItem> {
                           ),
                           Expanded(
                             child: Text(
-                              "${widget.car.profit}".price(),
+                              "${widget.car.status}".tr(),
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.end,
@@ -93,9 +95,8 @@ class _ReturnedCarItemState extends State<ReturnedCarItem> {
                             ),
                           ),
                           Text(
-                            "${widget.car.soldDate}",
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold),
+                            "${widget.car.returnedDate}",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                           ),

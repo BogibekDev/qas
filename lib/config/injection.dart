@@ -10,6 +10,7 @@ import '../domain/use_cases/detail/detail_use_case.dart';
 import '../domain/use_cases/home/get_models.dart';
 import '../domain/use_cases/home/home_use_case.dart';
 import '../domain/use_cases/login/login_use_case.dart';
+import '../domain/use_cases/profile/get_profile.dart';
 import '../domain/use_cases/profile/get_returned_car.dart';
 import '../domain/use_cases/profile/get_returned_cars.dart';
 import '../domain/use_cases/sell/add_buyer.dart';
@@ -42,3 +43,4 @@ final getReturnedCars =
     Provider((ref) => GetReturnedCars(ref.read(repoProvider)));
 final getReturnedCar =
     Provider((ref) => GetReturnedCar(ref.read(repoProvider)));
+final getProfile = Provider((ref) => GetProfile(ref.read(repoProvider)));

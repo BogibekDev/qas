@@ -8,18 +8,19 @@ part 'returned_detail.g.dart';
 @JsonSerializable()
 class ReturnedDetail {
   ReturnedDetail({
-    required this.id,
-    required this.seller,
-    required this.acceptor,
-    required this.status,
-    required this.reason,
-    required this.year,
-    required this.model,
-    required this.images,
-    required this.returnedDate,
-    required this.price,
-    required this.car,
-    required this.owner,
+     this.id,
+     this.seller,
+     this.acceptor,
+     this.status,
+     this.reason,
+     this.year,
+     this.model,
+     this.images,
+     this.pdfLink,
+     this.returnedDate,
+     this.price,
+     this.car,
+     this.owner,
   });
 
   final int? id;
@@ -33,6 +34,8 @@ class ReturnedDetail {
 
   @JsonKey(name: 'returned_date')
   final String? returnedDate;
+  @JsonKey(name: 'pdf_link')
+  final String? pdfLink;
   final String? price;
   final Car? car;
   final Buyer? owner;
