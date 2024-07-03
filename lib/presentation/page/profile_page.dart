@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qas/data/local/prefs.dart';
 
 import '../../config/injection.dart';
-import '../../main.dart';
+import '../../data/local/prefs.dart';
 import '../../tools/res_color.dart';
 import '../viewmodel/profile_viewmodel.dart';
 import '../widget/car_item_shimmer.dart';
 import '../widget/returned_car_item.dart';
 import '../widget/sold_car_item.dart';
+import 'login_page.dart';
 import 'returned_car_detail_page.dart';
 import 'sold_detail_page.dart';
 
@@ -55,14 +55,31 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            iconSize: 34,
-            onPressed: () {
-              SharedPrefs.clear();
-              navigatorKey.currentState?.pushReplacementNamed("/login");
+          GestureDetector(
+            onTap: () {
+              showConfirmationDialog(context, () {
+                SharedPrefs.clear();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (Route<dynamic> route) => false,
+                );
+              });
+
             },
-            icon: const Icon(Icons.logout),
-          )
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: ResColors.white,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: const Icon(
+                Icons.logout,
+                color: ResColors.mainColor,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
         ],
       ),
       body: Padding(
@@ -337,6 +354,42 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> showConfirmationDialog(
+      BuildContext context, Function onClose) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      // Prevents closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog.adaptive(
+          content: const ListBody(
+            children: [
+              Text('Ҳақиқатдан ҳам дастурдан чиқишни хохлайсизми?'),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "Йўқ",
+                style: TextStyle(color: ResColors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+            ),
+            TextButton(
+              child: const Text('Ха', style: TextStyle(color: ResColors.black)),
+              onPressed: () {
+                Navigator.of(context).pop();
+                onClose.call();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

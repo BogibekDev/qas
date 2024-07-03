@@ -35,6 +35,43 @@ class HomePage extends ConsumerWidget {
           actions: [
             GestureDetector(
               onTap: () {
+                _searchSheet(context, homeViewModel);
+              },
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: ResColors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: const Icon(
+                  Icons.search,
+                  color: ResColors.mainColor,
+                ),
+              ),
+            ),
+
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {
+                _scanQRCode(context, homeViewModel);
+              },
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: ResColors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: const Icon(
+                  Icons.qr_code_scanner,
+                  color: ResColors.mainColor,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -51,43 +88,7 @@ class HomePage extends ConsumerWidget {
                 ),
                 child: const Icon(
                   Icons.person,
-                  color: ResColors.black,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            GestureDetector(
-              onTap: () {
-                _scanQRCode(context, homeViewModel);
-              },
-              child: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: ResColors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: const Icon(
-                  Icons.qr_code_scanner,
-                  color: ResColors.black,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            GestureDetector(
-              onTap: () {
-                _searchSheet(context, homeViewModel);
-              },
-              child: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: ResColors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: const Icon(
-                  Icons.search,
-                  color: ResColors.black,
+                  color: ResColors.mainColor,
                 ),
               ),
             ),
