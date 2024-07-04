@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as carousel;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,7 +46,7 @@ class DetailPage extends ConsumerWidget {
               ? SingleChildScrollView(
                   child: Column(
                     children: [
-                      CarouselSlider(
+                      carousel.CarouselSlider(
                         carouselController: detailViewModel.carouselController,
                         items: detailViewModel.car.images?.map((image) {
                           return CachedNetworkImage(
@@ -62,14 +62,14 @@ class DetailPage extends ConsumerWidget {
                             fit: BoxFit.cover,
                           );
                         }).toList(),
-                        options: CarouselOptions(
+                        options: carousel. CarouselOptions(
                           viewportFraction: 1.0,
                           enlargeCenterPage: true,
                           enableInfiniteScroll: false,
                           onPageChanged: (index, reason) {
                             detailViewModel.carouselIndex = index;
                           },
-                          enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+                          enlargeStrategy: carousel. CenterPageEnlargeStrategy.zoom,
                         ),
                       ),
                       Container(
