@@ -39,17 +39,15 @@ extension Pricee on String {
   }
 
   String addSpace() {
-    var s = (double.parse(this).roundToDouble()).toString();
-    s = s.substring(0, s.length - 2);
-    var result = s[s.length - 1];
-    for (int i = 1; i < s.length; i++) {
-      if (i % 3 == 0) {
-        result = "${s[s.length - i - 1]} $result";
-      } else {
-        result = s[s.length - i - 1] + result;
+    var s = double.parse(this).toStringAsFixed(0);
+    var buffer = StringBuffer();
+    for (int i = 0; i < s.length; i++) {
+      if (i > 0 && (s.length - i) % 3 == 0) {
+        buffer.write(' ');
       }
+      buffer.write(s[i]);
     }
-    return result;
+    return buffer.toString();
   }
 
   String removeSpace() {
