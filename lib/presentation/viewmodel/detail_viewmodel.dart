@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_controller.dart' as carousel;
+// import 'package:carousel_slider/carousel_controller.dart' as carousel;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -30,7 +30,7 @@ class DetailViewModel extends BaseViewModel {
   bool isReturned = false;
   int count401 = 0;
   final TextEditingController reasonController = TextEditingController();
-  final carousel.CarouselController carouselController = carousel.CarouselController();
+  //final carousel.CarouselController carouselController = carousel.CarouselController();
   int _carouselIndex = 0;
 
   int get carouselIndex => _carouselIndex;

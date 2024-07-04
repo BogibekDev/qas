@@ -46,32 +46,32 @@ class DetailPage extends ConsumerWidget {
               ? SingleChildScrollView(
                   child: Column(
                     children: [
-                      carousel.CarouselSlider(
-                        carouselController: detailViewModel.carouselController,
-                        items: detailViewModel.car.images?.map((image) {
-                          return CachedNetworkImage(
-                            width: MediaQuery.sizeOf(context).width,
-                            imageUrl: image,
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) => const Icon(
-                              Icons.error_outline,
-                              size: 100,
-                            ),
-                            fit: BoxFit.cover,
-                          );
-                        }).toList(),
-                        options: carousel. CarouselOptions(
-                          viewportFraction: 1.0,
-                          enlargeCenterPage: true,
-                          enableInfiniteScroll: false,
-                          onPageChanged: (index, reason) {
-                            detailViewModel.carouselIndex = index;
-                          },
-                          enlargeStrategy: carousel. CenterPageEnlargeStrategy.zoom,
-                        ),
-                      ),
+                      // carousel.CarouselSlider(
+                      //   //carouselController: detailViewModel.carouselController,
+                      //   items: detailViewModel.car.images?.map((image) {
+                      //     return CachedNetworkImage(
+                      //       width: MediaQuery.sizeOf(context).width,
+                      //       imageUrl: image,
+                      //       placeholder: (context, url) => const Center(
+                      //         child: CircularProgressIndicator(),
+                      //       ),
+                      //       errorWidget: (context, url, error) => const Icon(
+                      //         Icons.error_outline,
+                      //         size: 100,
+                      //       ),
+                      //       fit: BoxFit.cover,
+                      //     );
+                      //   }).toList(),
+                      //   options: carousel. CarouselOptions(
+                      //     viewportFraction: 1.0,
+                      //     enlargeCenterPage: true,
+                      //     enableInfiniteScroll: false,
+                      //     onPageChanged: (index, reason) {
+                      //       detailViewModel.carouselIndex = index;
+                      //     },
+                      //     enlargeStrategy: carousel. CenterPageEnlargeStrategy.zoom,
+                      //   ),
+                      // ),
                       Container(
                         margin:
                             const EdgeInsets.only(top: 6, left: 10, right: 10),
@@ -83,8 +83,9 @@ class DetailPage extends ConsumerWidget {
                           itemBuilder: (context, position) => GestureDetector(
                             onTap: () {
                               detailViewModel.carouselIndex = position;
-                              detailViewModel.carouselController
-                                  .animateToPage(position);
+                            //   detailViewModel.carouselController
+                            //       .animateToPage(position);
+
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(horizontal: 6),
