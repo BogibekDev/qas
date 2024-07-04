@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qas/config/injection.dart';
-import 'package:qas/presentation/viewmodel/returned_detail_viewmodel.dart';
 import 'package:qas/tools/utils.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../config/injection.dart';
 import '../../tools/res_color.dart';
+import '../viewmodel/returned_detail_viewmodel.dart';
 import '../widget/detail_shimmer.dart';
 import '../widget/shimmer.dart';
 
