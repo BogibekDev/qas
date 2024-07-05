@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       navigatorKey: navigatorKey,
-      title: "appName".tr(),
+      title: "Қўшкопир Авто Савдо",
       theme: ThemeData(
         fontFamily: GoogleFonts.montserrat().fontFamily,
         bottomSheetTheme:
