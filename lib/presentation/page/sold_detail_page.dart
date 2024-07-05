@@ -232,15 +232,14 @@ class SoldDetailPage extends ConsumerWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       const Text(
-                                        "Компенсация пули: ",
+                                        "Қўшимча изоҳ: ",
                                         style: TextStyle(
                                           color: ResColors.black,
                                           fontSize: 14,
                                         ),
                                       ),
                                       Text(
-                                        "${viewModel.soldCar.compensationPrice}"
-                                            .price(),
+                                        "${viewModel.soldCar.description}",
                                         style: const TextStyle(
                                           color: ResColors.black,
                                           fontSize: 14,

@@ -191,7 +191,7 @@ class SellViewModel extends BaseViewModel {
     final String lastName = buyerLastName.text.trim();
     final String middleName = buyerMiddleName.text.trim();
     final String birthYear = buyerBirthday.text.trim();
-    final String passport = buyerPassport.text.trim();
+    final String passport = buyerPassport.text.trim().toUpperCase();
     final String passportDate = buyerPassportDate.text.trim();
     final String address = buyerAddress.text.trim();
     final String phoneNumber = buyerPhoneNumber.text.trim();
