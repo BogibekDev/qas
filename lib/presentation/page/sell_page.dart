@@ -131,6 +131,7 @@ class _SellPageState extends ConsumerState<SellPage> {
                       fontSize: 20,
                     ),
                   ),
+
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: viewModel.buyerPassport,
@@ -143,6 +144,24 @@ class _SellPageState extends ConsumerState<SellPage> {
                       border: const OutlineInputBorder(),
                       hintText: "AA1234567",
                       label: Text("passport".tr()),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    textInputAction: TextInputAction.next,
+                    controller: viewModel.buyerPassportDate,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [DateInputFormatter()],
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: OutlineInputBorder(),
+                      hintText: "12-04-2004",
+                      label: Text("Пасспорт берилган сана"),
                     ),
                     style: const TextStyle(
                       color: ResColors.black,
@@ -295,6 +314,23 @@ class _SellPageState extends ConsumerState<SellPage> {
                           },
                         )
                       : Container(),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: viewModel.extraComment,
+                    maxLines: 2,
+                    textInputAction: TextInputAction.next,
+                    decoration:const  InputDecoration(
+                      filled: true,
+                      fillColor: ResColors.textFieldBg,
+                      border: OutlineInputBorder(),
+                      hintText: "Қўшимча изоҳ",
+                      label: Text("Қўшимча изоҳ"),
+                    ),
+                    style: const TextStyle(
+                      color: ResColors.black,
+                      fontSize: 20,
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width,

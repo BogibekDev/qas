@@ -15,10 +15,11 @@ class SellRequest {
   final String? compensationPrice;
   @JsonKey(name: "payment_type")
   final String? paymentType;
+  final String? description;
 
 
   SellRequest(this.carId, this.buyer, this.price, this.compensationPrice,
-      this.paymentType);
+      this.paymentType,this.description);
 
   factory SellRequest.fromJson(Map<String, dynamic> json) =>
       _$SellRequestFromJson(json);

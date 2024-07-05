@@ -14,6 +14,7 @@ SellRequest _$SellRequestFromJson(Map<String, dynamic> json) => SellRequest(
       json['price'] as String?,
       json['compensation_price'] as String?,
       json['payment_type'] as String?,
+      json['description'] as String?,
     );
 
 Map<String, dynamic> _$SellRequestToJson(SellRequest instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$SellRequestToJson(SellRequest instance) =>
       'price': instance.price,
       'compensation_price': instance.compensationPrice,
       'payment_type': instance.paymentType,
+      'description': instance.description,
     };

@@ -29,10 +29,12 @@ class SellViewModel extends BaseViewModel {
   final TextEditingController buyerLastName = TextEditingController();
   final TextEditingController buyerMiddleName = TextEditingController();
   final TextEditingController buyerBirthday = TextEditingController();
+  final TextEditingController buyerPassportDate = TextEditingController();
   final TextEditingController buyerPassport = TextEditingController();
   final TextEditingController buyerAddress = TextEditingController();
   final TextEditingController buyerPhoneNumber = TextEditingController();
   final TextEditingController buyerExtraPhoneNumber = TextEditingController();
+  final TextEditingController extraComment = TextEditingController();
   int carId = 1;
   late Car car;
   Buyer? selectedBuyer;
@@ -133,6 +135,7 @@ class SellViewModel extends BaseViewModel {
     final String middleName = buyerMiddleName.text.trim();
     final String birthYear = buyerBirthday.text.trim();
     final String passport = buyerPassport.text.trim();
+    final String passportDate = buyerPassportDate.text.trim();
     final String address = buyerAddress.text.trim();
     final String phoneNumber = buyerPhoneNumber.text.trim();
     final String extraPhoneNumber = buyerExtraPhoneNumber.text.trim();
@@ -151,6 +154,7 @@ class SellViewModel extends BaseViewModel {
           middleName,
           birthYear,
           passport,
+          passportDate,
           address,
           "+998$phoneNumber",
           extraPhoneNumber.isNotEmpty ? "+998$extraPhoneNumber" : null);
@@ -188,16 +192,19 @@ class SellViewModel extends BaseViewModel {
     final String middleName = buyerMiddleName.text.trim();
     final String birthYear = buyerBirthday.text.trim();
     final String passport = buyerPassport.text.trim();
+    final String passportDate = buyerPassportDate.text.trim();
     final String address = buyerAddress.text.trim();
     final String phoneNumber = buyerPhoneNumber.text.trim();
     final String extraPhoneNumber = buyerExtraPhoneNumber.text.trim();
     final String price = priceC.text.removeSpace();
     final String compensationPrice = compensationC.text.removeSpace();
+    final String description = extraComment.text.trim();
 
     if (firstName.isNotEmpty &&
         lastName.isNotEmpty &&
         middleName.isNotEmpty &&
         birthYear.length == 10 &&
+        passportDate.length == 10 &&
         passport.length == 9 &&
         address.isNotEmpty &&
         phoneNumber.length == 9 &&
@@ -211,6 +218,7 @@ class SellViewModel extends BaseViewModel {
           middleName,
           birthYear,
           passport,
+          passportDate,
           address,
           "+998$phoneNumber",
           extraPhoneNumber.isNotEmpty ? "+998$extraPhoneNumber" : null);
@@ -219,7 +227,7 @@ class SellViewModel extends BaseViewModel {
 
 
       final request = SellRequest(carId, buyer, price,
-          compensationPrice, paymentType);
+          compensationPrice, paymentType,description);
 
       _sellCar.execute(request).listen((event) {
         event.when(

@@ -30,6 +30,7 @@ class SoldCar {
   String? model;
   String? profit;
   String? contract;
+  String? description;
   @JsonKey(name: "sold_date")
   String? soldDate;
 
@@ -49,6 +50,7 @@ class SoldCar {
     this.images,
     this.model,
     this.profit,
+    this.description,
     this.contract,
     this.soldDate,
   );

@@ -11,6 +11,7 @@ class Buyer {
     this.middleName,
     this.birthYear,
     this.passport,
+    this.passportDate,
     this.address,
     this.phoneNumber,
     this.extraPhoneNumber,
@@ -25,6 +26,8 @@ class Buyer {
   final String? middleName;
   @JsonKey(name: 'birth_year')
   final String? birthYear;
+  @JsonKey(name: 'passport_date')
+  final String? passportDate;
   final String? passport;
   final String? address;
   @JsonKey(name: 'phone_number')

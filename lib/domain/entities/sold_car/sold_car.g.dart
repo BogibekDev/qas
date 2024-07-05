@@ -28,6 +28,7 @@ SoldCar _$SoldCarFromJson(Map<String, dynamic> json) => SoldCar(
       (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
       json['model'] as String?,
       json['profit'] as String?,
+      json['description'] as String?,
       json['contract'] as String?,
       json['sold_date'] as String?,
     );
@@ -49,5 +50,6 @@ Map<String, dynamic> _$SoldCarToJson(SoldCar instance) => <String, dynamic>{
       'model': instance.model,
       'profit': instance.profit,
       'contract': instance.contract,
+      'description': instance.description,
       'sold_date': instance.soldDate,
     };

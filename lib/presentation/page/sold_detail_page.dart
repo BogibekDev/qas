@@ -226,6 +226,30 @@ class SoldDetailPage extends ConsumerWidget {
                               ],
                             ),
                             const SizedBox(height: 8),
+                            viewModel.soldCar.description != null
+                                ? Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        "Компенсация пули: ",
+                                        style: TextStyle(
+                                          color: ResColors.black,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        "${viewModel.soldCar.compensationPrice}"
+                                            .price(),
+                                        style: const TextStyle(
+                                          color: ResColors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                : Container(),
                             const SizedBox(height: 16),
                             const Text(
                               "Автомобиль ҳақида: ",
