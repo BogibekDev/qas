@@ -46,6 +46,10 @@ class _CarItemState extends State<CarItem> {
                     Icons.error_outline,
                     size: 100,
                   ),
+                  httpHeaders: const {
+                    // 'Access-Control-Allow-Origin': '*',
+                    'Sec-Fetch-Mode': 'no-cors',
+                  },
                 ),
               ),
               Expanded(
