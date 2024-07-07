@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:qas/presentation/widget/shimmer.dart';
 
@@ -34,23 +35,31 @@ class _CarItemState extends State<CarItem> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: CachedNetworkImage(
-                  width: MediaQuery.sizeOf(context).width / 4,
-                  height: MediaQuery.sizeOf(context).width / 4 - 10,
-                  imageUrl: "${widget.car.images?[0]}",
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => const Center(
-                    child: Shimmer(),
-                  ),
-                  errorWidget: (context, url, error) => const Icon(
-                    Icons.error_outline,
-                    size: 100,
-                  ),
-                  httpHeaders: const {
-                    // 'Access-Control-Allow-Origin': '*',
-                    'Sec-Fetch-Mode': 'no-cors',
-                  },
-                ),
+                child: kIsWeb
+                    ? Image.network(
+                        "${widget.car.images?[0]}",
+                        width: MediaQuery.sizeOf(context).width / 4,
+                        height: MediaQuery.sizeOf(context).width / 4 - 10,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const Center(child: Shimmer());
+                        },
+                      )
+                    : CachedNetworkImage(
+                        width: MediaQuery.sizeOf(context).width / 4,
+                        height: MediaQuery.sizeOf(context).width / 4 - 10,
+                        imageUrl: "${widget.car.images?[0]}",
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(
+                          child: Shimmer(),
+                        ),
+                        errorWidget: (context, url, error) => const Icon(
+                          Icons.error_outline,
+                          size: 100,
+                        ),
+                      ),
               ),
               Expanded(
                 child: Padding(
@@ -98,8 +107,7 @@ class _CarItemState extends State<CarItem> {
                           ),
                           Text(
                             "${widget.car.kilometer} KM",
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                           ),
