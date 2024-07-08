@@ -747,7 +747,7 @@ class DetailPage extends ConsumerWidget {
                               "cancel".tr(),
                               style: const TextStyle(
                                 color: ResColors.black,
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -775,10 +775,10 @@ class DetailPage extends ConsumerWidget {
                             },
                             child: detailViewModel.isReturnLoading
                                 ? const CircularProgressIndicator()
-                                : Text(
+                                : const Text(
                                     "Қайтариш",
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: ResColors.white,
                                       fontSize: 18,
                                     ),

@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qas/presentation/page/home_page.dart';
 
 import 'data/local/prefs.dart';
@@ -14,6 +16,11 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  const String scriptUrl = 'https://cdn.jsdelivr.net/npm/zxing-library@1.0.0/zxing.js';
+
+  if (kIsWeb) {
+    MobileScannerPlatform.instance.setBarcodeLibraryScriptUrl(scriptUrl);
+  }
   runApp(
     EasyLocalization(
         supportedLocales: const [Locale('en', 'US'), Locale('uz', 'UZ')],
