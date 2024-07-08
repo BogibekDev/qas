@@ -16,7 +16,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  const String scriptUrl = 'https://cdn.jsdelivr.net/npm/zxing-library@1.0.0/zxing.js';
+  const String scriptUrl = 'https://cdn.jsdelivr.net/npm/@zxing/library@0.18.6/umd/index.min.js';
 
   if (kIsWeb) {
     MobileScannerPlatform.instance.setBarcodeLibraryScriptUrl(scriptUrl);
