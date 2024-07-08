@@ -52,7 +52,7 @@ class HomePage extends ConsumerWidget {
             ),
 
             const SizedBox(width: 8),
-            GestureDetector(
+           !kIsWeb?  GestureDetector(
               onTap: () {
                 _scanQRCode(context, homeViewModel);
               },
@@ -68,7 +68,7 @@ class HomePage extends ConsumerWidget {
                   color: ResColors.mainColor,
                 ),
               ),
-            ),
+            ): Container (),
             const SizedBox(width: 8),
             GestureDetector(
               onTap: () {
