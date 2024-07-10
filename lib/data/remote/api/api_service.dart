@@ -51,7 +51,7 @@ abstract class ApiService {
 
   @GET(ApiConst.models)
   Stream<CustomResponse<Pagination<Model>>> models(
-      {@Query("count") int? count = 100});
+      {@Query("count") int? count = 1000});
 
   @GET("${ApiConst.carById}/{id}")
   Stream<CustomResponse<Car>> carById(@Path("id") int? id);
