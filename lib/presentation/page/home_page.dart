@@ -34,24 +34,7 @@ class HomePage extends ConsumerWidget {
           leading: Image.asset(Assets.logo),
           leadingWidth: 90,
           actions: [
-            GestureDetector(
-              onTap: () {
-                homeViewModel.loadCars();
-              },
-              child: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: ResColors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: const Icon(
-                  Icons.refresh,
-                  color: ResColors.mainColor,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
+
             GestureDetector(
               onTap: () {
                 homeViewModel.clearFilter();
@@ -477,7 +460,7 @@ class HomePage extends ConsumerWidget {
             width: 300,
             height: 300,
             child: YearPicker(
-              firstDate: DateTime(DateTime.now().year - 30, 1),
+              firstDate: DateTime(DateTime.now().year - 50, 1),
               lastDate: DateTime(DateTime.now().year, 1),
               selectedDate: homeViewModel.selectedDate,
               onChanged: (DateTime dateTime) {
