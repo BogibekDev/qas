@@ -406,46 +406,6 @@ class DetailPage extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  "Туғилган сана: ",
-                                  style: const TextStyle(
-                                    color: ResColors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  "${detailViewModel.car.owner?.birthYear}",
-                                  style: const TextStyle(
-                                      color: ResColors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700),
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Pasport рақами: ",
-                                  style: const TextStyle(
-                                    color: ResColors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  "${detailViewModel.car.owner?.passport}",
-                                  style: const TextStyle(
-                                      color: ResColors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700),
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
                                   "Телефон: ",
                                   style: const TextStyle(
                                     color: ResColors.black,
@@ -467,13 +427,13 @@ class DetailPage extends ConsumerWidget {
                               children: [
                                 const Text(
                                   "Қўшимча телефон: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: ResColors.black,
                                     fontSize: 14,
                                   ),
                                 ),
                                 Text(
-                                  "${detailViewModel.car.owner?.extraPhoneNumber}",
+                                  detailViewModel.car.owner?.extraPhoneNumber??"",
                                   style: const TextStyle(
                                       color: ResColors.black,
                                       fontSize: 14,
@@ -512,7 +472,7 @@ class DetailPage extends ConsumerWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "${detailViewModel.car.description}",
+                              detailViewModel.car.description??"",
                               style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 18,
@@ -747,7 +707,7 @@ class DetailPage extends ConsumerWidget {
                               "cancel".tr(),
                               style: const TextStyle(
                                 color: ResColors.black,
-                                fontSize: 16,
+                                fontSize: 18,
                               ),
                             ),
                           ),
@@ -778,7 +738,7 @@ class DetailPage extends ConsumerWidget {
                                 : const Text(
                                     "Қайтариш",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: ResColors.white,
                                       fontSize: 18,
                                     ),

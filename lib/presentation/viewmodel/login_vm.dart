@@ -42,7 +42,7 @@ class LoginViewModel extends BaseViewModel {
         },
       );
     } else {
-      errorMessage = "Telefon nomer yoki parol to'g'ri kiritilmagan";
+      errorMessage = "Телефон номер ёки пароль тўғри киритилмаган";
       toastError(Error.empty()..message = errorMessage);
     }
   }
@@ -55,7 +55,6 @@ class LoginViewModel extends BaseViewModel {
       (event) {
         event.when(
           loading: () {
-            errorMessage = "";
             isLoading = true;
             notifyListeners();
           },
@@ -65,6 +64,11 @@ class LoginViewModel extends BaseViewModel {
               SharedPrefs.saveToken(response.data.access ?? "");
               SharedPrefs.saveRefreshToken(response.data.refresh ?? "");
               goHome.call();
+            } else if (response.data.role != "seller") {
+              toastError(
+                  Error.empty()..message = "Бу дастур фақат сотувчилар учун");
+            } else {
+              toastError(response.error);
             }
           },
           error: (error) {
@@ -82,5 +86,4 @@ class LoginViewModel extends BaseViewModel {
     isPasswordShow = !isPasswordShow;
     notifyListeners();
   }
-
 }

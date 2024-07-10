@@ -39,7 +39,7 @@ class _CarItemState extends State<CarItem> {
                     ? Image.network(
                         "${widget.car.images?[0]}",
                         width: MediaQuery.sizeOf(context).width / 4,
-                        height: MediaQuery.sizeOf(context).width / 4 - 10,
+                        height: MediaQuery.sizeOf(context).width / 4 - 5,
                         fit: BoxFit.cover,
                         loadingBuilder: (BuildContext context, Widget child,
                             ImageChunkEvent? loadingProgress) {
@@ -49,7 +49,7 @@ class _CarItemState extends State<CarItem> {
                       )
                     : CachedNetworkImage(
                         width: MediaQuery.sizeOf(context).width / 4,
-                        height: MediaQuery.sizeOf(context).width / 4 - 10,
+                        height: MediaQuery.sizeOf(context).width / 4 - 5,
                         imageUrl: "${widget.car.images?[0]}",
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const Center(
@@ -80,13 +80,13 @@ class _CarItemState extends State<CarItem> {
                       Row(
                         children: [
                           const Text(
-                            "Ишлаб чиқарилган йили:",
+                            "Йили:",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                           ),
                           Expanded(
                             child: Text(
-                              "${widget.car.year}",
+                              "${widget.car.year??""}",
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.end,
@@ -99,8 +99,8 @@ class _CarItemState extends State<CarItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Expanded(
-                            child: const Text(
-                              "Босиб ўтилган йўл: ",
+                            child: Text(
+                              "Пробег: ",
                               overflow: TextOverflow.fade,
                               maxLines: 3,
                             ),

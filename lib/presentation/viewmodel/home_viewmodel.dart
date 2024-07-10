@@ -57,6 +57,8 @@ class HomeViewModel extends BaseViewModel {
             cars.addAll(response.data.results ?? []);
             hasNext = response.data.next != null;
             loadModels();
+          } else {
+            toastError(response.error);
           }
         },
         error: (Error? error) {
@@ -88,6 +90,8 @@ class HomeViewModel extends BaseViewModel {
           if (response.success) {
             cars.addAll(response.data.results ?? []);
             hasNext = response.data.next != null;
+          } else {
+            toastError(response.error);
           }
         },
         error: (Error? error) {
@@ -104,13 +108,15 @@ class HomeViewModel extends BaseViewModel {
 
   void filterCars() {
     isFilter = true;
+    var minPrice = int.tryParse(startMoney.text) ?? 0;
+    var maxPrice = int.tryParse(finishMoney.text) ?? 0;
     Map<String, dynamic> queries = {
       "page": filterPage,
       "model": modelC.text,
       "min_year": startYear.text,
       "max_year": finishYear.text,
-      "min_price": startMoney.text,
-      "max_price": finishMoney.text
+      "min_price": minPrice != 0 ? minPrice * 1000000 : null,
+      "max_price": maxPrice != 0 ? maxPrice * 1000000 : null,
     };
     _getCars.execute(queries).listen((event) {
       event.when(
@@ -122,6 +128,8 @@ class HomeViewModel extends BaseViewModel {
           if (response.success) {
             cars.clear();
             cars.addAll(response.data.results ?? []);
+          } else {
+            toastError(response.error);
           }
         },
         error: (error) {
@@ -138,13 +146,15 @@ class HomeViewModel extends BaseViewModel {
 
   void filterMoreCars() {
     isFilter = true;
+    var minPrice = int.tryParse(startMoney.text) ?? 0;
+    var maxPrice = int.tryParse(finishMoney.text) ?? 0;
     Map<String, dynamic> queries = {
       "page": filterPage,
       "model": modelC.text,
       "min_year": startYear.text,
       "max_year": finishYear.text,
-      "min_price": startMoney.text,
-      "max_price": finishMoney.text
+      "min_price": minPrice != 0 ? minPrice * 1000000 : null,
+      "max_price": maxPrice != 0 ? maxPrice * 1000000 : null,
     };
     _getCars.execute(queries).listen((event) {
       event.when(
@@ -156,6 +166,8 @@ class HomeViewModel extends BaseViewModel {
           if (response.success) {
             cars.addAll(response.data.results ?? []);
             hasNext = response.data.next != null;
+          } else {
+            toastError(response.error);
           }
         },
         error: (error) {
@@ -178,10 +190,22 @@ class HomeViewModel extends BaseViewModel {
           if (response.success) {
             models = response.data.results ?? [];
             notifyListeners();
+          } else {
+            toastError(response.error);
           }
         },
-        error: (error) {},
+        error: (error) {
+          toastError(error);
+        },
       );
     }).onDone(() {});
+  }
+
+  void clearFilter() {
+    modelC.clear();
+    startYear.clear();
+    finishYear.clear();
+    startMoney.clear();
+    finishMoney.clear();
   }
 }

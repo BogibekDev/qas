@@ -419,51 +419,12 @@ class SoldDetailPage extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  "${viewModel.soldCar.buyer?.firstName} ${viewModel.soldCar.buyer?.lastName} ${viewModel.soldCar.buyer?.middleName}",
+                                  "${viewModel.soldCar.buyer?.firstName} ${viewModel.soldCar.buyer?.lastName} \n${viewModel.soldCar.buyer?.middleName}",
                                   style: const TextStyle(
                                       color: ResColors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700),
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Туғилган сана: ",
-                                  style: const TextStyle(
-                                    color: ResColors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  "${viewModel.soldCar.buyer?.birthYear}",
-                                  style: const TextStyle(
-                                      color: ResColors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700),
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Pasport рақами: ",
-                                  style: const TextStyle(
-                                    color: ResColors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  "${viewModel.soldCar.buyer?.passport}",
-                                  style: const TextStyle(
-                                      color: ResColors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700),
+                                  textAlign: TextAlign.end,
                                 )
                               ],
                             ),
@@ -499,7 +460,7 @@ class SoldDetailPage extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  "${viewModel.soldCar.buyer?.extraPhoneNumber}",
+                                  viewModel.soldCar.buyer?.extraPhoneNumber??"",
                                   style: const TextStyle(
                                       color: ResColors.black,
                                       fontSize: 14,
@@ -530,7 +491,7 @@ class SoldDetailPage extends ConsumerWidget {
                             const SizedBox(height: 16),
                             const Text(
                               "Изоҳ",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: ResColors.black,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -538,7 +499,7 @@ class SoldDetailPage extends ConsumerWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "${viewModel.soldCar.car?.description}",
+                              viewModel.soldCar.car?.description??"",
                               style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 18,

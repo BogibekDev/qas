@@ -36,6 +36,8 @@ class _SimilarItemState extends State<SimilarItem> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: CachedNetworkImage(
+                    width: 150,
+                    height: 100,
                     fit: BoxFit.cover,
                     imageUrl: widget.car.images![0],
                     placeholder: (context, url) => const Center(

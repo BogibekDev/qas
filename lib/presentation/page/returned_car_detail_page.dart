@@ -152,7 +152,7 @@ class ReturnedCarDetailPage extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        "${viewModel.returned.acceptor?.firstName} ${viewModel.returned.acceptor?.lastName} ${viewModel.returned.acceptor?.middleName}",
+                        "${viewModel.returned.acceptor?.firstName} ${viewModel.returned.acceptor?.lastName}",
                         style: const TextStyle(
                           color: ResColors.black,
                           fontSize: 14,
@@ -271,51 +271,12 @@ class ReturnedCarDetailPage extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        "${viewModel.returned.owner?.firstName} ${viewModel.returned.owner?.lastName} ${viewModel.returned.owner?.middleName}",
+                        "${viewModel.returned.owner?.firstName} ${viewModel.returned.owner?.lastName} \n${viewModel.returned.owner?.middleName}",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Туғилган сана: ",
-                        style: const TextStyle(
-                          color: ResColors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        "${viewModel.returned.owner?.birthYear}",
-                        style: const TextStyle(
-                            color: ResColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Pasport рақами: ",
-                        style: const TextStyle(
-                          color: ResColors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        "${viewModel.returned.owner?.passport}",
-                        style: const TextStyle(
-                            color: ResColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700),
+                        textAlign: TextAlign.end,
                       )
                     ],
                   ),
@@ -351,7 +312,7 @@ class ReturnedCarDetailPage extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        "${viewModel.returned.owner?.extraPhoneNumber}",
+                        viewModel.returned.owner?.extraPhoneNumber??"",
                         style: const TextStyle(
                             color: ResColors.black,
                             fontSize: 14,

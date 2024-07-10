@@ -36,7 +36,7 @@ class _SoldCarItemState extends State<SoldCarItem> {
                 borderRadius: BorderRadius.circular(12),
                 child: CachedNetworkImage(
                   width: MediaQuery.sizeOf(context).width / 4,
-                  height: MediaQuery.sizeOf(context).width / 4 - 10,
+                  height: MediaQuery.sizeOf(context).width / 4 - 5,
                   imageUrl: "${widget.car.images?[0]}",
                   fit: BoxFit.cover,
                   placeholder: (context, url) => const Center(
@@ -87,7 +87,7 @@ class _SoldCarItemState extends State<SoldCarItem> {
                         children: [
                           const Expanded(
                             child: Text(
-                              "Сотилган сана : ",
+                              "Сана : ",
                               overflow: TextOverflow.fade,
                               maxLines: 3,
                             ),

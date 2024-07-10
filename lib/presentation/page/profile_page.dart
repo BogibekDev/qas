@@ -64,7 +64,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                   (Route<dynamic> route) => false,
                 );
               });
-
             },
             child: Container(
               width: 36,
@@ -298,51 +297,68 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            ListView.builder(
-                              controller: viewModel.scrollController,
-                              itemCount: viewModel.isLoading
-                                  ? 10
-                                  : viewModel.cars.length,
-                              itemBuilder: (context, position) {
-                                return viewModel.isLoading
-                                    ? const CarItemShimmer()
-                                    : SoldCarItem(
-                                        car: viewModel.cars[position],
+                            !viewModel.isLoading && viewModel.cars.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      "Мошина топилмади",
+                                      style: TextStyle(
+                                          color: ResColors.black, fontSize: 20),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    controller: viewModel.scrollController,
+                                    itemCount: viewModel.isLoading
+                                        ? 10
+                                        : viewModel.cars.length,
+                                    itemBuilder: (context, position) {
+                                      return viewModel.isLoading
+                                          ? const CarItemShimmer()
+                                          : SoldCarItem(
+                                              car: viewModel.cars[position],
+                                              onItemClick: () {
+                                                int? carId =
+                                                    viewModel.cars[position].id;
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SoldDetailPage(
+                                                            carId: carId!),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                    },
+                                  ),
+                            !viewModel.isLoading &&
+                                    viewModel.returnedCars.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      "Мошина топилмади",
+                                      style: TextStyle(
+                                          color: ResColors.black, fontSize: 20),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    itemCount: viewModel.returnedCars.length,
+                                    itemBuilder: (context, index) {
+                                      return ReturnedCarItem(
+                                        car: viewModel.returnedCars[index],
                                         onItemClick: () {
                                           int? carId =
-                                              viewModel.cars[position].id;
+                                              viewModel.returnedCars[index].id;
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  SoldDetailPage(carId: carId!),
+                                                  ReturnedCarDetailPage(
+                                                      carId: carId!),
                                             ),
                                           );
                                         },
                                       );
-                              },
-                            ),
-                            ListView.builder(
-                              itemCount: viewModel.returnedCars.length,
-                              // Replace with your dynamic item count
-                              itemBuilder: (context, index) {
-                                return ReturnedCarItem(
-                                  car: viewModel.returnedCars[index],
-                                  onItemClick: () {
-                                    int? carId =
-                                        viewModel.returnedCars[index].id;
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ReturnedCarDetailPage(
-                                                carId: carId!),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                                    },
+                                  ),
                           ],
                         ),
                       ),
