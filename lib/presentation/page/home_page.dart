@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../../config/injection.dart';
 import '../../tools/assets.dart';
@@ -71,23 +71,25 @@ class HomePage extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: 8),
-           !kIsWeb?  GestureDetector(
-              onTap: () {
-                _scanQRCode(context, homeViewModel);
-              },
-              child: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: ResColors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: const Icon(
-                  Icons.qr_code_scanner,
-                  color: ResColors.mainColor,
-                ),
-              ),
-            ): Container (),
+            !kIsWeb
+                ? GestureDetector(
+                    onTap: () {
+                      _scanQRCode(context, homeViewModel);
+                    },
+                    child: Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: ResColors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: const Icon(
+                        Icons.qr_code_scanner,
+                        color: ResColors.mainColor,
+                      ),
+                    ),
+                  )
+                : Container(),
             const SizedBox(width: 8),
             GestureDetector(
               onTap: () {
@@ -115,16 +117,17 @@ class HomePage extends ConsumerWidget {
           ],
         ),
       ),
-      body: RefreshIndicator(
-        backgroundColor: ResColors.mainBg,
-        color: ResColors.mainColor,
-        onRefresh: () async {
-          homeViewModel.loadCars();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(12),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: RefreshIndicator(
+          backgroundColor: ResColors.mainBg,
+          color: ResColors.mainColor,
+          onRefresh: () async {
+            homeViewModel.loadCars();
+          },
           child: (homeViewModel.cars.isNotEmpty || homeViewModel.isLoading)
               ? ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   controller: homeViewModel.scrollController,
                   itemCount:
                       homeViewModel.isLoading ? 10 : homeViewModel.cars.length,
