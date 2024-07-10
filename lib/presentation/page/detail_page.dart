@@ -36,7 +36,9 @@ class DetailPage extends ConsumerWidget {
             ? const Shimmer(width: 100)
             : Text(
                 detailViewModel.car.model ?? "",
-                style: const TextStyle(fontSize: 32, color: ResColors.black),
+                style: TextStyle(
+                    fontSize: detailViewModel.car.model!.length < 13 ? 32 : 28,
+                    color: ResColors.black),
               ),
         centerTitle: true,
       ),
@@ -85,7 +87,6 @@ class DetailPage extends ConsumerWidget {
                               detailViewModel.carouselIndex = position;
                               detailViewModel.carouselController
                                   .animateToPage(position);
-
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(horizontal: 6),
@@ -433,7 +434,8 @@ class DetailPage extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  detailViewModel.car.owner?.extraPhoneNumber??"",
+                                  detailViewModel.car.owner?.extraPhoneNumber ??
+                                      "",
                                   style: const TextStyle(
                                       color: ResColors.black,
                                       fontSize: 14,
@@ -472,7 +474,7 @@ class DetailPage extends ConsumerWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              detailViewModel.car.description??"",
+                              detailViewModel.car.description ?? "",
                               style: const TextStyle(
                                 color: ResColors.black,
                                 fontSize: 18,
