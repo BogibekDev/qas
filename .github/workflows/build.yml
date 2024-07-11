@@ -15,7 +15,8 @@ jobs:
 
     strategy:
       matrix:
-        platform: [android, ios, web, windows, macos, linux]
+        platform: [android, web, linux]
+#        platform: [android, ios, web, windows, macos, linux]
 
     steps:
       - name: Checkout repository
@@ -40,35 +41,35 @@ jobs:
         if: matrix.platform == 'android'
         run: flutter build apk --release
 
-      - name: Set up Xcode
-        if: matrix.platform == 'ios'
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '14.x'
+#      - name: Set up Xcode
+#        if: matrix.platform == 'ios'
+#        uses: maxim-lobanov/setup-xcode@v1
+#        with:
+#          xcode-version: '14.x'
 
-      - name: Build iOS
-        if: matrix.platform == 'ios'
-        run: flutter build ios --release --no-codesign
+#      - name: Build iOS
+#        if: matrix.platform == 'ios'
+#        run: flutter build ios --release --no-codesign
 
       - name: Build Web
         if: matrix.platform == 'web'
         run: flutter build web --release
 
-      - name: Set up Windows
-        if: matrix.platform == 'windows'
-        run: flutter config --enable-windows-desktop
-
-      - name: Build Windows
-        if: matrix.platform == 'windows'
-        run: flutter build windows --release
-
-      - name: Set up macOS
-        if: matrix.platform == 'macos'
-        run: flutter config --enable-macos-desktop
-
-      - name: Build macOS
-        if: matrix.platform == 'macos'
-        run: flutter build macos --release
+#      - name: Set up Windows
+#        if: matrix.platform == 'windows'
+#        run: flutter config --enable-windows-desktop
+#
+#      - name: Build Windows
+#        if: matrix.platform == 'windows'
+#        run: flutter build windows --release
+#
+#      - name: Set up macOS
+#        if: matrix.platform == 'macos'
+#        run: flutter config --enable-macos-desktop
+#
+#      - name: Build macOS
+#        if: matrix.platform == 'macos'
+#        run: flutter build macos --release
 
       - name: Set up Linux
         if: matrix.platform == 'linux'
@@ -90,14 +91,14 @@ jobs:
                -F caption="Android APK version ${VERSION}" \
                https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
 
-      - name: Upload to Telegram (iOS)
-        if: matrix.platform == 'ios'
-        run: |
-          mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Runner-${VERSION}.app
-          curl -F document=@build/ios/iphoneos/Runner-${VERSION}.app \
-               -F chat_id=$CHAT_ID \
-               -F caption="iOS App version ${VERSION}" \
-               https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
+#      - name: Upload to Telegram (iOS)
+#        if: matrix.platform == 'ios'
+#        run: |
+#          mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Runner-${VERSION}.app
+#          curl -F document=@build/ios/iphoneos/Runner-${VERSION}.app \
+#               -F chat_id=$CHAT_ID \
+#               -F caption="iOS App version ${VERSION}" \
+#               https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
 
       - name: Upload to Telegram (Web)
         if: matrix.platform == 'web'
@@ -108,23 +109,23 @@ jobs:
                -F caption="Web Build version ${VERSION}" \
                https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
 
-      - name: Upload to Telegram (Windows)
-        if: matrix.platform == 'windows'
-        run: |
-          zip -r windows-build-${VERSION}.zip build/windows/runner/Release
-          curl -F document=@windows-build-${VERSION}.zip \
-               -F chat_id=$CHAT_ID \
-               -F caption="Windows Build version ${VERSION}" \
-               https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
-
-      - name: Upload to Telegram (macOS)
-        if: matrix.platform == 'macos'
-        run: |
-          zip -r macos-build-${VERSION}.zip build/macos/Build/Products/Release
-          curl -F document=@macos-build-${VERSION}.zip \
-               -F chat_id=$CHAT_ID \
-               -F caption="macOS Build version ${VERSION}" \
-               https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
+#      - name: Upload to Telegram (Windows)
+#        if: matrix.platform == 'windows'
+#        run: |
+#          zip -r windows-build-${VERSION}.zip build/windows/runner/Release
+#          curl -F document=@windows-build-${VERSION}.zip \
+#               -F chat_id=$CHAT_ID \
+#               -F caption="Windows Build version ${VERSION}" \
+#               https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
+#
+#      - name: Upload to Telegram (macOS)
+#        if: matrix.platform == 'macos'
+#        run: |
+#          zip -r macos-build-${VERSION}.zip build/macos/Build/Products/Release
+#          curl -F document=@macos-build-${VERSION}.zip \
+#               -F chat_id=$CHAT_ID \
+#               -F caption="macOS Build version ${VERSION}" \
+#               https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
 
       - name: Upload to Telegram (Linux)
         if: matrix.platform == 'linux'
