@@ -43,7 +43,7 @@ jobs:
         run: flutter build apk --release
 
       - name: Define version
-        run: echo "VERSION=v1.${{ github.run_number }}" >> $GITHUB_ENV
+        run: echo "VERSION=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Upload to Telegram (Android)
         run: |
