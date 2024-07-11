@@ -43,7 +43,7 @@ jobs:
         run: flutter build apk --release
 
       - name: Define version
-        run: echo "VERSION=v1.${{ github.run_number }}-${{ github.sha }}" >> $GITHUB_ENV
+        run: echo "VERSION=v1.${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Upload to Telegram (Android)
         run: |
@@ -52,50 +52,6 @@ jobs:
                -F chat_id=$CHAT_ID \
                -F caption="Android APK version ${VERSION}" \
                https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
-
-  build_ios:
-    name: Build iOS App
-    runs-on: macos-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.2'
-
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pub-
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Set up Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '14.x'
-
-      - name: Build iOS
-        run: flutter build ios --release --no-codesign
-
-      - name: Define version
-        run: echo "VERSION=v1.${{ github.run_number }}-${{ github.sha }}" >> $GITHUB_ENV
-
-      - name: Upload to Telegram (iOS)
-        run: |
-          mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Runner-${VERSION}.app
-          curl -F document=@build/ios/iphoneos/Runner-${VERSION}.app \
-               -F chat_id=$CHAT_ID \
-               -F caption="iOS App version ${VERSION}" \
-               https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
-
 env:
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   CHAT_ID: ${{ secrets.CHAT_ID }}
