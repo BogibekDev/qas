@@ -10,8 +10,17 @@ on:
 
 jobs:
   build_android:
+
+    strategy:
+      matrix:
+        app_name: ["qas"]
+        app_version: ["v1.0.${{ github.run_number }}"]
+        flutter_version: ["3.22.2"]
+        java_version: ["11"]
+        os: ["ubuntu-latest"]
+
     name: Build Android App
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
 
     steps:
       - name: Checkout repository
@@ -20,7 +29,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2'
+          flutter-version: ${{matrix.flutter_version}}
 
       - name: Cache Flutter dependencies
         uses: actions/cache@v2
@@ -37,20 +46,18 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: ${{matrix.java_version}}
 
       - name: Build Android
         run: flutter build apk --release
 
-      - name: Define version
-        run: echo "VERSION=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
 
-      - name: Upload to Telegram (Android)
+      - name: Upload apk to Telegram
         run: |
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/app-release-${VERSION}.apk
-          curl -F document=@build/app/outputs/flutter-apk/app-release-${VERSION}.apk \
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/${{matrix.app_name}}-${{matrix.app_version}}.apk
+          curl -F document=@build/app/outputs/flutter-apk/${{matrix.app_name}}-${{matrix.app_version}}.apk \
                -F chat_id=$CHAT_ID \
-               -F caption="Android APK version ${VERSION}" \
+               -F caption="Android APK version ${{matrix.app_version}}" \
                https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
 env:
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
