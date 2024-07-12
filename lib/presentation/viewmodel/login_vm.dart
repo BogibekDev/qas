@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/base_vm.dart';
@@ -28,12 +29,15 @@ class LoginViewModel extends BaseViewModel {
     if (isLogin) goHome?.call();
   }
 
-  void login() {
+  void login() async {
     final number = phoneNumberController.text;
     final password = passwordController.text;
 
     if (password.length >= 6 && number.length == 9) {
-      LoginRequest request = LoginRequest('+998$number', password);
+      String fcmToken = await SharedPrefs.getFCMToken();
+      print("login vm: "+fcmToken);
+      String deviceType = kIsWeb ? "web" : "android";
+      LoginRequest request = LoginRequest('+998$number', password,fcmToken,deviceType);
 
       _loginApi(
         request,
