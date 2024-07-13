@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "368224353430",
+    "project_id": "qoshkopravtosavdo",
+    "storage_bucket": "qoshkopravtosavdo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368224353430:android:43a1c9be76f93398e016b7",
+        "android_client_info": {
+          "package_name": "dev.bogibek.qas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4tYaCAnKPAC1U8RkgyhcTYlj1Ay9WaFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -42,4 +42,17 @@ class SharedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
+
+  static saveFCMToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("FCMToken", token);
+  }
+  static Future<String> getFCMToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("FCMToken") ?? "";
+  }
+  static Future<void> removeFCMToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("FCMToken");
+  }
 }

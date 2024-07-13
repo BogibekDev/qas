@@ -10,4 +10,6 @@ Map<String, dynamic> _$LoginRequestToJson(LoginRequest instance) =>
     <String, dynamic>{
       'password': instance.password,
       'phone_number': instance.phoneNumber,
+      'fcm_token': instance.fcmToken,
+      'device_type': instance.deviceType,
     };
