@@ -15,6 +15,7 @@ jobs:
         flutter_version: ["3.22.2"]
         java_version: ["11"]
         os: ["ubuntu-latest"]
+        comment: ["git log -1 --pretty=%B"]
 
     name: Build Android App
     runs-on: ${{matrix.os}}
@@ -54,7 +55,7 @@ jobs:
           mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/${{matrix.app_name}}-${{matrix.app_version}}.apk
           curl -F document=@build/app/outputs/flutter-apk/${{matrix.app_name}}-${{matrix.app_version}}.apk \
                -F chat_id=$CHAT_ID \
-               -F caption="Android APK version ${{matrix.app_version}}" \
+               -F caption="Android APK version ${{matrix.app_version}} \n${{matrix.comment}}" \
                https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendDocument
 env:
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

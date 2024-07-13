@@ -24,11 +24,11 @@ class PushNotifications {
 
   // request notification permission
   static Future init() async {
-    var option = DefaultFirebaseOptions.currentPlatform;
+    FirebaseOptions option = DefaultFirebaseOptions.currentPlatform;
     await Firebase.initializeApp(options: option);
     await requestPermissions();
     // get the fcm device token
-    await getDeviceToken();
+    getDeviceToken();
     FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
     // initialize local notifications
     localNotificationInit();
@@ -41,16 +41,13 @@ class PushNotifications {
 
   static Future getDeviceToken({int maxRetires = 3}) async {
     try {
-      String? token;
-      if (kIsWeb) {
-        token = await _firebaseMessaging.getToken(
-            vapidKey:
-                "BKY3XWsf2elEp-M60u29TEh-8mB4sEKnFf0VCD8X3OjfR_FmGZHcuE2yL_K0B5FERyYOXnzrnfOGIWFOg9sQlug");
-      } else {
-        token = await _firebaseMessaging.getToken();
-      }
+      String? token = await _firebaseMessaging.getToken(
+        vapidKey: kIsWeb
+            ? "BL7cXStfOlFd45KvAusuJKN-i0hP_9WUyv2F0eos6IM40_yJyYRI4faj2IgCRS1ewoSeF7z8dgaHrkGIB-WDLag"
+            : null,
+      );
+
       SharedPrefs.saveFCMToken(token ?? "");
-      print("service : "+token!);
       return token;
     } catch (e) {
       if (maxRetires > 0) {
@@ -83,10 +80,14 @@ class PushNotifications {
             linux: initializationSettingsLinux);
 
     // request notification permissions for android 13 or above
-    _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()!
-        .requestNotificationsPermission();
+
+    final androidImplementation =
+        _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+
+    if (androidImplementation != null) {
+      androidImplementation.requestNotificationsPermission();
+    }
 
     _flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: onNotificationTap,

@@ -37,7 +37,9 @@ class _CarItemState extends State<CarItem> {
                 borderRadius: BorderRadius.circular(12),
                 child: kIsWeb
                     ? Image.network(
-                        "${widget.car.images?[0]}",
+                        widget.car.images!.isNotEmpty
+                            ? "${widget.car.images?[0]}"
+                            : "",
                         width: MediaQuery.sizeOf(context).width / 4,
                         height: MediaQuery.sizeOf(context).width / 4 - 5,
                         fit: BoxFit.cover,
@@ -46,18 +48,28 @@ class _CarItemState extends State<CarItem> {
                           if (loadingProgress == null) return child;
                           return const Center(child: Shimmer());
                         },
+                        errorBuilder: (context, er, error) => const Center(
+                          child: Icon(
+                            Icons.error_outline,
+                            size: 100,
+                          ),
+                        ),
                       )
                     : CachedNetworkImage(
                         width: MediaQuery.sizeOf(context).width / 4,
                         height: MediaQuery.sizeOf(context).width / 4 - 5,
-                        imageUrl: "${widget.car.images?[0]}",
+                        imageUrl: widget.car.images!.isNotEmpty
+                            ? "${widget.car.images?[0]}"
+                            : "",
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const Center(
                           child: Shimmer(),
                         ),
-                        errorWidget: (context, url, error) => const Icon(
-                          Icons.error_outline,
-                          size: 100,
+                        errorWidget: (context, url, error) => const Center(
+                          child: Icon(
+                            Icons.error_outline,
+                            size: 100,
+                          ),
                         ),
                       ),
               ),
@@ -86,7 +98,7 @@ class _CarItemState extends State<CarItem> {
                           ),
                           Expanded(
                             child: Text(
-                              "${widget.car.year??""}",
+                              "${widget.car.year ?? ""}",
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.end,
