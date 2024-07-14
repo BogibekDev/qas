@@ -46,7 +46,7 @@ class _CarItemState extends State<CarItem> {
                         loadingBuilder: (BuildContext context, Widget child,
                             ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) return child;
-                          return const Center(child: Shimmer());
+                          return const Center(child: CircularProgressIndicator());
                         },
                         errorBuilder: (context, er, error) => const Center(
                           child: Icon(
@@ -63,7 +63,7 @@ class _CarItemState extends State<CarItem> {
                             : "",
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const Center(
-                          child: Shimmer(),
+                          child:CircularProgressIndicator(),
                         ),
                         errorWidget: (context, url, error) => const Center(
                           child: Icon(
@@ -79,14 +79,31 @@ class _CarItemState extends State<CarItem> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "${widget.car.model}",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.start,
-                        maxLines: 2,
+                      Row(
+                        children: [
+                          Text(
+                            "${widget.car.model}",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.start,
+                            maxLines: 2,
+                          ),
+                          Expanded(
+                            child: Text(
+                              widget.car.isNew!=false ? "Янги" : "",
+                              style:
+                                  const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red,
+                                  ),
+                              textAlign: TextAlign.end,
+
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ],
                       ),
                       const SizedBox(height: 12),
                       Row(

@@ -29,6 +29,7 @@ class Car {
     this.images,
     this.branch,
     this.owner,
+    this.isNew,
   });
 
   final int? id;
@@ -64,6 +65,8 @@ class Car {
   final List<String>? images;
   final Buyer? owner;
   final Branch? branch;
+  @JsonKey(name: 'is_new')
+  final bool? isNew;
 
   factory Car.fromJson(Map<String, dynamic> json) => _$CarFromJson(json);
 

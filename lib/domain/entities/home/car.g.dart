@@ -35,6 +35,7 @@ Car _$CarFromJson(Map<String, dynamic> json) => Car(
       owner: json['owner'] == null
           ? null
           : Buyer.fromJson(json['owner'] as Map<String, dynamic>),
+      isNew: json['is_new'] as bool?,
     );
 
 Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
@@ -59,4 +60,5 @@ Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
       'images': instance.images,
       'owner': instance.owner,
       'branch': instance.branch,
+      'is_new': instance.isNew,
     };

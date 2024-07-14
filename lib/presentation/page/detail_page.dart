@@ -394,7 +394,7 @@ class DetailPage extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  "${detailViewModel.car.owner?.firstName} ${detailViewModel.car.owner?.lastName} ${detailViewModel.car.owner?.middleName}",
+                                  "${detailViewModel.car.owner?.firstName} ${detailViewModel.car.owner?.lastName}",
                                   style: const TextStyle(
                                       color: ResColors.black,
                                       fontSize: 14,

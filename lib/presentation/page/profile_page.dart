@@ -118,7 +118,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "${viewModel.profile.fullName}",
+                            viewModel.profile.fullName??"",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -143,7 +143,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "${viewModel.profile.phoneNumber}",
+                            viewModel.profile.phoneNumber??"",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -191,7 +191,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "${viewModel.profile.soldCarsCount} та",
+                            "${viewModel.profile.soldCarsCount??""} та",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -216,7 +216,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         ),
                         Expanded(
                           child: Text(
-                            "${viewModel.profile.returnedCarsCount} та",
+                            "${viewModel.profile.returnedCarsCount??""} та",
                             textAlign: TextAlign.end,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
